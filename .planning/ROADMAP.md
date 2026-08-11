@@ -1,9 +1,9 @@
 # Roadmap: GrowCipher
 
 ## Phase 1: Setup e Infraestrutura Base (Atual)
-- Bootstrap do projeto Flutter com package/organization configurados.
-- Criação das pastas de documentação e planejamento (GSD).
-- Estruturação base de pastas do aplicativo em Dart (bloc/provider/riverpod, models, repositories).
+- [x] Bootstrap do projeto Flutter com package/organization configurados.
+- [x] Criação das pastas de documentação e planejamento (GSD).
+- [x] Estruturação base de pastas do aplicativo em Dart (bloc/provider/riverpod, models, repositories).
 
 ## Phase 2: Arquitetura de Banco e Segurança
 - Implementar o armazenamento de chaves mestre (KeyStore/Keychain).
