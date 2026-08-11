@@ -1,0 +1,293 @@
+{
+  "@@locale": "pt",
+  "appTitle": "GrowCipher",
+  "actionContinue": "Continuar",
+  "actionSkip": "Pular",
+  "actionBack": "Voltar",
+  "actionSave": "Salvar",
+  "actionCancel": "Cancelar",
+  "actionEdit": "Editar",
+  "dontKnow": "Não sei",
+  "optionalTag": "opcional",
+  "notInformed": "Não informado",
+
+  "homeTagline": "Seu cultivo. Seus dados. Suas decisões.",
+  "homeEmptyTitle": "Vamos cadastrar sua planta",
+  "homeEmptyBody": "Registre sua primeira planta e acompanhe cada etapa do cultivo — tudo offline, só no seu aparelho.",
+  "addPlant": "Adicionar planta",
+  "homePlantsSection": "Suas plantas",
+  "plantAgeDays": "{count, plural, =1{1 dia} other{{count} dias}}",
+  "@plantAgeDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "stepProgress": "Passo {current} de {total}",
+  "@stepProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "wizardTitle": "Nova planta",
+
+  "wizardStartTitle": "O que você tem agora?",
+  "startingPointSeed": "Semente",
+  "startingPointSeedDesc": "Vou germinar e acompanhar desde o início",
+  "startingPointSeedling": "Muda",
+  "startingPointSeedlingDesc": "Uma planta jovem, já germinada",
+  "startingPointClone": "Clone",
+  "startingPointCloneDesc": "Corte tirado de outra planta",
+  "startingPointInProgress": "Planta em andamento",
+  "startingPointInProgressDesc": "Cultivo que já começou e quero registrar aqui",
+
+  "wizardIdentityTitle": "Como você quer identificar a planta?",
+  "plantNameLabel": "Nome da planta",
+  "plantNameHelper": "Opcional — você pode usar só o código",
+  "privacyCodeLabel": "Código local",
+  "privacyCodeHelper": "Gerado no aparelho, sem identificação nominal.",
+  "regeneratePrivacyCode": "Gerar outro código",
+  "photoLabel": "Foto",
+  "photoComingSoon": "A galeria privada chega em uma próxima versão.",
+
+  "wizardOriginTitle": "De onde ela veio?",
+  "originPurchasedF": "Comprada",
+  "originPurchasedM": "Comprado",
+  "originOwnProduction": "Produção própria",
+  "originGiftOrTrade": "Presente ou troca",
+  "originFoundSeed": "Encontrada em uma flor",
+  "originReceivedClone": "Recebido",
+  "originOtherF": "Outra",
+  "originOtherM": "Outro",
+  "originDetailsLabel": "Detalhes da origem",
+  "originDetailsHelper": "Fornecedor, produtor, lote, referência… (opcional)",
+
+  "wizardGeneticsTitle": "Você conhece a genética?",
+  "geneticsKnown": "Sim, eu sei qual é",
+  "strainLabel": "Variedade / genética",
+  "strainHelper": "Ex.: nome da variedade ou cruzamento",
+  "geneticTypeQuestion": "Ela é autoflorescente ou fotoperiódica?",
+  "geneticTypeAutoflower": "Autoflorescente",
+  "geneticTypePhotoperiod": "Fotoperiódica",
+
+  "datesTitleSeed": "Quando a semente foi plantada?",
+  "datesTitleSeedling": "Quando a muda começou?",
+  "datesTitleClone": "Quando você recebeu o clone?",
+  "datesTitleInProgress": "Quando o cultivo começou, mais ou menos?",
+  "dateToday": "Hoje",
+  "dateYesterday": "Ontem",
+  "datePick": "Escolher data",
+  "dateApproximate": "Data aproximada",
+  "approximateTag": "aproximada",
+  "extraDatesLabel": "Outras datas, se você souber",
+  "extraDateSeedObtained": "Data da semente",
+  "extraDateGermination": "Data de germinação",
+  "extraDateRooted": "Data de enraizamento",
+
+  "wizardEnvironmentTitle": "Onde ela vai crescer?",
+  "environmentIndoor": "Indoor",
+  "environmentOutdoor": "Outdoor",
+  "environmentMixed": "Misto",
+  "environmentDetailLabel": "Quer detalhar o espaço?",
+  "envGrowTent": "Grow tent",
+  "envRoom": "Quarto",
+  "envGreenhouse": "Estufa",
+  "envPot": "Vaso",
+  "envSoil": "Solo",
+  "envOther": "Outro",
+  "environmentNameLabel": "Nome do espaço",
+  "environmentNameHelper": "Ex.: “Tenda 1”, “Quintal” (opcional)",
+
+  "wizardMediumTitle": "Em que meio ela cresce?",
+  "mediumSoil": "Solo",
+  "mediumCoco": "Coco",
+  "mediumHydroponic": "Hidroponia",
+  "mediumAeroponic": "Aeroponia",
+  "mediumOther": "Outro",
+  "containerTypeLabel": "Recipiente",
+  "containerTypeHelper": "Ex.: vaso de tecido, vaso plástico (opcional)",
+  "containerVolumeLabel": "Volume do recipiente (L)",
+  "containerVolumeHelper": "Em litros (opcional)",
+
+  "wizardPhaseTitle": "Em que fase ela está?",
+  "phaseSuggestedHint": "Sugerida a partir da sua primeira resposta — pode mudar.",
+  "phaseSeed": "Semente",
+  "phaseGermination": "Germinação",
+  "phaseSeedling": "Muda",
+  "phaseVegetative": "Vegetativo",
+  "phaseFlowering": "Floração",
+  "phaseHarvest": "Finalização / Colheita",
+
+  "wizardIrrigationTitle": "Como você rega?",
+  "irrigationManual": "Manual",
+  "irrigationAutomatic": "Automática",
+  "irrigationMixed": "As duas",
+  "irrigationUndefined": "Ainda não definida",
+  "irrigationSystemLabel": "Qual sistema?",
+  "irrigationDrip": "Gotejamento",
+  "irrigationReservoir": "Reservatório",
+  "irrigationScheduled": "Programada",
+
+  "reviewTitle": "Revise sua planta",
+  "reviewHint": "Toque em uma seção para voltar e editar.",
+  "createPlantCta": "CRIAR PLANTA",
+  "reviewSectionStart": "Ponto de partida",
+  "reviewSectionIdentity": "Identificação",
+  "reviewSectionOrigin": "Origem",
+  "reviewSectionGenetics": "Genética",
+  "reviewSectionDates": "Datas",
+  "reviewSectionEnvironment": "Ambiente",
+  "reviewSectionMedium": "Meio de cultivo",
+  "reviewSectionPhase": "Fase",
+  "reviewSectionIrrigation": "Irrigação",
+
+  "successTitle": "Planta criada",
+  "successSubtitle": "Tudo salvo no seu aparelho, sem internet e sem conta.",
+  "registerFirstActivity": "REGISTRAR PRIMEIRA ATIVIDADE",
+  "goToPlant": "IR PARA A PLANTA",
+
+  "quickLogTitle": "O que aconteceu?",
+  "quickLogWatered": "Reguei",
+  "quickLogFed": "Nutrientes / alimentação",
+  "quickLogTreatment": "Tratamento",
+  "quickLogMeasurement": "Medição",
+  "quickLogTransplant": "Transplante",
+  "quickLogPhaseChange": "Mudança de fase",
+  "quickLogPhoto": "Foto",
+  "quickLogPhotoComingSoon": "Chega com a galeria privada",
+  "quickLogObservation": "Observação",
+  "quickLogProblem": "Problema",
+  "quickLogTaskDone": "Tarefa concluída",
+  "quickLogHarvest": "Colheita",
+  "quickLogEndPlant": "Encerrar planta",
+  "eventSaved": "Registro salvo",
+
+  "occurredAtLabel": "Quando aconteceu?",
+  "occurredAtNow": "Agora",
+  "notesLabel": "Anotação (opcional)",
+  "amountLabel": "Quantidade",
+  "unitLabel": "Unidade",
+
+  "volumeUnitHelper": "Ex.: ml, L (opcional)",
+  "solutionTypeLabel": "Tipo de solução",
+  "solutionTypeHelper": "Ex.: água pura, água com nutrientes (opcional)",
+
+  "productLabel": "Produto",
+  "productHelper": "Ex.: nome do fertilizante (opcional)",
+
+  "treatmentTypeLabel": "Tipo de tratamento",
+  "treatmentPestControl": "Controle de pragas",
+  "treatmentFungusControl": "Controle de fungos",
+  "treatmentGeneric": "Tratamento geral",
+  "treatmentCorrection": "Correção",
+  "treatmentSupplement": "Suplemento",
+  "methodLabel": "Método",
+  "methodHelper": "Ex.: pulverização foliar, rega (opcional)",
+
+  "measurementHint": "Preencha só o que você mediu.",
+  "measureTemperature": "Temperatura (°C)",
+  "measureHumidity": "Umidade (%)",
+  "measurePh": "pH",
+  "measureEc": "EC (mS/cm)",
+  "measureVpd": "VPD (kPa)",
+  "measureDli": "DLI (mol/m²·dia)",
+
+  "newPhaseLabel": "Nova fase",
+  "currentPhaseLabel": "Fase atual: {phase}",
+  "@currentPhaseLabel": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "phaseTransition": "{from} → {to}",
+  "@phaseTransition": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+
+  "observationFieldLabel": "O que você observou?",
+
+  "problemCategoryLabel": "Categoria",
+  "problemPest": "Praga",
+  "problemDisease": "Doença",
+  "problemDeficiency": "Deficiência",
+  "problemExcess": "Excesso",
+  "problemWatering": "Rega",
+  "problemTemperature": "Temperatura",
+  "problemHumidity": "Umidade",
+  "problemLighting": "Iluminação",
+  "problemPhysicalDamage": "Dano físico",
+  "problemDescriptionLabel": "Descrição (opcional)",
+
+  "taskDescriptionLabel": "Qual tarefa?",
+
+  "wetWeightLabel": "Peso úmido",
+  "dryWeightLabel": "Peso seco",
+  "weightUnitHelper": "Ex.: g, kg (opcional)",
+  "harvestEndsCycle": "Encerrar o ciclo desta planta",
+  "harvestEndsCycleHelper": "A planta passa a “Concluída”. O histórico fica guardado.",
+
+  "endReasonLabel": "Por que encerrar?",
+  "endReasonHarvestCompleted": "Colheita concluída",
+  "endReasonDied": "Morreu",
+  "endReasonDiscarded": "Descartada",
+  "endReasonInterrupted": "Interrompida",
+  "endReasonOther": "Outro motivo",
+  "endCauseLabel": "O que causou?",
+  "causePest": "Praga",
+  "causeDisease": "Doença",
+  "causeWatering": "Rega",
+  "causeNutrition": "Nutrição",
+  "causeEnvironment": "Ambiente",
+  "causeAccident": "Acidente",
+  "endPlantKeepsHistory": "O histórico completo fica guardado. Nada é apagado.",
+
+  "timelineTitle": "Linha do tempo",
+  "timelineEmpty": "Nenhum registro ainda.",
+  "registerActivity": "Registrar atividade",
+  "plantFallbackTitle": "Planta {code}",
+  "@plantFallbackTitle": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+
+  "statusActive": "Ativa",
+  "statusCompleted": "Concluída",
+  "statusDied": "Morta",
+  "statusDiscarded": "Descartada",
+  "statusInterrupted": "Interrompida",
+  "statusArchived": "Arquivada",
+
+  "eventPlantCreated": "Planta cadastrada",
+  "eventGerminated": "Germinação",
+  "eventWatered": "Rega",
+  "eventFed": "Alimentação",
+  "eventTreatment": "Tratamento",
+  "eventMeasurement": "Medição",
+  "eventTransplant": "Transplante",
+  "eventPhaseChanged": "Mudança de fase",
+  "eventPhotoAdded": "Foto",
+  "eventObservation": "Observação",
+  "eventProblem": "Problema",
+  "eventTaskDone": "Tarefa concluída",
+  "eventHarvested": "Colheita",
+  "eventPlantEnded": "Ciclo encerrado"
+}
