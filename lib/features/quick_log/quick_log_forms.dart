@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../app_scope.dart';
+import '../../providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/identifiers.dart';
 import '../../domain/models/plant.dart';
 import '../../domain/models/plant_enums.dart';
@@ -63,12 +64,12 @@ class QuickLogForm extends StatelessWidget {
 
 // --- infraestrutura comum dos formulários ---
 
-abstract class _EventFormState<T extends StatefulWidget> extends State<T> {
+abstract class _EventFormState<T extends ConsumerStatefulWidget> extends ConsumerState<T> {
   /// `null` = "Agora" (resolvido no momento de salvar).
   DateTime? occurredAt;
   bool saving = false;
 
-  PlantRepository get repository => AppScope.of(context).plantRepository;
+  PlantRepository get repository => ref.read(plantRepositoryProvider);
 
   Future<void> submit(Future<void> Function(DateTime occurredAt) write) async {
     if (saving) return;
@@ -269,7 +270,7 @@ class _TextField extends StatelessWidget {
 
 // --- rega ---
 
-class _WateredForm extends StatefulWidget {
+class _WateredForm extends ConsumerStatefulWidget {
   const _WateredForm({required this.plant, required this.onBack});
 
   final Plant plant;
@@ -357,7 +358,7 @@ class _WateredFormState extends _EventFormState<_WateredForm> {
 
 // --- alimentação / nutrientes ---
 
-class _FedForm extends StatefulWidget {
+class _FedForm extends ConsumerStatefulWidget {
   const _FedForm({required this.plant, required this.onBack});
 
   final Plant plant;
@@ -445,7 +446,7 @@ class _FedFormState extends _EventFormState<_FedForm> {
 
 // --- tratamento (separado de alimentação) ---
 
-class _TreatmentForm extends StatefulWidget {
+class _TreatmentForm extends ConsumerStatefulWidget {
   const _TreatmentForm({required this.plant, required this.onBack});
 
   final Plant plant;
@@ -556,7 +557,7 @@ class _TreatmentFormState extends _EventFormState<_TreatmentForm> {
 
 // --- medição ---
 
-class _MeasurementForm extends StatefulWidget {
+class _MeasurementForm extends ConsumerStatefulWidget {
   const _MeasurementForm({required this.plant, required this.onBack});
 
   final Plant plant;
@@ -666,7 +667,7 @@ class _MeasurementFormState extends _EventFormState<_MeasurementForm> {
 
 // --- transplante ---
 
-class _TransplantForm extends StatefulWidget {
+class _TransplantForm extends ConsumerStatefulWidget {
   const _TransplantForm({required this.plant, required this.onBack});
 
   final Plant plant;
@@ -738,7 +739,7 @@ class _TransplantFormState extends _EventFormState<_TransplantForm> {
 
 // --- mudança de fase ---
 
-class _PhaseChangeForm extends StatefulWidget {
+class _PhaseChangeForm extends ConsumerStatefulWidget {
   const _PhaseChangeForm({required this.plant, required this.onBack});
 
   final Plant plant;
@@ -815,7 +816,7 @@ class _PhaseChangeFormState extends _EventFormState<_PhaseChangeForm> {
 
 // --- observação ---
 
-class _ObservationForm extends StatefulWidget {
+class _ObservationForm extends ConsumerStatefulWidget {
   const _ObservationForm({required this.plant, required this.onBack});
 
   final Plant plant;
@@ -885,7 +886,7 @@ class _ObservationFormState extends _EventFormState<_ObservationForm> {
 
 // --- problema ---
 
-class _ProblemForm extends StatefulWidget {
+class _ProblemForm extends ConsumerStatefulWidget {
   const _ProblemForm({required this.plant, required this.onBack});
 
   final Plant plant;
@@ -966,7 +967,7 @@ class _ProblemFormState extends _EventFormState<_ProblemForm> {
 
 // --- tarefa concluída ---
 
-class _TaskDoneForm extends StatefulWidget {
+class _TaskDoneForm extends ConsumerStatefulWidget {
   const _TaskDoneForm({required this.plant, required this.onBack});
 
   final Plant plant;
@@ -1025,7 +1026,7 @@ class _TaskDoneFormState extends _EventFormState<_TaskDoneForm> {
 
 // --- colheita ---
 
-class _HarvestForm extends StatefulWidget {
+class _HarvestForm extends ConsumerStatefulWidget {
   const _HarvestForm({required this.plant, required this.onBack});
 
   final Plant plant;
@@ -1122,7 +1123,7 @@ class _HarvestFormState extends _EventFormState<_HarvestForm> {
 
 // --- encerramento da planta ---
 
-class _EndPlantForm extends StatefulWidget {
+class _EndPlantForm extends ConsumerStatefulWidget {
   const _EndPlantForm({required this.plant, required this.onBack});
 
   final Plant plant;

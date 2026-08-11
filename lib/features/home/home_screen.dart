@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../app_scope.dart';
+import '../../providers.dart';
 import '../../domain/models/plant.dart';
 import '../../domain/models/plant_enums.dart';
 import '../common/enum_labels.dart';
@@ -9,16 +10,16 @@ import '../plant_profile/plant_profile_screen.dart';
 import '../plant_wizard/plant_wizard_screen.dart';
 
 /// Home / painel: lista as plantas ou convida a cadastrar a primeira.
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   static const String route = '/';
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   List<Plant>? _plants;
   bool _loadRequested = false;
 
@@ -32,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _reload() async {
-    final plants = await AppScope.of(context).plantRepository.getPlants();
+    final plants = await ref.read(plantRepositoryProvider).getPlants();
     if (mounted) {
       setState(() => _plants = plants);
     }

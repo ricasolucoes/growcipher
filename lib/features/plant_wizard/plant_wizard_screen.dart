@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../app_scope.dart';
+import '../../providers.dart';
 import '../../domain/identifiers.dart';
 import '../../domain/models/plant_draft.dart';
 import '../../domain/models/plant_enums.dart';
@@ -32,16 +33,16 @@ enum WizardStep {
 ///
 /// As respostas ficam num [PlantDraft] em memória; nada é persistido antes
 /// do "CRIAR PLANTA" na revisão.
-class PlantWizardScreen extends StatefulWidget {
+class PlantWizardScreen extends ConsumerStatefulWidget {
   const PlantWizardScreen({super.key});
 
   static const String route = '/plants/new';
 
   @override
-  State<PlantWizardScreen> createState() => _PlantWizardScreenState();
+  ConsumerState<PlantWizardScreen> createState() => _PlantWizardScreenState();
 }
 
-class _PlantWizardScreenState extends State<PlantWizardScreen> {
+class _PlantWizardScreenState extends ConsumerState<PlantWizardScreen> {
   final PlantDraft _draft = PlantDraft();
   final PageController _pageController = PageController();
 
@@ -127,7 +128,7 @@ class _PlantWizardScreenState extends State<PlantWizardScreen> {
     if (_creating || !_draft.canCreate) return;
     setState(() => _creating = true);
 
-    final repository = AppScope.of(context).plantRepository;
+    final repository = ref.read(plantRepositoryProvider);
     final now = DateTime.now();
     final plant = _draft.toPlant(id: generateLocalId(), now: now);
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../app_scope.dart';
+import '../../providers.dart';
 import '../../domain/models/plant.dart';
 import '../../domain/models/plant_enums.dart';
 import '../../domain/models/plant_event.dart';
@@ -11,7 +12,7 @@ import '../common/l10n_extensions.dart';
 import '../quick_log/quick_log.dart';
 
 /// Perfil da planta: dados estáveis no topo, linha do tempo abaixo.
-class PlantProfileScreen extends StatefulWidget {
+class PlantProfileScreen extends ConsumerStatefulWidget {
   const PlantProfileScreen({super.key, required this.plantId});
 
   static const String route = '/plants/profile';
@@ -19,10 +20,10 @@ class PlantProfileScreen extends StatefulWidget {
   final String plantId;
 
   @override
-  State<PlantProfileScreen> createState() => _PlantProfileScreenState();
+  ConsumerState<PlantProfileScreen> createState() => _PlantProfileScreenState();
 }
 
-class _PlantProfileScreenState extends State<PlantProfileScreen> {
+class _PlantProfileScreenState extends ConsumerState<PlantProfileScreen> {
   Plant? _plant;
   List<PlantEvent>? _events;
   bool _loadRequested = false;
@@ -37,7 +38,7 @@ class _PlantProfileScreenState extends State<PlantProfileScreen> {
   }
 
   Future<void> _reload() async {
-    final repository = AppScope.of(context).plantRepository;
+    final repository = ref.read(plantRepositoryProvider);
     final plant = await repository.getPlant(widget.plantId);
     final events = await repository.getEvents(widget.plantId);
     if (mounted) {

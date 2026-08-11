@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../app_scope.dart';
+import '../../providers.dart';
 import '../../domain/models/plant.dart';
 import '../../domain/models/plant_enums.dart';
 import '../common/enum_labels.dart';
@@ -10,7 +11,7 @@ import '../plant_profile/plant_profile_screen.dart';
 import '../quick_log/quick_log.dart';
 
 /// Tela de sucesso pós-criação: resumo + convite para o primeiro registro.
-class PlantCreatedScreen extends StatefulWidget {
+class PlantCreatedScreen extends ConsumerStatefulWidget {
   const PlantCreatedScreen({super.key, required this.plantId});
 
   static const String route = '/plants/created';
@@ -18,10 +19,10 @@ class PlantCreatedScreen extends StatefulWidget {
   final String plantId;
 
   @override
-  State<PlantCreatedScreen> createState() => _PlantCreatedScreenState();
+  ConsumerState<PlantCreatedScreen> createState() => _PlantCreatedScreenState();
 }
 
-class _PlantCreatedScreenState extends State<PlantCreatedScreen> {
+class _PlantCreatedScreenState extends ConsumerState<PlantCreatedScreen> {
   Plant? _plant;
   bool _loadRequested = false;
 
@@ -35,9 +36,7 @@ class _PlantCreatedScreenState extends State<PlantCreatedScreen> {
   }
 
   Future<void> _load() async {
-    final plant = await AppScope.of(
-      context,
-    ).plantRepository.getPlant(widget.plantId);
+    final plant = await ref.read(plantRepositoryProvider).getPlant(widget.plantId);
     if (mounted) {
       setState(() => _plant = plant);
     }
