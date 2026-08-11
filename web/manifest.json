@@ -1,11 +1,11 @@
 {
-    "name": "growcipher",
-    "short_name": "growcipher",
+    "name": "GrowCipher",
+    "short_name": "GrowCipher",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#101512",
+    "theme_color": "#2E6B4F",
+    "description": "Diário de cultivo offline-first e criptografado: registre plantas, ciclos e eventos com controle total sobre os próprios dados.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
