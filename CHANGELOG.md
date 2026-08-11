@@ -29,7 +29,7 @@
 
 **Documentação:** vault Obsidian em `docs/` (visão, posicionamento, princípios, funcionalidades, MVP e consolidação de design) e planejamento GSD em `.planning/` (`PROJECT.md` e `ROADMAP.md` com as 5 fases).
 
-**Dependências:** `flutter_lints` 3 → 4 — máximo compatível com o Dart 3.3.4 do Flutter 3.19.6; os demais 24 pacotes desatualizados estão fixados pelo SDK e só se movem com upgrade do Flutter.
+**Toolchain:** projeto fixado no Flutter 3.44.9 / Dart 3.12.2 via `.tool-versions`, vindo do 3.19.6 (abril/2024) que travava 24 pacotes em versões antigas. Com o SDK novo, `flutter_lints` sobe de 3 para 6 e as dependências passam a resolver nas versões atuais — pré-requisito para escolher os plugins de SQLCipher e biometria da Phase 2.
 
 - [x] Versão inicial `0.1.0+1` (o `flutter create` gera `1.0.0+1`)
 - [x] `description` do pubspec, do manifest web e do `index.html` descrevem o produto
