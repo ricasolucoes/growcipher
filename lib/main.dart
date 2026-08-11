@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
 import 'data/app_database.dart';
-import 'data/sqlite_plant_repository.dart';
+import 'providers.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,5 +11,10 @@ Future<void> main() async {
   // Banco local, offline — nada sai do aparelho.
   final database = await AppDatabase().open();
 
-  runApp(GrowCipherApp(repository: SqlitePlantRepository(database)));
+  runApp(
+    ProviderScope(
+      overrides: [appDatabaseProvider.overrideWithValue(database)],
+      child: const GrowCipherApp(),
+    ),
+  );
 }

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'app_scope.dart';
-import 'domain/repositories/plant_repository.dart';
 import 'features/home/home_screen.dart';
 import 'features/plant_profile/plant_profile_screen.dart';
 import 'features/plant_wizard/plant_created_screen.dart';
@@ -15,15 +12,11 @@ import 'l10n/generated/app_localizations.dart';
 const Color _seedColor = Color(0xFF2E6B4F);
 
 class GrowCipherApp extends StatelessWidget {
-  const GrowCipherApp({super.key, required this.repository});
-
-  final PlantRepository repository;
+  const GrowCipherApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return AppScope(
-      plantRepository: repository,
-      child: MaterialApp(
+    return MaterialApp(
         onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
         debugShowCheckedModeBanner: false,
         theme: _buildTheme(Brightness.light),
@@ -41,8 +34,7 @@ class GrowCipherApp extends StatelessWidget {
         ],
         onGenerateRoute: _onGenerateRoute,
         initialRoute: HomeScreen.route,
-      ),
-    );
+      );
   }
 
   Route<Object?>? _onGenerateRoute(RouteSettings settings) {
