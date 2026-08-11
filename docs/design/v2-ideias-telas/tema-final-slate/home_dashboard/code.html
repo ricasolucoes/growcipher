@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GrowCipher - Home Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#a8e7cd",
+                      "on-tertiary-fixed": "#002117",
+                      "surface-container-highest": "#2d3449",
+                      "inverse-surface": "#dae2fd",
+                      "inverse-primary": "#006b5f",
+                      "on-secondary": "#233144",
+                      "surface-container-high": "#222a3d",
+                      "on-secondary-fixed-variant": "#3a485c",
+                      "on-primary-container": "#00574d",
+                      "outline-variant": "#3c4a46",
+                      "surface-variant": "#2d3449",
+                      "on-secondary-fixed": "#0d1c2f",
+                      "outline": "#859490",
+                      "on-surface": "#dae2fd",
+                      "tertiary-fixed": "#b0f0d6",
+                      "on-background": "#dae2fd",
+                      "surface-container": "#171f33",
+                      "on-tertiary-container": "#155743",
+                      "tertiary-container": "#8ccbb2",
+                      "on-tertiary": "#003829",
+                      "primary-fixed-dim": "#3cddc7",
+                      "primary-fixed": "#62fae3",
+                      "inverse-on-surface": "#283044",
+                      "tertiary-fixed-dim": "#95d3ba",
+                      "secondary-fixed-dim": "#b9c7e0",
+                      "background": "#0b1326",
+                      "error": "#ffb4ab",
+                      "on-surface-variant": "#bacac5",
+                      "on-error": "#690005",
+                      "surface-dim": "#0b1326",
+                      "primary-container": "#2dd4bf",
+                      "surface-bright": "#31394d",
+                      "on-primary-fixed-variant": "#005047",
+                      "surface-tint": "#3cddc7",
+                      "surface": "#0b1326",
+                      "on-tertiary-fixed-variant": "#0b513d",
+                      "surface-container-lowest": "#060e20",
+                      "on-error-container": "#ffdad6",
+                      "error-container": "#93000a",
+                      "on-secondary-container": "#abb9d2",
+                      "secondary": "#b9c7e0",
+                      "secondary-fixed": "#d5e3fd",
+                      "on-primary": "#003731",
+                      "secondary-container": "#3c4a5e",
+                      "primary": "#57f1db",
+                      "surface-container-low": "#131b2e",
+                      "on-primary-fixed": "#00201c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "container-padding": "24px",
+                      "base": "8px",
+                      "margin-desktop": "64px",
+                      "margin-mobile": "16px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "label-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "title-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-md": [
+                              "JetBrains Mono"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "label-sm": [
+                              "11px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "title-lg": [
+                              "22px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.5px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0.5px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.25px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "57px",
+                              {
+                                      "lineHeight": "64px",
+                                      "letterSpacing": "-0.25px",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md text-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-background w-full top-0 sticky border-b border-outline-variant flex justify-between items-center px-margin-mobile h-16 w-full z-40">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary hover:bg-surface-container-high transition-colors active:opacity-80 p-2 rounded-full cursor-pointer" data-icon="lock" data-weight="fill" style="font-variation-settings: 'FILL' 1;">lock</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight hidden md:block">GrowCipher</span>
+<span class="font-title-lg text-title-lg text-primary md:hidden">GrowCipher</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="hidden md:flex items-center gap-4 mr-6">
+<!-- Desktop Navigation - Active Home -->
+<a class="flex items-center gap-2 text-primary font-label-sm text-label-sm px-3 py-2 rounded-DEFAULT bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">home</span>
+                    Home
+                </a>
+<a class="flex items-center gap-2 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm px-3 py-2 rounded-DEFAULT hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">potted_plant</span>
+                    Plants
+                </a>
+<a class="flex items-center gap-2 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm px-3 py-2 rounded-DEFAULT hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span>
+                    Materials
+                </a>
+<a class="flex items-center gap-2 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm px-3 py-2 rounded-DEFAULT hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">photo_library</span>
+                    Gallery
+                </a>
+</div>
+<!-- Vault Status Indicator -->
+<div class="hidden md:flex items-center gap-2 mr-4 bg-surface-container-low px-3 py-1.5 rounded border border-outline-variant">
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(87,241,219,0.5)]"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Encrypted</span>
+</div>
+<span class="material-symbols-outlined text-primary hover:bg-surface-container-high transition-colors active:opacity-80 p-2 rounded-full cursor-pointer" data-icon="settings">settings</span>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow p-margin-mobile md:p-margin-desktop md:pt-8 max-w-[1440px] mx-auto w-full pb-32 md:pb-16">
+<!-- Dashboard Header -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface mb-1">Dashboard</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Vault ID: GC-889-XQ</p>
+</div>
+<div class="text-right hidden md:block">
+<div class="font-label-sm text-label-sm text-primary uppercase">System Status</div>
+<div class="font-body-md text-body-md text-on-surface-variant">All sensors nominal</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-base md:gap-gutter">
+<!-- Quick Stats Row (Spans full width on mobile, top row on desktop) -->
+<div class="md:col-span-12 grid grid-cols-2 md:grid-cols-4 gap-base md:gap-gutter mb-2">
+<div class="bg-surface-container p-4 rounded-DEFAULT border border-secondary/20 flex flex-col justify-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Active Plants</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">12</span>
+</div>
+<div class="bg-surface-container p-4 rounded-DEFAULT border border-secondary/20 flex flex-col justify-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Alerts</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-error">2</span>
+</div>
+<div class="bg-surface-container p-4 rounded-DEFAULT border border-secondary/20 flex flex-col justify-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Tasks Today</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary">5</span>
+</div>
+<div class="bg-surface-container p-4 rounded-DEFAULT border border-secondary/20 flex flex-col justify-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Avg Temp</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">76°F</span>
+</div>
+</div>
+<!-- Active Plants Grid (Spans 8 cols on desktop) -->
+<div class="md:col-span-8 bg-surface-container-low rounded-DEFAULT border border-outline-variant p-4 flex flex-col h-[500px]">
+<div class="flex justify-between items-center mb-4 pb-2 border-b border-outline-variant/50">
+<h2 class="font-title-lg text-title-lg text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">grid_view</span>
+                        Active Canopy
+                    </h2>
+<button class="font-label-sm text-label-sm text-primary hover:text-primary-fixed uppercase tracking-wider transition-colors">View All</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto pr-2 custom-scrollbar">
+<!-- Plant Card 1 -->
+<div class="bg-surface-container p-3 rounded border border-secondary/10 hover:border-primary/50 transition-colors cursor-pointer group flex flex-col justify-between min-h-[160px]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold">OG Kush #1</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Clone A4</p>
+</div>
+<span class="bg-primary-container/20 text-primary-fixed text-[10px] px-2 py-0.5 rounded font-label-sm uppercase">Flower W3</span>
+</div>
+<div class="mt-auto pt-3 border-t border-outline-variant/30 grid grid-cols-2 gap-2 text-center">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-0.5">Water</span>
+<span class="block font-label-md text-label-md text-on-surface">2d ago</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-0.5">Feed</span>
+<span class="block font-label-md text-label-md text-error">Due</span>
+</div>
+</div>
+</div>
+<!-- Plant Card 2 -->
+<div class="bg-surface-container p-3 rounded border border-secondary/10 hover:border-primary/50 transition-colors cursor-pointer group flex flex-col justify-between min-h-[160px]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold">Sour D #2</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Seed S2</p>
+</div>
+<span class="bg-tertiary-container/20 text-tertiary-fixed text-[10px] px-2 py-0.5 rounded font-label-sm uppercase">Veg W4</span>
+</div>
+<div class="mt-auto pt-3 border-t border-outline-variant/30 grid grid-cols-2 gap-2 text-center">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-0.5">Water</span>
+<span class="block font-label-md text-label-md text-on-surface">Today</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-0.5">Feed</span>
+<span class="block font-label-md text-label-md text-on-surface">1d ago</span>
+</div>
+</div>
+</div>
+<!-- Plant Card 3 -->
+<div class="bg-surface-container p-3 rounded border border-secondary/10 hover:border-primary/50 transition-colors cursor-pointer group flex flex-col justify-between min-h-[160px]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold">GSC Mother</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Clone G1</p>
+</div>
+<span class="bg-surface-bright/50 text-on-surface-variant text-[10px] px-2 py-0.5 rounded font-label-sm uppercase">Mother</span>
+</div>
+<div class="mt-auto pt-3 border-t border-outline-variant/30 grid grid-cols-2 gap-2 text-center">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-0.5">Water</span>
+<span class="block font-label-md text-label-md text-on-surface">1d ago</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-0.5">Feed</span>
+<span class="block font-label-md text-label-md text-on-surface">3d ago</span>
+</div>
+</div>
+</div>
+<!-- Plant Card 4 -->
+<div class="bg-surface-container p-3 rounded border border-secondary/10 hover:border-primary/50 transition-colors cursor-pointer group flex flex-col justify-between min-h-[160px]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold">Blue Dream</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Seed B1</p>
+</div>
+<span class="bg-primary-container/20 text-primary-fixed text-[10px] px-2 py-0.5 rounded font-label-sm uppercase">Flower W1</span>
+</div>
+<div class="mt-auto pt-3 border-t border-outline-variant/30 grid grid-cols-2 gap-2 text-center">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-0.5">Water</span>
+<span class="block font-label-md text-label-md text-error">Due</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant mb-0.5">Feed</span>
+<span class="block font-label-md text-label-md text-on-surface">5d ago</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Side Panel (Spans 4 cols on desktop) -->
+<div class="md:col-span-4 flex flex-col gap-base md:gap-gutter">
+<!-- Tasks Widget -->
+<div class="bg-surface-container-highest rounded-DEFAULT border border-outline-variant p-4 flex-grow flex flex-col">
+<h2 class="font-title-lg text-title-lg text-on-surface mb-4 flex items-center gap-2 pb-2 border-b border-outline-variant/50">
+<span class="material-symbols-outlined text-[20px] text-tertiary">checklist</span>
+                        Action Items
+                    </h2>
+<ul class="space-y-1 flex-grow">
+<li class="flex items-center gap-3 py-2 px-2 hover:bg-surface-bright/30 rounded transition-colors group">
+<div class="w-4 h-4 rounded-sm border border-outline group-hover:border-primary flex items-center justify-center cursor-pointer"></div>
+<div class="flex-grow">
+<span class="block font-body-md text-body-md text-on-surface">Feed OG Kush #1</span>
+<span class="block font-label-sm text-label-sm text-error">High Priority • Nutrient Mix B</span>
+</div>
+</li>
+<li class="flex items-center gap-3 py-2 px-2 hover:bg-surface-bright/30 rounded transition-colors group">
+<div class="w-4 h-4 rounded-sm border border-outline group-hover:border-primary flex items-center justify-center cursor-pointer"></div>
+<div class="flex-grow">
+<span class="block font-body-md text-body-md text-on-surface">Water Blue Dream</span>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Standard pH 6.0</span>
+</div>
+</li>
+<li class="flex items-center gap-3 py-2 px-2 hover:bg-surface-bright/30 rounded transition-colors group">
+<div class="w-4 h-4 rounded-sm border border-outline group-hover:border-primary flex items-center justify-center cursor-pointer"></div>
+<div class="flex-grow">
+<span class="block font-body-md text-body-md text-on-surface">Check VPD Levels</span>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Tent 2</span>
+</div>
+</li>
+</ul>
+</div>
+<!-- Recent Events Log -->
+<div class="bg-surface-container rounded-DEFAULT border border-secondary/10 p-4 h-[200px] flex flex-col overflow-hidden relative">
+<!-- Subtle background pattern for technical feel -->
+<div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(var(--tw-colors-on-surface) 1px, transparent 1px); background-size: 16px 16px;"></div>
+<h2 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-3 relative z-10">System Log</h2>
+<div class="space-y-3 overflow-y-auto pr-2 custom-scrollbar relative z-10 flex-grow font-label-sm text-label-sm">
+<div class="flex gap-3 text-on-surface-variant opacity-80">
+<span class="text-tertiary opacity-70 w-12 shrink-0">14:05</span>
+<span class="truncate">Auto-irrigation triggered (Zone A)</span>
+</div>
+<div class="flex gap-3 text-on-surface-variant opacity-80">
+<span class="text-tertiary opacity-70 w-12 shrink-0">11:30</span>
+<span class="truncate">User 'Admin' updated nutrient profile</span>
+</div>
+<div class="flex gap-3 text-on-surface-variant opacity-80">
+<span class="text-error opacity-70 w-12 shrink-0">09:15</span>
+<span class="truncate">Temp spike detected (Zone B) - Resolved</span>
+</div>
+<div class="flex gap-3 text-on-surface-variant opacity-80">
+<span class="text-tertiary opacity-70 w-12 shrink-0">08:00</span>
+<span class="truncate">Daily cycle initiated</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Quick Log) -->
+<button aria-label="Quick Log" class="fixed bottom-24 md:bottom-8 right-4 md:right-8 w-14 h-14 bg-primary text-on-primary-container rounded-full flex items-center justify-center shadow-[0_4px_12px_rgba(45,212,191,0.3)] hover:bg-primary-fixed active:scale-95 transition-all z-40">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden bg-surface-container-lowest dark:bg-surface-container-lowest fixed bottom-0 w-full z-50 border-t border-outline-variant flex justify-around items-center h-20 pb-safe px-base">
+<!-- Active Tab: Home -->
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-5 py-1 active:scale-95 duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="home" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<!-- Inactive Tabs -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-all active:scale-95 duration-100 px-3 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="potted_plant">potted_plant</span>
+<span class="font-label-sm text-label-sm mt-1">Plants</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-all active:scale-95 duration-100 px-3 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-sm text-label-sm mt-1">Materials</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-all active:scale-95 duration-100 px-3 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="photo_library">photo_library</span>
+<span class="font-label-sm text-label-sm mt-1">Gallery</span>
+</a>
+</nav>
+<style>
+        /* Custom scrollbar for technical feel */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: var(--tw-colors-outline-variant);
+            border-radius: 2px;
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+<script>
+        // Simple ambient subtle pulse for the vault indicator
+        setInterval(() => {
+            const indicator = document.querySelector('.w-2.h-2.rounded-full.bg-primary');
+            if(indicator) {
+                indicator.style.opacity = indicator.style.opacity === '0.7' ? '1' : '0.7';
+            }
+        }, 2000);
+    </script>
+</body></html>

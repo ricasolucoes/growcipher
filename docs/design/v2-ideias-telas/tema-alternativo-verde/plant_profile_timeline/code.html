@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Plant Profile - Timeline</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#2f3634",
+                    "on-tertiary-container": "#744000",
+                    "primary-fixed": "#62fae3",
+                    "secondary": "#b9c8de",
+                    "primary": "#57f1db",
+                    "tertiary": "#ffd1aa",
+                    "on-surface": "#dde4e1",
+                    "surface-container": "#1a211f",
+                    "on-tertiary-fixed": "#2d1600",
+                    "surface-container-low": "#161d1b",
+                    "tertiary-fixed": "#ffdcc0",
+                    "surface-container-lowest": "#09100e",
+                    "primary-fixed-dim": "#3cddc7",
+                    "background": "#0e1513",
+                    "on-secondary-container": "#a7b6cc",
+                    "on-error": "#690005",
+                    "error": "#ffb4ab",
+                    "on-surface-variant": "#bacac5",
+                    "surface": "#0e1513",
+                    "tertiary-container": "#ffac5a",
+                    "secondary-fixed-dim": "#b9c8de",
+                    "surface-bright": "#333b39",
+                    "on-tertiary-fixed-variant": "#6b3b00",
+                    "surface-dim": "#0e1513",
+                    "secondary-fixed": "#d4e4fa",
+                    "outline": "#859490",
+                    "secondary-container": "#39485a",
+                    "primary-container": "#2dd4bf",
+                    "on-error-container": "#ffdad6",
+                    "on-primary-container": "#00574d",
+                    "on-primary-fixed-variant": "#005047",
+                    "outline-variant": "#3c4a46",
+                    "on-secondary-fixed-variant": "#39485a",
+                    "tertiary-fixed-dim": "#ffb875",
+                    "error-container": "#93000a",
+                    "on-secondary-fixed": "#0d1c2d",
+                    "on-primary-fixed": "#00201c",
+                    "surface-variant": "#2f3634",
+                    "surface-container-high": "#242b2a",
+                    "inverse-primary": "#006b5f",
+                    "on-secondary": "#233143",
+                    "on-primary": "#003731",
+                    "inverse-on-surface": "#2b3230",
+                    "inverse-surface": "#dde4e1",
+                    "on-tertiary": "#4b2800",
+                    "on-background": "#dde4e1",
+                    "surface-tint": "#3cddc7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "margin-mobile": "16px",
+                    "md": "16px",
+                    "unit": "4px",
+                    "xl": "32px",
+                    "xs": "4px",
+                    "gutter": "16px",
+                    "sm": "8px",
+                    "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Hanken Grotesk"],
+                    "label-md": ["Hanken Grotesk"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "metadata": ["Hanken Grotesk"],
+                    "body-main": ["Hanken Grotesk"],
+                    "card-title": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "metadata": ["11px", {"lineHeight": "14px", "fontWeight": "400"}],
+                    "body-main": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "card-title": ["15px", {"lineHeight": "20px", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        /* Custom Utilities */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-main antialiased min-h-screen pb-24 md:pb-0 md:pt-16">
+<!-- TopAppBar (Web & Mobile Shell) -->
+<header class="bg-background dark:bg-background docked full-width top-0 z-40 flat no shadows flex justify-between items-center w-full px-margin-mobile h-16 md:fixed">
+<button class="hover:opacity-80 transition-opacity flex items-center justify-center text-on-surface-variant dark:text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+<h1 class="text-headline-md font-headline-md font-bold text-primary dark:text-primary tracking-tight">GrowCipher</h1>
+<button class="hover:opacity-80 transition-opacity flex items-center justify-center text-on-surface-variant dark:text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</header>
+<main class="w-full max-w-3xl mx-auto flex flex-col">
+<!-- Hero Section: Plant Photo & Phase -->
+<section class="relative w-full h-64 md:h-80 md:mt-4 md:rounded-xl overflow-hidden shadow-sm shadow-black/20">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A macro photography shot of a healthy cannabis plant in its vegetative phase, featuring deep green, textured leaves with precise serrated edges. The lighting is artificial and high-contrast, mimicking a high-end indoor grow tent environment with subtle cyberpunk cyan and magenta rim lighting to give it a technological, premium aesthetic. The background is completely black, isolating the plant structure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADWpF0oEZkoSV84n6qmcpipj3HZvGg4-mgzPZZAuvqATd9sXlgbYRzu_bnwD6_DmfMmHgvs-7M3IT_cqX7E8DA5pVdHRNP-SuAIxCERzHvU2-koOX80j6KwhEP9c-mngdj4qTEazHqn46nf9Gau9MDqSqdJCZGwNhTlAXpqN_EV7nAPvsCjfulXckzYB6KLqdB9r_iK3_HQQUgXtQsKLD-etcsA8v053_VGrDATYHS8QqND199FzHe"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80"></div>
+<div class="absolute bottom-margin-mobile left-margin-mobile right-margin-mobile flex justify-between items-end">
+<div>
+<h2 class="text-headline-md font-headline-md text-on-surface mb-1 drop-shadow-md">Titan OG #4</h2>
+<div class="inline-flex items-center gap-2 bg-surface-container-high/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/5">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-label-md font-label-md text-on-surface uppercase tracking-wider">Vegetative Phase</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Status Strip -->
+<section class="px-margin-mobile py-4 flex items-center justify-between text-label-md font-label-md text-on-surface-variant">
+<div class="flex items-center gap-3">
+<span class="bg-surface-container px-2 py-1 rounded-md text-on-surface">42 DAYS</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="bg-surface-container px-2 py-1 rounded-md text-on-surface">VEG</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                    NO ALERTS
+                </span>
+</div>
+</section>
+<!-- Quick Log Action -->
+<section class="px-margin-mobile mb-6">
+<button class="w-full bg-primary text-on-primary py-3 px-6 rounded-lg flex items-center justify-center gap-2 font-card-title text-card-title hover:bg-primary-fixed-dim transition-colors active:scale-[0.98]">
+<span class="material-symbols-outlined">add</span>
+                QUICK LOG
+            </button>
+</section>
+<!-- Navigation Tabs -->
+<section class="px-margin-mobile mb-4 border-b border-surface-container-high">
+<nav class="flex gap-6 overflow-x-auto hide-scrollbar text-card-title font-card-title">
+<button class="pb-3 text-primary border-b-2 border-primary whitespace-nowrap">Timeline</button>
+<button class="pb-3 text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap">Environment</button>
+<button class="pb-3 text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap">Details</button>
+</nav>
+</section>
+<!-- Timeline Content -->
+<section class="px-margin-mobile flex-1 pb-8">
+<div class="relative pl-6 border-l-2 border-surface-container-high space-y-6">
+<!-- Event 1 -->
+<div class="relative">
+<div class="absolute -left-[35px] top-0 w-8 h-8 rounded-full bg-surface-container-high border-2 border-background flex items-center justify-center z-10 text-primary">
+<span class="material-symbols-outlined text-[16px]">water_drop</span>
+</div>
+<div class="bg-surface-container rounded-lg p-4 ml-2">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-card-title text-card-title text-on-surface">Watered</h3>
+<span class="font-metadata text-metadata text-on-surface-variant">Today, 08:30 AM</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">1.5L of RO water, pH 6.2. Runoff checked within optimal range.</p>
+</div>
+</div>
+<!-- Event 2 -->
+<div class="relative">
+<div class="absolute -left-[35px] top-0 w-8 h-8 rounded-full bg-surface-container-high border-2 border-background flex items-center justify-center z-10 text-tertiary">
+<span class="material-symbols-outlined text-[16px]">science</span>
+</div>
+<div class="bg-surface-container rounded-lg p-4 ml-2">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-card-title text-card-title text-on-surface">Fed Nutrients</h3>
+<span class="font-metadata text-metadata text-on-surface-variant">Yesterday, 09:00 AM</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Applied 5ml/L Micro, 5ml/L Grow, 2ml/L Bloom mix. EC measured at 1.4.</p>
+</div>
+</div>
+<!-- Event 3 -->
+<div class="relative">
+<div class="absolute -left-[35px] top-0 w-8 h-8 rounded-full bg-surface-container-high border-2 border-background flex items-center justify-center z-10 text-secondary">
+<span class="material-symbols-outlined text-[16px]">photo_camera</span>
+</div>
+<div class="bg-surface-container rounded-lg p-4 ml-2">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-card-title text-card-title text-on-surface">Photo Log</h3>
+<span class="font-metadata text-metadata text-on-surface-variant">2 days ago</span>
+</div>
+<div class="w-full h-24 rounded bg-surface-container-lowest mt-2 overflow-hidden relative">
+<img class="w-full h-full object-cover opacity-80" data-alt="A focused top-down shot of cannabis canopy development. Deep green leaves filling the frame symmetrically, demonstrating healthy vegetative growth under artificial grow lights. The style is sharp, clinical, and data-focused." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO70gwjg6s0PyuxlXGfvR7iWRhRz694SOywBiUbzSnAU7hNzeDXtDXCD6NbvhKFnVhowZTX4jQyobcy55dUXhHwdmJybNfAoTe28s-oRnVEiN9T2ytyhOcNME-sUhtijUpRG8dkAZewnHhGw90ndVxQPMhTMmkeBfZrDQcCD08Bkn786WEMxeBsEgzTGpNOyrDTjlYBlaoTUiMqdd9OtjjYm0vbyFvyCo4YCOpdDuElupVZZxUMYUz"/>
+</div>
+</div>
+</div>
+<!-- End Line fade -->
+<div class="absolute bottom-[-20px] -left-[2px] w-[2px] h-20 bg-gradient-to-b from-surface-container-high to-transparent"></div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only per design system responsive pivot, but JSON implies fixed bottom) -->
+<nav class="bg-surface-container dark:bg-surface-container docked full-width bottom-0 rounded-t-xl shadow-[0_-4px_12px_rgba(0,0,0,0.3)] fixed bottom-0 left-0 w-full z-50 flex justify-around items-end px-4 pt-2 pb-4 md:hidden">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high rounded-full w-14 py-1">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="text-label-md font-label-md">Home</span>
+</button>
+<!-- Active Tab: Plants -->
+<button class="flex flex-col items-center justify-center text-primary dark:text-primary relative after:content-[''] after:w-1 after:h-1 after:bg-primary after:rounded-full after:mt-1 hover:bg-surface-container-high dark:hover:bg-surface-container-high rounded-full w-14 py-1 Active: scale-110 transition-transform duration-200">
+<span class="material-symbols-outlined mb-1" data-icon="potted_plant">potted_plant</span>
+<span class="text-label-md font-label-md">Plants</span>
+</button>
+<!-- Center FAB: Log -->
+<div class="relative -top-4">
+<button class="flex flex-col items-center justify-center w-14 h-14 bg-primary text-on-primary rounded-full shadow-[0_4px_12px_rgba(87,241,219,0.3)] transform transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[28px]" data-icon="add_circle">add_circle</span>
+</button>
+<span class="text-label-md font-label-md text-on-surface-variant absolute -bottom-5 w-full text-center">Log</span>
+</div>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high rounded-full w-14 py-1">
+<span class="material-symbols-outlined mb-1" data-icon="photo_library">photo_library</span>
+<span class="text-label-md font-label-md">Gallery</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high rounded-full w-14 py-1">
+<span class="material-symbols-outlined mb-1" data-icon="more_horiz">more_horiz</span>
+<span class="text-label-md font-label-md">More</span>
+</button>
+</nav>
+</body></html>

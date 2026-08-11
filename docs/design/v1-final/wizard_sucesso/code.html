@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Planta Criada - GrowCipher</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffdad6",
+                        "on-secondary": "#233144",
+                        "on-surface-variant": "#bacac5",
+                        "surface-container-lowest": "#060e20",
+                        "on-primary": "#003731",
+                        "surface-tint": "#3cddc7",
+                        "on-secondary-fixed": "#0d1c2f",
+                        "secondary-fixed": "#d5e3fd",
+                        "outline-variant": "#3c4a46",
+                        "surface-container-low": "#131b2e",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#b0f0d6",
+                        "tertiary-fixed-dim": "#95d3ba",
+                        "outline": "#859490",
+                        "surface": "#0b1326",
+                        "primary-fixed": "#62fae3",
+                        "tertiary-container": "#8ccbb2",
+                        "surface-container": "#171f33",
+                        "surface-bright": "#31394d",
+                        "on-tertiary": "#003829",
+                        "on-tertiary-fixed": "#002117",
+                        "on-background": "#dae2fd",
+                        "inverse-surface": "#dae2fd",
+                        "surface-variant": "#2d3449",
+                        "on-secondary-container": "#abb9d2",
+                        "surface-dim": "#0b1326",
+                        "surface-container-highest": "#2d3449",
+                        "error-container": "#93000a",
+                        "surface-container-high": "#222a3d",
+                        "primary": "#57f1db",
+                        "error": "#ffb4ab",
+                        "tertiary": "#a8e7cd",
+                        "on-primary-fixed-variant": "#005047",
+                        "secondary-fixed-dim": "#b9c7e0",
+                        "inverse-primary": "#006b5f",
+                        "background": "#0b1326",
+                        "on-tertiary-container": "#155743",
+                        "inverse-on-surface": "#283044",
+                        "on-tertiary-fixed-variant": "#0b513d",
+                        "on-primary-container": "#00574d",
+                        "on-primary-fixed": "#00201c",
+                        "secondary": "#b9c7e0",
+                        "on-surface": "#dae2fd",
+                        "secondary-container": "#3c4a5e",
+                        "on-secondary-fixed-variant": "#3a485c",
+                        "primary-container": "#2dd4bf",
+                        "primary-fixed-dim": "#3cddc7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-padding": "24px",
+                        "gutter": "16px",
+                        "margin-desktop": "64px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "title-lg": ["Hanken Grotesk"],
+                        "label-md": ["JetBrains Mono"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "label-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400" }],
+                        "title-lg": ["22px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500" }],
+                        "display-lg": ["57px", { "lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700" }],
+                        "label-sm": ["11px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        };
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600;700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col items-center justify-center p-margin-mobile">
+<div class="w-full max-w-md bg-surface-container-low rounded-lg p-container-padding flex flex-col items-center text-center">
+<!-- Success Icon -->
+<div class="w-16 h-16 bg-primary-container rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-[32px] text-on-primary-container" data-icon="check_circle">check_circle</span>
+</div>
+<!-- Title -->
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary mb-8">✓ Planta criada</h1>
+<!-- Summary Card -->
+<div class="w-full bg-surface rounded p-4 mb-8 border border-outline-variant text-left">
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/30 last:border-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Nome</span>
+<span class="font-body-md text-body-md text-on-surface">Alpha-1</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/30 last:border-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Fase</span>
+<span class="font-body-md text-body-md text-on-surface">Vegetativo</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/30 last:border-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Ambiente</span>
+<span class="font-body-md text-body-md text-on-surface">Indoor</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/30 last:border-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Idade</span>
+<span class="font-body-md text-body-md text-on-surface">42 dias</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="w-full flex flex-col gap-4">
+<button class="w-full bg-primary text-on-primary h-12 rounded flex items-center justify-center font-label-md text-label-md uppercase tracking-wider hover:bg-primary-fixed-dim transition-colors">
+                REGISTRAR PRIMEIRA ATIVIDADE
+            </button>
+<button class="w-full bg-transparent border border-outline text-on-surface h-12 rounded flex items-center justify-center font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container-highest transition-colors">
+                IR PARA A PLANTA
+            </button>
+</div>
+</div>
+</body></html>

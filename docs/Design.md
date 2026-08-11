@@ -2,7 +2,7 @@
 
 Documento único de contexto para geração de design (Claude Design). Consolida: identidade do produto, público, inventário completo de todas as imagens existentes no projeto, assets que precisam ser criados e o mapa de telas do MVP.
 
-> **Estado atual:** o projeto é um scaffold Flutter recém-criado. **Não existe nenhuma arte própria ainda** — todas as 36 imagens do repositório são placeholders padrão do Flutter (logo do Flutter como ícone). Todo o design visual está por ser criado.
+> **Estado atual (2026-08-11):** o design foi gerado no Google Stitch e exportado para [`design/`](design/README.md) — design system **Sovereign Vault** (`design/v1-final/DESIGN.md` + 7 telas) e outras ideias de tela em dois temas (`design/v2-ideias-telas/`), incluindo proposta de logo. As 36 imagens do repositório (ícones/splash) continuam sendo placeholders padrão do Flutter; os assets finais da §5 seguem pendentes.
 
 ---
 
@@ -97,12 +97,14 @@ Splash iOS: `LaunchImage.imageset/LaunchImage.png` + `@2x` + `@3x` — atualment
 
 | Onde | Valor atual |
 |---|---|
-| `lib/main.dart` — `ColorScheme.fromSeed` | `Colors.deepPurple` (Material 3) |
+| `lib/` — `ColorScheme.fromSeed` | verde sóbrio provisório `#2E6B4F` — paleta definitiva em `design/v1-final/DESIGN.md` |
 | `web/manifest.json` — `theme_color` / `background_color` | `#0175C2` (azul Flutter) |
 | Splash Android | branco `@android:color/white` |
 | `web/manifest.json` — name/description | "growcipher" / "A new Flutter project." (a atualizar) |
 
 ## 5. Assets a Criar (entregáveis de design)
+
+> **Progresso (2026-08-11):** os itens 3 (paleta) e 4 (tipografia) já estão definidos em `design/v1-final/DESIGN.md` (Sovereign Vault — falta aplicar no app); há proposta de logo em `design/v2-ideias-telas/growcipher_primary_logo.png`, base para o item 1. Itens 1, 2, 5 e 6 seguem pendentes como arquivos finais.
 
 1. **Ícone do app** — máster 1024×1024, exportável para todos os tamanhos das tabelas acima (Android mipmaps, iOS appiconset, macOS, web, `.ico` Windows). Precisa funcionar de 16×16 a 1024×1024 e na variante **maskable** (conteúdo dentro da safe zone circular). Considerar variantes adaptive icon Android (foreground + background).
 2. **Splash / launch screen** — Android (`launch_background.xml` + bitmap) e iOS (`LaunchImage` 1x/2x/3x), coerente com o tema. Deve ser **discreta** (é o que aparece ao abrir o app em público).
@@ -113,7 +115,9 @@ Splash iOS: `LaunchImage.imageset/LaunchImage.png` + `@2x` + `@3x` — atualment
 
 ## 6. Mapa de Telas do MVP
 
-Derivado de `Funcionalidades.md` + `ROADMAP.md`:
+Derivado de `Funcionalidades.md` + `ROADMAP.md`.
+
+> **Telas com design exportado** (ver `design/README.md`): 1 Onboarding, 3 Home, 5 Perfil/cadastro (wizard em 4 passos), 6 Linha do tempo, 7 Registro rápido (+ rega), 11 Galeria privada. As demais (2, 4, 8–10, 12–15) ainda não têm design.
 
 1. **Onboarding / criação do cofre** — sem conta; define senha/PIN, oferece biometria. Explica privacidade em 2–3 passos.
 2. **Tela de bloqueio** — PIN/senha/biometria; bloqueio automático. Visual neutro e discreto.

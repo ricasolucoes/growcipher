@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GrowCipher - Private Gallery</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#2f3634",
+                        "on-tertiary-container": "#744000",
+                        "primary-fixed": "#62fae3",
+                        "secondary": "#b9c8de",
+                        "primary": "#57f1db",
+                        "tertiary": "#ffd1aa",
+                        "on-surface": "#dde4e1",
+                        "surface-container": "#1a211f",
+                        "on-tertiary-fixed": "#2d1600",
+                        "surface-container-low": "#161d1b",
+                        "tertiary-fixed": "#ffdcc0",
+                        "surface-container-lowest": "#09100e",
+                        "primary-fixed-dim": "#3cddc7",
+                        "background": "#0e1513",
+                        "on-secondary-container": "#a7b6cc",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "on-surface-variant": "#bacac5",
+                        "surface": "#0e1513",
+                        "tertiary-container": "#ffac5a",
+                        "secondary-fixed-dim": "#b9c8de",
+                        "surface-bright": "#333b39",
+                        "on-tertiary-fixed-variant": "#6b3b00",
+                        "surface-dim": "#0e1513",
+                        "secondary-fixed": "#d4e4fa",
+                        "outline": "#859490",
+                        "secondary-container": "#39485a",
+                        "primary-container": "#2dd4bf",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#00574d",
+                        "on-primary-fixed-variant": "#005047",
+                        "outline-variant": "#3c4a46",
+                        "on-secondary-fixed-variant": "#39485a",
+                        "tertiary-fixed-dim": "#ffb875",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed": "#0d1c2d",
+                        "on-primary-fixed": "#00201c",
+                        "surface-variant": "#2f3634",
+                        "surface-container-high": "#242b2a",
+                        "inverse-primary": "#006b5f",
+                        "on-secondary": "#233143",
+                        "on-primary": "#003731",
+                        "inverse-on-surface": "#2b3230",
+                        "inverse-surface": "#dde4e1",
+                        "on-tertiary": "#4b2800",
+                        "on-background": "#dde4e1",
+                        "surface-tint": "#3cddc7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "margin-mobile": "16px",
+                        "md": "16px",
+                        "unit": "4px",
+                        "xl": "32px",
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "sm": "8px",
+                        "margin-desktop": "48px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Hanken Grotesk"],
+                        "label-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "metadata": ["Hanken Grotesk"],
+                        "body-main": ["Hanken Grotesk"],
+                        "card-title": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "metadata": ["11px", { "lineHeight": "14px", "fontWeight": "400" }],
+                        "body-main": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+                        "card-title": ["15px", { "lineHeight": "20px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-background text-primary flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16 sticky top-0 z-40">
+<button class="hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-on-surface-variant" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+</button>
+<h1 class="text-headline-md font-headline-md font-bold text-primary">GrowCipher</h1>
+<button class="hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-on-surface-variant" style="font-variation-settings: 'FILL' 0;">settings</span>
+</button>
+</header>
+<!-- Top Tab Navigation -->
+<div class="px-margin-mobile md:px-margin-desktop pt-4 pb-6 sticky top-16 bg-background z-30">
+<div class="flex gap-4 border-b border-surface-variant">
+<button class="text-label-md font-label-md text-primary border-b-2 border-primary pb-2 uppercase tracking-wider">
+                Gallery
+            </button>
+<button class="text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-colors pb-2 uppercase tracking-wider">
+                Compare
+            </button>
+</div>
+</div>
+<!-- Main Content Canvas -->
+<main class="flex-grow px-margin-mobile md:px-margin-desktop">
+<!-- Gallery Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md">
+<!-- Gallery Item 1 -->
+<div class="flex flex-col group cursor-pointer">
+<div class="aspect-[3/4] rounded-lg overflow-hidden relative bg-surface-container mb-sm">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A striking macro shot of a thriving indoor plant leaf under modern grow lights. Deep greens and subtle cyan highlights emphasize the plant's health. The background is a dark, sleek gradient fitting a high-tech minimal aesthetic. Lighting is crisp and purposeful." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAo0RxJNyJPb2c6q7yMPCfPZcvSslBeX3POACklqNrzCGbSwhRU4zS4qIUTc-nR8l5hjt7kn0kOO0dWPeYvNPPDOtSSh-Y7EiOq0MukAScIrEVKaNoUJltEtqUyuT32IyqC3N9id7H5nSv9FJgHgDiPvt4pCZMJq8jR6HP7RW3ALgezE1lRCoAJxPcElrthmeQLDBfqFcB-qK_5BuA_v5eLBZDCI-nelfmIE_Uj5syrp9zow2Po7UkK"/>
+</div>
+<div class="flex justify-between items-start text-metadata font-metadata text-on-surface-variant">
+<span>Oct 24 • Week 04</span>
+<span class="text-right">GC-992A</span>
+</div>
+</div>
+<!-- Gallery Item 2 -->
+<div class="flex flex-col group cursor-pointer">
+<div class="aspect-[3/4] rounded-lg overflow-hidden relative bg-surface-container mb-sm">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A sophisticated close-up of a plant canopy in a controlled environment. The image focuses on visual growth comparison with sharp details and deep shadows. The color palette features intense greens against a sophisticated black and dark cyan background. Tech-driven minimalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwZmiXRveefNVY13WugWk_HfKLBgnJ0E2t0dygo2cDUMCTbhMyMY4wyHLV9RK-Xi5-HDbzK7THI_CoF8rtguuoqQQQy4nVFZ9edFQOa9dz3eEsVWExECHV5X7SlEmObpqTYNgoyNp4RRsgscOUuhHIHUtfbql4w5ZHImJEaWujrTccU8l4E-8n-XQoMKbqhhSe6uD6sxJ4dlpK-gHUJYv-DSHbvzDbEERX4ILvrtfO4AgZKU77mFO7"/>
+</div>
+<div class="flex justify-between items-start text-metadata font-metadata text-on-surface-variant">
+<span>Oct 17 • Week 03</span>
+<span class="text-right">GC-992A</span>
+</div>
+</div>
+<!-- Gallery Item 3 -->
+<div class="flex flex-col group cursor-pointer">
+<div class="aspect-[3/4] rounded-lg overflow-hidden relative bg-surface-container mb-sm ring-1 ring-primary">
+<div class="absolute top-2 right-2 z-10 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-background" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Detailed texture study of an indoor plant's foliage. The lighting emphasizes the structural growth pattern. The scene is dramatic with high contrast, using dark teal and cyan accents to create a premium, technical agricultural look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAq6TO7nD1Qw-kELvGxaNYJ5XqqF0QHHx9G7Ha80z52jt2rgWkmYwFCqwwFD0skp7HDQcHe6lOWgyTvhpeBecZNDA8PcMOLFauvp5t3jTsb9h19G_P4ZSEH8k9Q_3Zr3_hlWb65nN3AweBVCkPv1V8pVMPUP4Zh8mUqAnVB0h0yqhfuAKYfE5MDk3Z1ysGDH1kt_DcWPT89OR3wxEnl4lghjNnWxzcSvR8nNN4OnZvsRajuuB3hRa0"/>
+</div>
+<div class="flex justify-between items-start text-metadata font-metadata text-primary">
+<span>Oct 10 • Week 02</span>
+<span class="text-right">GC-992A</span>
+</div>
+</div>
+<!-- Gallery Item 4 -->
+<div class="flex flex-col group cursor-pointer">
+<div class="aspect-[3/4] rounded-lg overflow-hidden relative bg-surface-container mb-sm">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="An early growth stage of an exotic plant seedling viewed from above. The composition is highly symmetrical and minimal. Dark background with cool, technical lighting highlighting the fragile but vibrant green leaves. Represents precision asset management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB07c8Cyl69sdT36PSn1LGU2RXQBXe3h-cwur0qIVKD94rmn8wmXAop9GNnz463Ero0wZ0HhIh53S9UdnpHNQzjjKeVECd1LkTAVd5tvvCAXxqG6H70rlJ2F0OZOTndKj89MsJqBtNpE0F1-RknC08Na6DgKn8jow74C6dAIPPDEtPCcMFUkkKc41lYX5ETL3khozjkr6dPOCE3uNvCRVBQAuHS00WFnRV4ZszSWtD0bO81iutHfPcW"/>
+</div>
+<div class="flex justify-between items-start text-metadata font-metadata text-on-surface-variant">
+<span>Oct 03 • Week 01</span>
+<span class="text-right">GC-992A</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-surface-container shadow-md rounded-t-full">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-full p-2 transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">home</span>
+<span class="text-label-md font-label-md mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-full p-2 transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">potted_plant</span>
+<span class="text-label-md font-label-md mt-1">Plants</span>
+</button>
+<!-- Center FAB (Log) -->
+<button class="flex flex-col items-center justify-center text-primary relative -top-4 bg-surface-container p-2 rounded-full shadow-lg">
+<span class="material-symbols-outlined text-[40px]" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary relative after:content-[''] after:w-1 after:h-1 after:bg-primary after:rounded-full after:mt-1 p-2 scale-110 transition-transform duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">photo_library</span>
+<span class="text-label-md font-label-md mt-1">Gallery</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-full p-2 transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">more_horiz</span>
+<span class="text-label-md font-label-md mt-1">More</span>
+</button>
+</nav>
+<!-- Desktop Nav Cluster (Hidden on Mobile) -->
+<nav class="hidden md:flex fixed top-0 right-[150px] h-16 items-center gap-lg z-50">
+<button class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">home</span>
+            Home
+        </button>
+<button class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">potted_plant</span>
+            Plants
+        </button>
+<button class="text-label-md font-label-md text-primary flex items-center gap-2 relative after:content-[''] after:absolute after:-bottom-5 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">photo_library</span>
+            Gallery
+        </button>
+</nav>
+</body></html>

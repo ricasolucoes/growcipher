@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GrowCipher - Onboarding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Hanken+Grotesk:wght@500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error-container": "#ffdad6",
+                      "on-secondary": "#233144",
+                      "on-surface-variant": "#bacac5",
+                      "surface-container-lowest": "#060e20",
+                      "on-primary": "#003731",
+                      "surface-tint": "#3cddc7",
+                      "on-secondary-fixed": "#0d1c2f",
+                      "secondary-fixed": "#d5e3fd",
+                      "outline-variant": "#3c4a46",
+                      "surface-container-low": "#131b2e",
+                      "on-error": "#690005",
+                      "tertiary-fixed": "#b0f0d6",
+                      "tertiary-fixed-dim": "#95d3ba",
+                      "outline": "#859490",
+                      "surface": "#0b1326",
+                      "primary-fixed": "#62fae3",
+                      "tertiary-container": "#8ccbb2",
+                      "surface-container": "#171f33",
+                      "surface-bright": "#31394d",
+                      "on-tertiary": "#003829",
+                      "on-tertiary-fixed": "#002117",
+                      "on-background": "#dae2fd",
+                      "inverse-surface": "#dae2fd",
+                      "surface-variant": "#2d3449",
+                      "on-secondary-container": "#abb9d2",
+                      "surface-dim": "#0b1326",
+                      "surface-container-highest": "#2d3449",
+                      "error-container": "#93000a",
+                      "surface-container-high": "#222a3d",
+                      "primary": "#57f1db",
+                      "error": "#ffb4ab",
+                      "tertiary": "#a8e7cd",
+                      "on-primary-fixed-variant": "#005047",
+                      "secondary-fixed-dim": "#b9c7e0",
+                      "inverse-primary": "#006b5f",
+                      "background": "#0b1326",
+                      "on-tertiary-container": "#155743",
+                      "inverse-on-surface": "#283044",
+                      "on-tertiary-fixed-variant": "#0b513d",
+                      "on-primary-container": "#00574d",
+                      "on-primary-fixed": "#00201c",
+                      "secondary": "#b9c7e0",
+                      "on-surface": "#dae2fd",
+                      "secondary-container": "#3c4a5e",
+                      "on-secondary-fixed-variant": "#3a485c",
+                      "primary-container": "#2dd4bf",
+                      "primary-fixed-dim": "#3cddc7"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "container-padding": "24px",
+                      "gutter": "16px",
+                      "margin-desktop": "64px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "headline-lg": ["Hanken Grotesk"],
+                      "headline-lg-mobile": ["Hanken Grotesk"],
+                      "body-lg": ["Inter"],
+                      "title-lg": ["Hanken Grotesk"],
+                      "label-md": ["JetBrains Mono"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "label-sm": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400"}],
+                      "title-lg": ["22px", {"lineHeight": "28px", "fontWeight": "500"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                      "display-lg": ["57px", {"lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700"}],
+                      "label-sm": ["11px", {"lineHeight": "16px", "fontWeight": "500"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .bg-pattern {
+            background-image: 
+                linear-gradient(to right, rgba(213, 227, 253, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(213, 227, 253, 0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            100% { left: 200%; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-pattern">
+<!-- Ambient glow behind the main content -->
+<div class="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+<div class="w-96 h-96 bg-primary opacity-[0.03] rounded-full blur-[100px]"></div>
+</div>
+<!-- Main Container -->
+<main class="z-10 w-full max-w-md px-margin-mobile flex flex-col items-center justify-center h-full gap-8 relative">
+<!-- Header / Logo Area -->
+<div class="flex flex-col items-center text-center gap-4 animate-fade-in-up w-full">
+<div class="w-16 h-16 bg-surface-container rounded-xl border border-secondary/10 flex items-center justify-center mb-4 shimmer shadow-[0_0_15px_rgba(87,241,219,0.05)]">
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="lock" data-weight="fill" style="font-variation-settings: 'FILL' 1;">lock</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface tracking-tight leading-tight">GrowCipher</h1>
+</div>
+<!-- Content Area -->
+<div class="flex flex-col gap-6 text-center w-full max-w-sm">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface font-semibold">
+                Seu cultivo.<br/>
+<span class="text-primary-dim text-surface-tint">Seus dados.</span><br/>
+                Suas decisões.
+            </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-[280px] mx-auto">
+                O cofre digital do cultivador: privado, offline e criptografado.
+            </p>
+<!-- Security Highlight Box -->
+<div class="bg-surface-container/50 border border-secondary/10 rounded-lg p-4 flex gap-3 items-start text-left mt-2 backdrop-blur-sm">
+<span class="material-symbols-outlined text-primary/70 mt-1 shrink-0" data-icon="shield_lock" style="font-variation-settings: 'FILL' 0;">shield_lock</span>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Seus registros e fotos permanecem protegidos <span class="text-on-surface font-medium">neste dispositivo</span>. Não é necessário criar conta.
+                </p>
+</div>
+</div>
+<!-- Action Area -->
+<div class="w-full flex flex-col gap-6 mt-4 pb-8">
+<button class="w-full h-12 bg-primary hover:bg-primary-fixed text-on-primary font-title-lg text-title-lg rounded-lg transition-colors flex items-center justify-center gap-2 group shadow-[0_4px_12px_rgba(87,241,219,0.15)] relative overflow-hidden">
+<span class="relative z-10 font-bold uppercase tracking-wide text-[15px]">Criar Seu Cofre</span>
+<span class="material-symbols-outlined relative z-10 transition-transform group-hover:translate-x-1" data-icon="arrow_forward" style="font-size: 20px;">arrow_forward</span>
+<div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+</button>
+<!-- Technical Trust Chips -->
+<div class="flex flex-wrap justify-center gap-3">
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-surface-container border border-secondary/10 rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant text-[14px]" data-icon="person_off">person_off</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Sem Conta</span>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-surface-container border border-secondary/10 rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant text-[14px]" data-icon="block">block</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Sem Telemetria</span>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-surface-container border border-secondary/10 rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant text-[14px]" data-icon="wifi_off">wifi_off</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Offline-First</span>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Etapa 8 de 9 - GrowCipher</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Hanken+Grotesk:wght@500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffdad6",
+                        "on-secondary": "#233144",
+                        "on-surface-variant": "#bacac5",
+                        "surface-container-lowest": "#060e20",
+                        "on-primary": "#003731",
+                        "surface-tint": "#3cddc7",
+                        "on-secondary-fixed": "#0d1c2f",
+                        "secondary-fixed": "#d5e3fd",
+                        "outline-variant": "#3c4a46",
+                        "surface-container-low": "#131b2e",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#b0f0d6",
+                        "tertiary-fixed-dim": "#95d3ba",
+                        "outline": "#859490",
+                        "surface": "#0b1326",
+                        "primary-fixed": "#62fae3",
+                        "tertiary-container": "#8ccbb2",
+                        "surface-container": "#171f33",
+                        "surface-bright": "#31394d",
+                        "on-tertiary": "#003829",
+                        "on-tertiary-fixed": "#002117",
+                        "on-background": "#dae2fd",
+                        "inverse-surface": "#dae2fd",
+                        "surface-variant": "#2d3449",
+                        "on-secondary-container": "#abb9d2",
+                        "surface-dim": "#0b1326",
+                        "surface-container-highest": "#2d3449",
+                        "error-container": "#93000a",
+                        "surface-container-high": "#222a3d",
+                        "primary": "#57f1db",
+                        "error": "#ffb4ab",
+                        "tertiary": "#a8e7cd",
+                        "on-primary-fixed-variant": "#005047",
+                        "secondary-fixed-dim": "#b9c7e0",
+                        "inverse-primary": "#006b5f",
+                        "background": "#0b1326",
+                        "on-tertiary-container": "#155743",
+                        "inverse-on-surface": "#283044",
+                        "on-tertiary-fixed-variant": "#0b513d",
+                        "on-primary-container": "#00574d",
+                        "on-primary-fixed": "#00201c",
+                        "secondary": "#b9c7e0",
+                        "on-surface": "#dae2fd",
+                        "secondary-container": "#3c4a5e",
+                        "on-secondary-fixed-variant": "#3a485c",
+                        "primary-container": "#2dd4bf",
+                        "primary-fixed-dim": "#3cddc7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-padding": "24px",
+                        "gutter": "16px",
+                        "margin-desktop": "64px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "title-lg": ["Hanken Grotesk"],
+                        "label-md": ["JetBrains Mono"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "label-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.25px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0.5px", "fontWeight": "400" }],
+                        "title-lg": ["22px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500" }],
+                        "display-lg": ["57px", { "lineHeight": "64px", "letterSpacing": "-0.25px", "fontWeight": "700" }],
+                        "label-sm": ["11px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col font-body-md text-body-md">
+<!-- Top Navigation Area for Wizard -->
+<header class="w-full flex justify-between items-center px-container-padding h-16 border-b border-outline-variant/30 sticky top-0 bg-background/80 backdrop-blur-md z-40">
+<button aria-label="Voltar" class="flex items-center text-on-surface-variant hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded">
+<span class="material-symbols-outlined mr-2">arrow_back</span>
+</button>
+<div class="flex items-center gap-2">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Etapa 8 de 9</span>
+<div class="w-24 h-1 bg-surface-container-high rounded-full overflow-hidden ml-2">
+<div class="h-full bg-primary rounded-full" style="width: 88%;"></div>
+</div>
+</div>
+<button aria-label="Cancelar" class="text-label-md font-label-md text-primary hover:text-primary-fixed-dim uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-primary rounded p-1">
+            Cancelar
+        </button>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow flex flex-col items-center px-margin-mobile md:px-margin-desktop py-8 md:py-12 w-full max-w-[800px] mx-auto">
+<div class="w-full mb-8 text-center md:text-left">
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile md:text-headline-lg md:font-headline-lg mb-2">Em que fase ela está agora?</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant">Não tem certeza? Tudo bem. Você pode alterar isso depois.</p>
+</div>
+<!-- Bento Grid for Selection -->
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
+<!-- Option: Semente -->
+<label class="cursor-pointer group">
+<input class="peer sr-only" name="plant_phase" type="radio" value="semente"/>
+<div class="flex flex-col items-center justify-center p-6 bg-surface-container-low border border-outline-variant rounded-lg transition-all duration-200 peer-checked:bg-surface-container-highest peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary hover:bg-surface-container h-full">
+<span class="material-symbols-outlined text-4xl mb-4 text-on-surface-variant peer-checked:text-primary transition-colors group-hover:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 0;">egg</span>
+<span class="text-body-md font-body-md font-medium text-center peer-checked:text-primary">Semente</span>
+</div>
+</label>
+<!-- Option: Germinação -->
+<label class="cursor-pointer group">
+<input class="peer sr-only" name="plant_phase" type="radio" value="germinacao"/>
+<div class="flex flex-col items-center justify-center p-6 bg-surface-container-low border border-outline-variant rounded-lg transition-all duration-200 peer-checked:bg-surface-container-highest peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary hover:bg-surface-container h-full">
+<span class="material-symbols-outlined text-4xl mb-4 text-on-surface-variant peer-checked:text-primary transition-colors group-hover:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 0;">find_replace</span>
+<span class="text-body-md font-body-md font-medium text-center peer-checked:text-primary">Germinação</span>
+</div>
+</label>
+<!-- Option: Muda -->
+<label class="cursor-pointer group">
+<input class="peer sr-only" name="plant_phase" type="radio" value="muda"/>
+<div class="flex flex-col items-center justify-center p-6 bg-surface-container-low border border-outline-variant rounded-lg transition-all duration-200 peer-checked:bg-surface-container-highest peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary hover:bg-surface-container h-full">
+<span class="material-symbols-outlined text-4xl mb-4 text-on-surface-variant peer-checked:text-primary transition-colors group-hover:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 0;">potted_plant</span>
+<span class="text-body-md font-body-md font-medium text-center peer-checked:text-primary">Muda</span>
+</div>
+</label>
+<!-- Option: Vegetativo -->
+<label class="cursor-pointer group">
+<input checked="" class="peer sr-only" name="plant_phase" type="radio" value="vegetativo"/>
+<div class="flex flex-col items-center justify-center p-6 bg-surface-container-low border border-outline-variant rounded-lg transition-all duration-200 peer-checked:bg-surface-container-highest peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary hover:bg-surface-container h-full relative overflow-hidden">
+<!-- Subtle active indicator -->
+<div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+<span class="material-symbols-outlined text-4xl mb-4 text-on-surface-variant peer-checked:text-primary transition-colors group-hover:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 0;">forest</span>
+<span class="text-body-md font-body-md font-medium text-center peer-checked:text-primary">Vegetativo</span>
+</div>
+</label>
+<!-- Option: Floração -->
+<label class="cursor-pointer group">
+<input class="peer sr-only" name="plant_phase" type="radio" value="floracao"/>
+<div class="flex flex-col items-center justify-center p-6 bg-surface-container-low border border-outline-variant rounded-lg transition-all duration-200 peer-checked:bg-surface-container-highest peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary hover:bg-surface-container h-full">
+<span class="material-symbols-outlined text-4xl mb-4 text-on-surface-variant peer-checked:text-primary transition-colors group-hover:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 0;">local_florist</span>
+<span class="text-body-md font-body-md font-medium text-center peer-checked:text-primary">Floração</span>
+</div>
+</label>
+<!-- Option: Colheita / Finalização -->
+<label class="cursor-pointer group">
+<input class="peer sr-only" name="plant_phase" type="radio" value="colheita"/>
+<div class="flex flex-col items-center justify-center p-6 bg-surface-container-low border border-outline-variant rounded-lg transition-all duration-200 peer-checked:bg-surface-container-highest peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary hover:bg-surface-container h-full">
+<span class="material-symbols-outlined text-4xl mb-4 text-on-surface-variant peer-checked:text-primary transition-colors group-hover:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 0;">content_cut</span>
+<span class="text-body-md font-body-md font-medium text-center peer-checked:text-primary">Colheita / Finalização</span>
+</div>
+</label>
+<!-- Option: Não sei -->
+<label class="cursor-pointer group col-span-2 md:col-span-3 mt-2">
+<input class="peer sr-only" name="plant_phase" type="radio" value="desconhecido"/>
+<div class="flex items-center p-4 bg-surface-container-lowest border border-outline-variant border-dashed rounded-lg transition-all duration-200 peer-checked:bg-surface-container-highest peer-checked:border-primary peer-checked:border-solid hover:bg-surface-container">
+<span class="material-symbols-outlined text-2xl mr-4 text-on-surface-variant peer-checked:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">help_center</span>
+<span class="text-body-md font-body-md font-medium flex-grow peer-checked:text-primary text-on-surface-variant">Não sei ao certo</span>
+</div>
+</label>
+</div>
+</main>
+<!-- Bottom Action Bar -->
+<footer class="w-full flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 bg-background border-t border-outline-variant/30 sticky bottom-0 z-40">
+<button class="px-6 py-2 h-12 flex items-center justify-center text-body-md font-body-md font-medium text-on-surface-variant bg-transparent border border-outline-variant rounded hover:bg-surface-container transition-colors focus:outline-none focus:ring-2 focus:ring-primary">
+            Pular
+        </button>
+<button class="px-6 py-2 h-12 flex items-center justify-center text-body-md font-body-md font-medium text-on-primary bg-primary rounded hover:bg-primary-container transition-colors focus:outline-none focus:ring-2 focus:ring-primary-fixed-dim focus:ring-offset-2 focus:ring-offset-background ml-auto">
+            Continuar
+            <span class="material-symbols-outlined ml-2 text-[20px]">arrow_forward</span>
+</button>
+</footer>
+</body></html>
