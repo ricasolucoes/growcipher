@@ -1,5 +1,5 @@
 import 'package:path/path.dart' as p;
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_sqlcipher/sqflite.dart';
 
 /// Banco local do GrowCipher.
 ///
@@ -70,20 +70,34 @@ class AppDatabase {
 
   /// Abre (criando/migrando se preciso) o banco. [path] é sobrescrevível
   /// para testes (`inMemoryDatabasePath`).
-  Future<Database> open({String? path}) async {
+  Future<Database> open({String? path, String? password}) async {
     final resolvedPath =
         path ?? p.join(await _factory.getDatabasesPath(), fileName);
 
-    return _factory.openDatabase(
-      resolvedPath,
-      options: OpenDatabaseOptions(
-        version: version,
-        onConfigure: (db) => db.execute('PRAGMA foreign_keys = ON'),
-        onCreate: (db, version) => _apply(db, from: 0, to: version),
-        onUpgrade: (db, oldVersion, newVersion) =>
-            _apply(db, from: oldVersion, to: newVersion),
-      ),
-    );
+    Future<Database> doOpen() {
+      return _factory.openDatabase(
+        resolvedPath,
+        password: password,
+        options: OpenDatabaseOptions(
+          version: version,
+          onConfigure: (db) => db.execute('PRAGMA foreign_keys = ON'),
+          onCreate: (db, version) => _apply(db, from: 0, to: version),
+          onUpgrade: (db, oldVersion, newVersion) =>
+              _apply(db, from: oldVersion, to: newVersion),
+        ),
+      );
+    }
+
+    try {
+      return await doOpen();
+    } catch (e) {
+      if (e is DatabaseException && password != null) {
+        // Possível conflito de banco não criptografado anterior
+        await _factory.deleteDatabase(resolvedPath);
+        return await doOpen();
+      }
+      rethrow;
+    }
   }
 
   Future<void> _apply(Database db, {required int from, required int to}) async {
