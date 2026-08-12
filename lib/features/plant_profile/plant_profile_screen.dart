@@ -27,6 +27,30 @@ class _PlantProfileScreenState extends ConsumerState<PlantProfileScreen> {
   Plant? _plant;
   List<PlantEvent>? _events;
   bool _loadRequested = false;
+  bool _isLoadingMore = false;
+  bool _hasMoreEvents = true;
+  static const int _pageSize = 20;
+
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      _loadMoreEvents();
+    }
+  }
 
   @override
   void didChangeDependencies() {
@@ -40,11 +64,33 @@ class _PlantProfileScreenState extends ConsumerState<PlantProfileScreen> {
   Future<void> _reload() async {
     final repository = ref.read(plantRepositoryProvider);
     final plant = await repository.getPlant(widget.plantId);
-    final events = await repository.getEvents(widget.plantId);
+    final events = await repository.getEvents(widget.plantId, limit: _pageSize);
     if (mounted) {
       setState(() {
         _plant = plant;
         _events = events;
+        _hasMoreEvents = events.length == _pageSize;
+      });
+    }
+  }
+
+  Future<void> _loadMoreEvents() async {
+    if (_isLoadingMore || !_hasMoreEvents || _events == null) return;
+    
+    setState(() => _isLoadingMore = true);
+    
+    final repository = ref.read(plantRepositoryProvider);
+    final moreEvents = await repository.getEvents(
+      widget.plantId,
+      limit: _pageSize,
+      offset: _events!.length,
+    );
+    
+    if (mounted) {
+      setState(() {
+        _events!.addAll(moreEvents);
+        _hasMoreEvents = moreEvents.length == _pageSize;
+        _isLoadingMore = false;
       });
     }
   }
@@ -77,6 +123,7 @@ class _PlantProfileScreenState extends ConsumerState<PlantProfileScreen> {
       body: plant == null || events == null
           ? const Center(child: CircularProgressIndicator())
           : ListView(
+              controller: _scrollController,
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
               children: [
                 _PlantHeader(plant: plant),
@@ -99,8 +146,14 @@ class _PlantProfileScreenState extends ConsumerState<PlantProfileScreen> {
                       ),
                     ),
                   )
-                else
+                else ...[
                   for (final event in events) _EventTile(event: event),
+                  if (_isLoadingMore)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                ],
               ],
             ),
     );
