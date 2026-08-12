@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'core/security/local_auth_service.dart';
+import 'core/security/secure_storage_service.dart';
 import 'features/home/home_screen.dart';
 import 'features/plant_profile/plant_profile_screen.dart';
 import 'features/plant_wizard/plant_created_screen.dart';
@@ -11,8 +14,41 @@ import 'l10n/generated/app_localizations.dart';
 /// de design, ver `docs/Design.md` §5, item 3.
 const Color _seedColor = Color(0xFF2E6B4F);
 
-class GrowCipherApp extends StatelessWidget {
+class GrowCipherApp extends StatefulWidget {
   const GrowCipherApp({super.key});
+
+  @override
+  State<GrowCipherApp> createState() => _GrowCipherAppState();
+}
+
+class _GrowCipherAppState extends State<GrowCipherApp> with WidgetsBindingObserver {
+  final _localAuthService = LocalAuthService();
+  final _secureStorageService = const SecureStorageService();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      final biometricEnabled = await _secureStorageService.isBiometricEnabled();
+      if (biometricEnabled) {
+        final authenticated = await _localAuthService.authenticate();
+        if (!authenticated) {
+          SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
