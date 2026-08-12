@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../app_scope.dart';
+import '../../providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/identifiers.dart';
 import '../../domain/models/plant.dart';
 import '../../domain/models/plant_enums.dart';
@@ -63,19 +64,67 @@ class QuickLogForm extends StatelessWidget {
 
 // --- infraestrutura comum dos formulários ---
 
-abstract class _EventFormState<T extends StatefulWidget> extends State<T> {
-  /// `null` = "Agora" (resolvido no momento de salvar).
-  DateTime? occurredAt;
-  bool saving = false;
+class FormEphemeralState {
+  final DateTime? occurredAt;
+  final bool saving;
 
-  PlantRepository get repository => AppScope.of(context).plantRepository;
+  const FormEphemeralState({this.occurredAt, this.saving = false});
+
+  FormEphemeralState copyWith({
+    DateTime? occurredAt,
+    bool? saving,
+    bool clearOccurredAt = false,
+  }) {
+    return FormEphemeralState(
+      occurredAt: clearOccurredAt ? null : (occurredAt ?? this.occurredAt),
+      saving: saving ?? this.saving,
+    );
+  }
+}
+
+class QuickLogFormStateNotifier extends AutoDisposeNotifier<FormEphemeralState> {
+  @override
+  FormEphemeralState build() => const FormEphemeralState();
+
+  void setOccurredAt(DateTime? date) {
+    state = state.copyWith(occurredAt: date, clearOccurredAt: date == null);
+  }
+
+  void setSaving(bool saving) {
+    state = state.copyWith(saving: saving);
+  }
+}
+
+final quickLogFormStateProvider = NotifierProvider.autoDispose<
+    QuickLogFormStateNotifier,
+    FormEphemeralState
+>(QuickLogFormStateNotifier.new);
+
+abstract class _EventFormState<T extends ConsumerStatefulWidget> extends ConsumerState<T> {
+  DateTime? get occurredAt => ref.watch(quickLogFormStateProvider).occurredAt;
+  set occurredAt(DateTime? value) => ref.read(quickLogFormStateProvider.notifier).setOccurredAt(value);
+
+  bool get saving => ref.watch(quickLogFormStateProvider).saving;
+  set saving(bool value) => ref.read(quickLogFormStateProvider.notifier).setSaving(value);
+
+  PlantRepository get repository => ref.read(plantRepositoryProvider);
 
   Future<void> submit(Future<void> Function(DateTime occurredAt) write) async {
     if (saving) return;
-    setState(() => saving = true);
-    await write(occurredAt ?? DateTime.now());
-    if (mounted) {
-      Navigator.of(context).pop(true);
+    
+    // Defer the state update to avoid calling it during build phase if not careful,
+    // though here we are in an event handler.
+    saving = true;
+    
+    try {
+      await write(occurredAt ?? DateTime.now());
+      if (mounted) {
+        Navigator.of(context).pop(true);
+      }
+    } finally {
+      if (mounted) {
+        saving = false;
+      }
     }
   }
 
@@ -269,14 +318,14 @@ class _TextField extends StatelessWidget {
 
 // --- rega ---
 
-class _WateredForm extends StatefulWidget {
+class _WateredForm extends ConsumerStatefulWidget {
   const _WateredForm({required this.plant, required this.onBack});
 
   final Plant plant;
   final VoidCallback onBack;
 
   @override
-  State<_WateredForm> createState() => _WateredFormState();
+  ConsumerState<_WateredForm> createState() => _WateredFormState();
 }
 
 class _WateredFormState extends _EventFormState<_WateredForm> {
@@ -357,14 +406,14 @@ class _WateredFormState extends _EventFormState<_WateredForm> {
 
 // --- alimentação / nutrientes ---
 
-class _FedForm extends StatefulWidget {
+class _FedForm extends ConsumerStatefulWidget {
   const _FedForm({required this.plant, required this.onBack});
 
   final Plant plant;
   final VoidCallback onBack;
 
   @override
-  State<_FedForm> createState() => _FedFormState();
+  ConsumerState<_FedForm> createState() => _FedFormState();
 }
 
 class _FedFormState extends _EventFormState<_FedForm> {
@@ -445,14 +494,14 @@ class _FedFormState extends _EventFormState<_FedForm> {
 
 // --- tratamento (separado de alimentação) ---
 
-class _TreatmentForm extends StatefulWidget {
+class _TreatmentForm extends ConsumerStatefulWidget {
   const _TreatmentForm({required this.plant, required this.onBack});
 
   final Plant plant;
   final VoidCallback onBack;
 
   @override
-  State<_TreatmentForm> createState() => _TreatmentFormState();
+  ConsumerState<_TreatmentForm> createState() => _TreatmentFormState();
 }
 
 class _TreatmentFormState extends _EventFormState<_TreatmentForm> {
@@ -556,14 +605,14 @@ class _TreatmentFormState extends _EventFormState<_TreatmentForm> {
 
 // --- medição ---
 
-class _MeasurementForm extends StatefulWidget {
+class _MeasurementForm extends ConsumerStatefulWidget {
   const _MeasurementForm({required this.plant, required this.onBack});
 
   final Plant plant;
   final VoidCallback onBack;
 
   @override
-  State<_MeasurementForm> createState() => _MeasurementFormState();
+  ConsumerState<_MeasurementForm> createState() => _MeasurementFormState();
 }
 
 class _MeasurementFormState extends _EventFormState<_MeasurementForm> {
@@ -666,14 +715,14 @@ class _MeasurementFormState extends _EventFormState<_MeasurementForm> {
 
 // --- transplante ---
 
-class _TransplantForm extends StatefulWidget {
+class _TransplantForm extends ConsumerStatefulWidget {
   const _TransplantForm({required this.plant, required this.onBack});
 
   final Plant plant;
   final VoidCallback onBack;
 
   @override
-  State<_TransplantForm> createState() => _TransplantFormState();
+  ConsumerState<_TransplantForm> createState() => _TransplantFormState();
 }
 
 class _TransplantFormState extends _EventFormState<_TransplantForm> {
@@ -738,14 +787,14 @@ class _TransplantFormState extends _EventFormState<_TransplantForm> {
 
 // --- mudança de fase ---
 
-class _PhaseChangeForm extends StatefulWidget {
+class _PhaseChangeForm extends ConsumerStatefulWidget {
   const _PhaseChangeForm({required this.plant, required this.onBack});
 
   final Plant plant;
   final VoidCallback onBack;
 
   @override
-  State<_PhaseChangeForm> createState() => _PhaseChangeFormState();
+  ConsumerState<_PhaseChangeForm> createState() => _PhaseChangeFormState();
 }
 
 class _PhaseChangeFormState extends _EventFormState<_PhaseChangeForm> {
@@ -815,14 +864,14 @@ class _PhaseChangeFormState extends _EventFormState<_PhaseChangeForm> {
 
 // --- observação ---
 
-class _ObservationForm extends StatefulWidget {
+class _ObservationForm extends ConsumerStatefulWidget {
   const _ObservationForm({required this.plant, required this.onBack});
 
   final Plant plant;
   final VoidCallback onBack;
 
   @override
-  State<_ObservationForm> createState() => _ObservationFormState();
+  ConsumerState<_ObservationForm> createState() => _ObservationFormState();
 }
 
 class _ObservationFormState extends _EventFormState<_ObservationForm> {
@@ -885,14 +934,14 @@ class _ObservationFormState extends _EventFormState<_ObservationForm> {
 
 // --- problema ---
 
-class _ProblemForm extends StatefulWidget {
+class _ProblemForm extends ConsumerStatefulWidget {
   const _ProblemForm({required this.plant, required this.onBack});
 
   final Plant plant;
   final VoidCallback onBack;
 
   @override
-  State<_ProblemForm> createState() => _ProblemFormState();
+  ConsumerState<_ProblemForm> createState() => _ProblemFormState();
 }
 
 class _ProblemFormState extends _EventFormState<_ProblemForm> {
@@ -966,14 +1015,14 @@ class _ProblemFormState extends _EventFormState<_ProblemForm> {
 
 // --- tarefa concluída ---
 
-class _TaskDoneForm extends StatefulWidget {
+class _TaskDoneForm extends ConsumerStatefulWidget {
   const _TaskDoneForm({required this.plant, required this.onBack});
 
   final Plant plant;
   final VoidCallback onBack;
 
   @override
-  State<_TaskDoneForm> createState() => _TaskDoneFormState();
+  ConsumerState<_TaskDoneForm> createState() => _TaskDoneFormState();
 }
 
 class _TaskDoneFormState extends _EventFormState<_TaskDoneForm> {
@@ -1025,14 +1074,14 @@ class _TaskDoneFormState extends _EventFormState<_TaskDoneForm> {
 
 // --- colheita ---
 
-class _HarvestForm extends StatefulWidget {
+class _HarvestForm extends ConsumerStatefulWidget {
   const _HarvestForm({required this.plant, required this.onBack});
 
   final Plant plant;
   final VoidCallback onBack;
 
   @override
-  State<_HarvestForm> createState() => _HarvestFormState();
+  ConsumerState<_HarvestForm> createState() => _HarvestFormState();
 }
 
 class _HarvestFormState extends _EventFormState<_HarvestForm> {
@@ -1122,14 +1171,14 @@ class _HarvestFormState extends _EventFormState<_HarvestForm> {
 
 // --- encerramento da planta ---
 
-class _EndPlantForm extends StatefulWidget {
+class _EndPlantForm extends ConsumerStatefulWidget {
   const _EndPlantForm({required this.plant, required this.onBack});
 
   final Plant plant;
   final VoidCallback onBack;
 
   @override
-  State<_EndPlantForm> createState() => _EndPlantFormState();
+  ConsumerState<_EndPlantForm> createState() => _EndPlantFormState();
 }
 
 class _EndPlantFormState extends _EventFormState<_EndPlantForm> {
