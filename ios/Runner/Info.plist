@@ -45,5 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSFaceIDUsageDescription</key>
+	<string>GrowCipher requer autenticação para proteger os dados do seu cultivo.</string>
 </dict>
 </plist>
