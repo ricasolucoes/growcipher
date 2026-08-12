@@ -36,12 +36,14 @@ class SqlitePlantRepository implements PlantRepository {
   }
 
   @override
-  Future<List<PlantEvent>> getEvents(String plantId) async {
+  Future<List<PlantEvent>> getEvents(String plantId, {int? limit, int? offset}) async {
     final rows = await _db.query(
       'plant_events',
       where: 'plant_id = ?',
       whereArgs: [plantId],
       orderBy: 'occurred_at DESC, created_at DESC',
+      limit: limit,
+      offset: offset,
     );
     return rows.map(_eventFromRow).toList();
   }
