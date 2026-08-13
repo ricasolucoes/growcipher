@@ -270,6 +270,11 @@ class SqlitePlantRepository implements PlantRepository {
   static Map<String, Object?> _eventToRow(PlantEvent event) {
     final payload = Map<String, Object?>.of(event.payloadToMap())
       ..removeWhere((_, value) => value == null);
+
+    String? photoRef;
+    if (event is PhotoAddedEvent) photoRef = event.photoRef;
+    if (event is ProblemReportedEvent) photoRef = event.photoRef;
+
     return {
       'id': event.id,
       'plant_id': event.plantId,
@@ -277,6 +282,7 @@ class SqlitePlantRepository implements PlantRepository {
       'occurred_at': event.occurredAt.millisecondsSinceEpoch,
       'created_at': event.createdAt.millisecondsSinceEpoch,
       'notes': event.notes,
+      'photo_ref': photoRef,
       'payload': jsonEncode(payload),
     };
   }
@@ -288,7 +294,12 @@ class SqlitePlantRepository implements PlantRepository {
       payload = (jsonDecode(rawPayload) as Map<String, dynamic>)
           .cast<String, Object?>();
     } on FormatException {
-      payload = const {};
+      payload = {};
+    }
+
+    if (row['photo_ref'] != null) {
+      payload = Map.of(payload);
+      payload['photoRef'] = row['photo_ref'];
     }
 
     return PlantEvent.fromRecord(

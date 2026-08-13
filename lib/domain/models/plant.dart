@@ -89,6 +89,7 @@ class Plant {
   }
 
   Plant copyWith({
+    String? photoRef,
     PlantPhase? phase,
     PlantStatus? status,
     DateTime? updatedAt,
@@ -97,7 +98,7 @@ class Plant {
       id: id,
       displayName: displayName,
       privacyCode: privacyCode,
-      photoRef: photoRef,
+      photoRef: photoRef ?? this.photoRef,
       startingPoint: startingPoint,
       origin: origin,
       originDetails: originDetails,

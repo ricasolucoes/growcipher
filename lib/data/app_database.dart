@@ -15,7 +15,7 @@ class AppDatabase {
   final DatabaseFactory _factory;
 
   static const String fileName = 'growcipher.db';
-  static const int version = 1;
+  static const int version = 2;
 
   /// `_migrations[n - 1]` leva o banco da versão `n - 1` para a versão `n`.
   static const List<List<String>> _migrations = [
@@ -65,6 +65,12 @@ class AppDatabase {
       CREATE INDEX idx_plant_events_plant_time
         ON plant_events(plant_id, occurred_at DESC)
       ''',
+    ],
+    // v2 - add photo_ref
+    [
+      '''
+      ALTER TABLE plant_events ADD COLUMN photo_ref TEXT
+      '''
     ],
   ];
 
