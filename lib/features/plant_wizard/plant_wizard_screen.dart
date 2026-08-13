@@ -142,7 +142,14 @@ class _PlantWizardScreenState extends State<PlantWizardScreen> {
         ),
     ];
 
-    await repository.createPlant(plant, extraEvents: extraEvents);
+    try {
+      await repository.createPlant(plant, extraEvents: extraEvents);
+    } catch (_) {
+      // Falha de escrita local: devolve o botão ao usuário em vez de deixar
+      // a revisão travada em "criando".
+      if (mounted) setState(() => _creating = false);
+      rethrow;
+    }
 
     if (!mounted) return;
     Navigator.of(

@@ -73,7 +73,14 @@ abstract class _EventFormState<T extends StatefulWidget> extends State<T> {
   Future<void> submit(Future<void> Function(DateTime occurredAt) write) async {
     if (saving) return;
     setState(() => saving = true);
-    await write(occurredAt ?? DateTime.now());
+    try {
+      await write(occurredAt ?? DateTime.now());
+    } catch (_) {
+      // Falha de escrita local: libera o botão para o usuário tentar de novo
+      // em vez de deixar o formulário travado em "salvando".
+      if (mounted) setState(() => saving = false);
+      rethrow;
+    }
     if (mounted) {
       Navigator.of(context).pop(true);
     }
