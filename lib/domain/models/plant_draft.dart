@@ -17,6 +17,7 @@ class PlantDraft {
 
   String? displayName;
   String privacyCode;
+  String? photoRef;
 
   PlantOrigin? origin;
   String? originDetails;
@@ -72,6 +73,7 @@ class PlantDraft {
       id: id,
       displayName: (name == null || name.isEmpty) ? null : name,
       privacyCode: privacyCode,
+      photoRef: photoRef,
       startingPoint: startingPoint!,
       origin: origin ?? PlantOrigin.unknown,
       originDetails: _clean(originDetails),

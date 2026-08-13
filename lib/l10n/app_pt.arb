@@ -55,6 +55,9 @@
   "privacyCodeHelper": "Gerado no aparelho, sem identificação nominal.",
   "regeneratePrivacyCode": "Gerar outro código",
   "photoLabel": "Foto",
+  "addPhoto": "Adicionar foto",
+  "takePhoto": "Tirar foto",
+  "chooseFromGallery": "Escolher da galeria",
   "photoComingSoon": "A galeria privada chega em uma próxima versão.",
 
   "wizardOriginTitle": "De onde ela veio?",

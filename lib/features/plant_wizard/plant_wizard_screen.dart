@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../providers.dart';
 import '../../domain/identifiers.dart';
@@ -50,6 +52,8 @@ class _PlantWizardScreenState extends ConsumerState<PlantWizardScreen> {
 
   int _index = 0;
   bool _creating = false;
+  String? _tempPhotoPath;
+  final ImagePicker _picker = ImagePicker();
 
   late final TextEditingController _nameController;
   late final TextEditingController _originDetailsController;
@@ -127,6 +131,10 @@ class _PlantWizardScreenState extends ConsumerState<PlantWizardScreen> {
   Future<void> _createPlant() async {
     if (_creating || !_draft.canCreate) return;
     setState(() => _creating = true);
+
+    if (_tempPhotoPath != null) {
+      _draft.photoRef = await ref.read(photoStoreProvider).savePhoto(_tempPhotoPath!);
+    }
 
     final repository = ref.read(plantRepositoryProvider);
     final now = DateTime.now();
@@ -343,17 +351,59 @@ class _PlantWizardScreenState extends ConsumerState<PlantWizardScreen> {
           ),
         ),
         const SizedBox(height: 20),
-        // Captura de foto chega com a galeria privada (fase futura do
-        // roadmap); o domínio já aceita photoRef.
         ListTile(
-          enabled: false,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
             side: BorderSide(color: theme.colorScheme.outlineVariant),
           ),
-          leading: const Icon(Icons.photo_camera_outlined),
+          leading: _tempPhotoPath != null 
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.file(
+                    File(_tempPhotoPath!),
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover,
+                  ),
+                )
+              : const Icon(Icons.photo_camera_outlined),
           title: Text('${l10n.photoLabel} (${l10n.optionalTag})'),
-          subtitle: Text(l10n.photoComingSoon),
+          subtitle: _tempPhotoPath != null 
+              ? Text(l10n.actionEdit)
+              : Text(l10n.addPhoto),
+          onTap: () async {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => SafeArea(
+                child: Wrap(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.camera_alt),
+                      title: Text(l10n.takePhoto),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        final xFile = await _picker.pickImage(source: ImageSource.camera);
+                        if (xFile != null) {
+                          setState(() => _tempPhotoPath = xFile.path);
+                        }
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.photo_library),
+                      title: Text(l10n.chooseFromGallery),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        final xFile = await _picker.pickImage(source: ImageSource.gallery);
+                        if (xFile != null) {
+                          setState(() => _tempPhotoPath = xFile.path);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       ],
     );
