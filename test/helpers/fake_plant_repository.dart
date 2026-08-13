@@ -1,5 +1,6 @@
 import 'package:growcipher/domain/identifiers.dart';
 import 'package:growcipher/domain/models/plant.dart';
+import 'package:growcipher/domain/models/grow_stats.dart';
 import 'package:growcipher/domain/models/plant_enums.dart';
 import 'package:growcipher/domain/models/plant_event.dart';
 import 'package:growcipher/domain/repositories/plant_repository.dart';
@@ -19,9 +20,34 @@ class FakePlantRepository implements PlantRepository {
   Future<Plant?> getPlant(String id) async => plants[id];
 
   @override
-  Future<List<PlantEvent>> getEvents(String plantId) async =>
-      events.where((event) => event.plantId == plantId).toList()
-        ..sort((a, b) => b.occurredAt.compareTo(a.occurredAt));
+  Future<GrowStats> getStats() async {
+    final totalPlants = plants.length;
+    final activePlants = plants.values.where((p) => p.status == PlantStatus.active).length;
+    final totalEvents = events.length;
+    return GrowStats(
+      totalPlants: totalPlants,
+      activePlants: activePlants,
+      totalEvents: totalEvents,
+    );
+  }
+
+  @override
+  Future<List<PlantEvent>> getEvents(String plantId, {int? limit, int? offset}) async {
+    final filtered = events.where((event) => event.plantId == plantId).toList()
+      ..sort((a, b) => b.occurredAt.compareTo(a.occurredAt));
+    if (offset != null) {
+      if (offset >= filtered.length) return [];
+      filtered.removeRange(0, offset);
+    }
+    if (limit != null && limit < filtered.length) {
+      return filtered.sublist(0, limit);
+    }
+    return filtered;
+  }
+
+  @override
+  Future<List<PlantEvent>> getAllEvents() async => events.toList()
+    ..sort((a, b) => b.occurredAt.compareTo(a.occurredAt));
 
   @override
   Future<Plant> createPlant(
