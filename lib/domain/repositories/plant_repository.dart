@@ -21,6 +21,8 @@ abstract class PlantRepository {
   /// Eventos da planta, mais recentes primeiro.
   Future<List<PlantEvent>> getEvents(String plantId, {int? limit, int? offset});
 
+  Future<List<PlantEvent>> getAllEvents();
+
   /// Persiste a planta e o evento `plantCreated` atomicamente.
   ///
   /// [extraEvents] permite gravar na mesma transação eventos que nasceram no

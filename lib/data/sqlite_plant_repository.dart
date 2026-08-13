@@ -26,7 +26,9 @@ class SqlitePlantRepository implements PlantRepository {
       'SELECT COUNT(*) FROM plants WHERE status = ?',
       [PlantStatus.active.name],
     );
-    final totalEventsRow = await _db.rawQuery('SELECT COUNT(*) FROM plant_events');
+    final totalEventsRow = await _db.rawQuery(
+      'SELECT COUNT(*) FROM plant_events',
+    );
 
     final totalPlants = Sqflite.firstIntValue(totalPlantsRow) ?? 0;
     final activePlants = Sqflite.firstIntValue(activePlantsRow) ?? 0;
@@ -57,7 +59,11 @@ class SqlitePlantRepository implements PlantRepository {
   }
 
   @override
-  Future<List<PlantEvent>> getEvents(String plantId, {int? limit, int? offset}) async {
+  Future<List<PlantEvent>> getEvents(
+    String plantId, {
+    int? limit,
+    int? offset,
+  }) async {
     final rows = await _db.query(
       'plant_events',
       where: 'plant_id = ?',
@@ -66,6 +72,12 @@ class SqlitePlantRepository implements PlantRepository {
       limit: limit,
       offset: offset,
     );
+    return rows.map(_eventFromRow).toList();
+  }
+
+  @override
+  Future<List<PlantEvent>> getAllEvents() async {
+    final rows = await _db.query('plant_events');
     return rows.map(_eventFromRow).toList();
   }
 
