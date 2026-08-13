@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 05-exporta-o-e-relat-rios-2-PLAN.md
-last_updated: "2026-08-12T23:24:00.000Z"
+stopped_at: Completed 05-exporta-o-e-relat-rios-1-PLAN.md
+last_updated: "2026-08-13T02:26:15.968Z"
 progress:
   total_phases: 5
   completed_phases: 1
-  total_plans: 5
-  completed_plans: 3
+  total_plans: 4
+  completed_plans: 2
 ---
 
 ## Current Position
