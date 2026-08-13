@@ -49,6 +49,19 @@ sealed class PlantEvent {
   /// Campos específicos do subtipo, prontos para serialização.
   Map<String, Object?> payloadToMap() => const {};
 
+  /// Serializa o evento para JSON.
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'plantId': plantId,
+      'occurredAt': occurredAt.toIso8601String(),
+      'createdAt': createdAt.toIso8601String(),
+      'notes': notes,
+      'type': type.name,
+      'payload': payloadToMap(),
+    };
+  }
+
   /// Reconstrói o subtipo correto a partir do registro persistido.
   static PlantEvent fromRecord({
     required String id,

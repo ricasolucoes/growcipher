@@ -88,6 +88,36 @@ class Plant {
     return (name == null || name.isEmpty) ? privacyCode : name;
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'displayName': displayName,
+      'privacyCode': privacyCode,
+      'photoRef': photoRef,
+      'startingPoint': startingPoint.name,
+      'origin': origin.name,
+      'originDetails': originDetails,
+      'strain': strain,
+      'geneticType': geneticType.name,
+      'startDate': startDate?.toIso8601String(),
+      'startDateIsApproximate': startDateIsApproximate,
+      'seedObtainedDate': seedObtainedDate?.toIso8601String(),
+      'rootedDate': rootedDate?.toIso8601String(),
+      'environment': environment.name,
+      'environmentPlace': environmentPlace?.name,
+      'environmentName': environmentName,
+      'growingMedium': growingMedium.name,
+      'containerType': containerType,
+      'containerVolumeLiters': containerVolumeLiters,
+      'irrigationMode': irrigationMode.name,
+      'irrigationSystem': irrigationSystem?.name,
+      'phase': phase.name,
+      'status': status.name,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+    };
+  }
+
   Plant copyWith({
     String? photoRef,
     PlantPhase? phase,
