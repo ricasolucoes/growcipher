@@ -1,3 +1,4 @@
+import '../models/grow_stats.dart';
 import '../models/plant.dart';
 import '../models/plant_enums.dart';
 import '../models/plant_event.dart';
@@ -11,6 +12,8 @@ import '../models/plant_event.dart';
 /// - encerrar registra `plantEnded` e atualiza [Plant.status] — a planta e
 ///   seu histórico nunca são apagados.
 abstract class PlantRepository {
+  Future<GrowStats> getStats();
+
   Future<List<Plant>> getPlants();
 
   Future<Plant?> getPlant(String id);
