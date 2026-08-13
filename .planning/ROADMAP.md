@@ -1,25 +1,2 @@
-# Roadmap: GrowCipher
+- [v1.0 Milestone Archive](milestones/v1.0-ROADMAP.md) - Completed on 2026-08-13
 
-## Phase 1: Setup e Infraestrutura Base (Atual)
-- [x] Bootstrap do projeto Flutter com package/organization configurados.
-- [x] Criação das pastas de documentação e planejamento (GSD).
-- [x] Estruturação base de pastas do aplicativo em Dart (bloc/provider/riverpod, models, repositories).
-
-## Phase 2: Arquitetura de Banco e Segurança
-- Implementar o armazenamento de chaves mestre (KeyStore/Keychain).
-- Inicialização do SQLite com SQLCipher (Criptografia at-rest).
-- Configuração de login local e biometria (`local_auth`).
-
-## Phase 3: Gestão de Plantas
-- Cadastro de plantas, genéticas e informações iniciais.
-- Linha do tempo de eventos de cada planta.
-- Sistema de registro rápido (Rega, Nutrição).
-
-## Phase 4: Fotos e Privacidade
-- [x] Câmera e seleção de fotos.
-- [x] Processamento seguro (remover metadados EXIF offline).
-- [x] Armazenamento das imagens na pasta local (fora da galeria do usuário).
-
-## Phase 5: Exportação e Relatórios
-- [x] Estatísticas locais.
-- [x] Exportação segura dos dados (backup e compartilhamento com senha).

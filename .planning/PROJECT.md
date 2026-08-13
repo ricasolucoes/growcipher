@@ -14,3 +14,13 @@ GrowCipher é uma plataforma global, privada e offline-first para cultivadores d
 2. Organização diária (regas, observações, tarefas sem depender da nuvem).
 3. Privacidade extrema (dados criptografados, sem rastreadores, remoção de EXIF das fotografias).
 4. Aprendizado (estatísticas puramente baseadas nos próprios dados).
+
+## Current State (v1.0)
+The v1.0 milestone has been completed. The app features:
+- Core Riverpod architecture and secure encrypted storage (SQLCipher + Biometrics).
+- Plant creation, timeline and quick event logging.
+- Secure photo capturing with offline EXIF stripping.
+- Export functionality (encrypted ZIP backup) and local dashboard statistics.
+
+## Next Milestone Goals (v1.1+)
+- TBD.
