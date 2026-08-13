@@ -13,5 +13,7 @@ abstract class PhotoStore {
   /// Caminho da foto, ou `null` se a referência não existir mais.
   Future<String?> getPhotoPath(String photoRef);
 
+  Future<List<String>> getAllPhotos();
+
   Future<void> deletePhoto(String photoRef);
 }
