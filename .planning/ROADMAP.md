@@ -16,15 +16,21 @@
 - Sistema de registro rápido (Rega, Nutrição).
 
 ## Phase 3.5: Progressão Local (pilar)
-- Domínio puro: tabela de XP, curva de nível, completude por planta, catálogo de conquistas, motor de avaliação.
-- Persistência no esquema v2: estado, ledger de XP reconstruível, contadores e conquistas destravadas.
-- Tela de progresso e realimentação no fluxo de registro (o que falta preencher, quanto vale).
+- [x] Domínio puro: tabela de XP, curva de nível, completude por planta, catálogo de 32 conquistas, motor de avaliação (`lib/domain/gamification/`).
+- [x] Persistência no esquema v2: estado, ledger de XP idempotente, contadores e conquistas destravadas (`lib/data/sqlite_gamification_repository.dart`).
+- [x] `GamifiedPlantRepository` decorando o repositório de plantas, ativo em `main.dart` — todo evento gravado pontua.
+- [ ] **Interface** (pendente, mexe em arquivos compartilhados):
+  - `AppScope` recebe `GamificationRepository` (opcional, para os testes de widget seguirem construindo o app sem ela).
+  - Rota e tela de progresso: nível e barra do nível, sequência atual e melhor marca, conquistas destravadas por família, plantas com perfil incompleto.
+  - Entrada na home (ícone na AppBar) e realimentação no registro rápido: quanto o evento pagou e qual campo ainda vale XP.
+  - ARB: nome e descrição das 32 conquistas + rótulos dos 8 insights, no padrão de `enum_labels.dart` (domínio emite id, interface traduz).
 - Restrições não negociáveis em `docs/Gamificacao.md` §5.
 
 ## Phase 3.6: Inteligência no Aparelho — Camada 1 (pilar)
-- Motor determinístico de insights sobre o histórico do próprio usuário: cadência de rega, duração de fase, medição fora da linha de base, perfil incompleto, problema sem desfecho, janela de colheita.
-- Porta `LocalInference` para as camadas opcionais, com implementação nula como padrão do produto.
-- Sem download de modelo, sem rede em nenhum caminho.
+- [x] Motor determinístico de insights sobre o histórico do próprio usuário: cadência de rega, duração de fase, medição fora da linha de base, perfil incompleto, foto ausente, problema sem desfecho, janela de colheita, sequência em risco (`lib/domain/ai/insight_engine.dart`).
+- [x] Porta `LocalInference` para as camadas opcionais, com `UnavailableLocalInference` como padrão do produto.
+- [x] Sem download de modelo, sem rede em nenhum caminho.
+- [ ] **Interface** (pendente): faixa de insights na home e no perfil da planta, com a evidência numérica visível e ação de dispensar. Textos no ARB, indexados por `InsightKind`.
 
 ## Phase 4: Fotos e Privacidade
 - Câmera e seleção de fotos.
