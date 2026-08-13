@@ -99,6 +99,30 @@ Nenhum lembrete precisa passar pelo servidor.
 - Linha do tempo visual.
 - Comparação entre ciclos concluídos.
 
+## Progressão
+Camada de incentivo ao registro, toda local ([[Gamificacao]]):
+- XP por evento, com bônus por campo opcional preenchido e por nota escrita.
+- Nível calculado sobre o XP acumulado, sem teto.
+- Completude do perfil de cada planta, com a lista do que falta.
+- Sequência de dias com registro e melhor sequência já alcançada.
+- Conquistas em seis famílias: cadastro, registro, consistência, cuidado, ciclo e curadoria.
+- Tela de progresso reunindo nível, sequência, conquistas e plantas incompletas.
+
+Nada disso sai do aparelho, expira, cobra ou destrava funcionalidade.
+
+## Análise no aparelho
+Insights derivados do próprio histórico ([[IA]]):
+- Rega atrasada frente à cadência daquela planta.
+- Fase mais longa que o usual nas plantas anteriores do usuário.
+- Medição fora da linha de base dele.
+- Perfil incompleto, com campos nomeados.
+- Ausência de fotografia recente.
+- Problema registrado sem desfecho.
+- Janela de colheita projetada dos ciclos já encerrados.
+- Sequência de registro em risco.
+
+A camada determinística não baixa modelo nenhum. Visão para triagem de sintoma foliar e linguagem para consultar o próprio diário entram como download opcional, removível, sem rede em tempo de inferência.
+
 ## Exportação e backup
 - Backup integral criptografado.
 - Exportação de uma planta específica.

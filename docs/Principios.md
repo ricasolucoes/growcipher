@@ -50,6 +50,30 @@ O usuário escolhe:
 - Com quem compartilhar.
 - Quando apagar tudo.
 
+## Progressão local
+O aplicativo recompensa quem registra. Quanto mais completo o histórico, mais o cofre devolve ao dono: nível, conquistas, sequências e um retrato de completude por planta.
+
+A regra que separa isso de manipulação barata:
+
+- A progressão é **solitária**. Não existe ranking, feed, perfil público, comparação com outros cultivadores nem competição social. O usuário compete com o próprio histórico.
+- A progressão **não cria urgência artificial**. Nada expira, nada é perdido por inatividade, nenhuma moeda some, nenhuma notificação cobra. Uma sequência interrompida é um fato registrado, não uma punição.
+- A progressão **nunca condiciona funcionalidade**. Nenhum recurso do aplicativo fica atrás de nível, conquista ou pontuação. XP não compra nada porque não há nada para comprar.
+- A progressão **é derivada, nunca fonte**. Pontos e conquistas são calculados a partir da linha do tempo; apagar a camada de progressão inteira não perde um único dado de cultivo.
+- A progressão **premia honestidade**. Registrar um problema, uma perda ou o fim de uma planta vale tanto quanto registrar uma colheita. Um diário que só admite sucesso é um diário inútil.
+
+O objetivo é um só: transformar o registro detalhado em hábito, porque histórico denso é o que torna as estatísticas e a análise no aparelho úteis. Ver [[Gamificacao]].
+
+## Inteligência no aparelho
+A análise acontece no aparelho ou não acontece.
+
+- **Nenhuma inferência remota.** Nenhum dado de cultivo, texto, medição ou fotografia é enviado a qualquer serviço para ser processado — nem anonimizado, nem agregado, nem "só para melhorar o modelo".
+- **Nenhum treino com dados do usuário.** O histórico não alimenta modelo nenhum, nem local nem externo.
+- **Degradação graciosa.** A camada determinística funciona em qualquer aparelho, sem baixar nada. Modelos opcionais são download explícito do usuário, removíveis a qualquer momento, e a ausência deles nunca quebra uma tela.
+- **Análise sobre os próprios dados.** As conclusões saem do histórico do próprio usuário — a cadência que *ele* pratica, as faixas que *ele* mede, os ciclos que *ele* fechou. Não há verdade agronômica universal embutida.
+- **Sugestão, nunca ordem.** O aplicativo aponta o que mudou e o que está faltando; a decisão é sempre do cultivador. Ele organiza informações e auxilia decisões, e biologia continua não sendo um cron job.
+
+Ver [[IA]].
+
 ## Neutralidade mundial
 O produto é global e não depende de uma jurisdição específica.
 

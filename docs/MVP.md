@@ -15,7 +15,7 @@ O aplicativo não precisa começar tentando administrar fazendas inteiras, assoc
 
 ## Proposta de valor do MVP
 
-O MVP deve resolver cinco problemas centrais:
+O MVP deve resolver sete problemas centrais:
 
 ### 1. Memória do cultivo
 O cultivador consegue acompanhar tudo o que aconteceu com cada planta:
@@ -80,5 +80,26 @@ O sistema apresenta estatísticas construídas exclusivamente a partir do histó
 - Evolução ao longo do tempo.
 
 O objetivo não é criar um ranking público de cultivadores. É permitir que cada pessoa aprenda com a própria experiência sem entregar seu histórico para alimentar publicidade, modelos externos ou algum dashboard corporativo faminto.
+
+### 6. Motivo para registrar
+Os cinco itens acima têm um pré-requisito silencioso: o usuário precisa registrar. Um diário abandonado na terceira semana não tem memória, não tem estatística e não tem o que analisar.
+
+O MVP trata isso como funcionalidade, não como esperança:
+- XP por evento registrado, com bônus por cada campo opcional preenchido.
+- Nível e conquistas calculados sobre o histórico local.
+- Completude por planta, com os campos faltantes nomeados um a um.
+- Sequência de dias com registro, guardada como marca pessoal.
+
+Tudo solitário, tudo local, nada que expire ou cobre. Sem ranking, sem competição, sem recurso preso atrás de nível — as restrições completas estão em [[Gamificacao]].
+
+### 7. Análise sem entregar o cofre
+O que o item 5 mostra em números, esta camada interpreta — no aparelho:
+- Rega atrasada frente à cadência que a própria planta vinha tendo.
+- Fase durando mais que o usual nas plantas anteriores do usuário.
+- Medição que destoa da linha de base dele.
+- Perfil incompleto, problema sem desfecho, ausência de fotografias recentes.
+- Janela de colheita projetada dos ciclos que ele mesmo já fechou.
+
+A camada determinística funciona em qualquer aparelho, sem baixar nada. Modelos maiores — visão para triagem de sintoma foliar, linguagem para perguntar ao próprio diário — são download opcional e removível. Nenhuma inferência remota, em nenhuma hipótese, detalhado em [[IA]].
 
 Veja também: [[Funcionalidades]]
