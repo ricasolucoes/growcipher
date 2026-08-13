@@ -11,11 +11,16 @@
   "optionalTag": "opcional",
   "notInformed": "Não informado",
 
-  "homeTagline": "Seu cultivo. Seus dados. Suas decisões.",
-  "homeEmptyTitle": "Vamos cadastrar sua planta",
-  "homeEmptyBody": "Registre sua primeira planta e acompanhe cada etapa do cultivo — tudo offline, só no seu aparelho.",
+  "homeTagline": "Privacidade desde a semente.",
+  "homeEmptyTitle": "Seu cultivo seguro começa aqui",
+  "homeEmptyBody": "A GrowCipher guarda os dados das suas plantas localmente no seu aparelho. Sem internet, sem complicação.",
+  "homePlantsSection": "Minhas Plantas",
+
+  "statsTotalPlants": "Total de Plantas",
+  "statsActivePlants": "Plantas Ativas",
+  "statsTotalEvents": "Eventos",
+
   "addPlant": "Adicionar planta",
-  "homePlantsSection": "Suas plantas",
   "plantAgeDays": "{count, plural, =1{1 dia} other{{count} dias}}",
   "@plantAgeDays": {
     "placeholders": {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers.dart';
+import '../../domain/models/grow_stats.dart';
 import '../../domain/models/plant.dart';
 import '../../domain/models/plant_enums.dart';
 import '../common/enum_labels.dart';
@@ -21,6 +22,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   List<Plant>? _plants;
+  GrowStats? _stats;
   bool _loadRequested = false;
 
   @override
@@ -33,9 +35,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Future<void> _reload() async {
-    final plants = await ref.read(plantRepositoryProvider).getPlants();
+    final repo = ref.read(plantRepositoryProvider);
+    final plants = await repo.getPlants();
+    final stats = await repo.getStats();
     if (mounted) {
-      setState(() => _plants = plants);
+      setState(() {
+        _plants = plants;
+        _stats = stats;
+      });
     }
   }
 
@@ -71,7 +78,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: switch (plants) {
         null => const Center(child: CircularProgressIndicator()),
         [] => _EmptyState(onAddPlant: _openWizard),
-        _ => _PlantList(plants: plants, onOpenPlant: _openPlant),
+        _ => _PlantList(plants: plants, stats: _stats, onOpenPlant: _openPlant),
       },
     );
   }
@@ -142,20 +149,28 @@ class _EmptyState extends StatelessWidget {
 }
 
 class _PlantList extends StatelessWidget {
-  const _PlantList({required this.plants, required this.onOpenPlant});
+  const _PlantList({required this.plants, this.stats, required this.onOpenPlant});
 
   final List<Plant> plants;
+  final GrowStats? stats;
   final ValueChanged<Plant> onOpenPlant;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final hasStats = stats != null;
+    final offset = hasStats ? 2 : 1;
 
     return ListView.builder(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
-      itemCount: plants.length + 1,
+      itemCount: plants.length + offset,
       itemBuilder: (context, index) {
-        if (index == 0) {
+        if (hasStats && index == 0) {
+          return _StatsCard(stats: stats!);
+        }
+        
+        final headerIndex = hasStats ? 1 : 0;
+        if (index == headerIndex) {
           return Padding(
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 12),
             child: Text(
@@ -164,11 +179,62 @@ class _PlantList extends StatelessWidget {
             ),
           );
         }
+        
+        final plantIndex = index - offset;
         return _PlantTile(
-          plant: plants[index - 1],
-          onTap: () => onOpenPlant(plants[index - 1]),
+          plant: plants[plantIndex],
+          onTap: () => onOpenPlant(plants[plantIndex]),
         );
       },
+    );
+  }
+}
+
+class _StatsCard extends StatelessWidget {
+  const _StatsCard({required this.stats});
+
+  final GrowStats stats;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    
+    Widget statItem(String label, int value) {
+      return Column(
+        children: [
+          Text(
+            value.toString(),
+            style: theme.textTheme.titleLarge?.copyWith(
+              color: theme.colorScheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      );
+    }
+    
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      elevation: 0,
+      color: theme.colorScheme.surfaceContainerLow,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            statItem(l10n.statsTotalPlants, stats.totalPlants),
+            statItem(l10n.statsActivePlants, stats.activePlants),
+            statItem(l10n.statsTotalEvents, stats.totalEvents),
+          ],
+        ),
+      ),
     );
   }
 }
