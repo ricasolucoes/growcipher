@@ -245,8 +245,10 @@ class _PlantWizardScreenState extends State<PlantWizardScreen> {
       setState(() {
         if (_draft.startingPoint != value) {
           _draft.startingPoint = value;
-          // Respostas dependentes do ponto de partida deixam de valer.
+          // Respostas dependentes do ponto de partida deixam de valer — o
+          // detalhe da origem também, já que a origem escolhida some.
           _draft.origin = null;
+          _originDetailsController.clear();
           _draft.seedObtainedDate = null;
           _draft.germinationDate = null;
           _draft.rootedDate = null;
