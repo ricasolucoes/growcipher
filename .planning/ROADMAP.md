@@ -21,5 +21,5 @@
 - [x] Armazenamento das imagens na pasta local (fora da galeria do usuário).
 
 ## Phase 5: Exportação e Relatórios
-- Estatísticas locais.
-- Exportação segura dos dados (backup e compartilhamento com senha).
+- [x] Estatísticas locais.
+- [x] Exportação segura dos dados (backup e compartilhamento com senha).
