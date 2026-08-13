@@ -135,6 +135,48 @@ void main() {
     expect(plant.phase, PlantPhase.seedling); // sugerida para clone
   });
 
+  testWidgets('trocar o ponto de partida descarta as respostas dependentes', (
+    tester,
+  ) async {
+    final repository = FakePlantRepository();
+    await pumpApp(tester, repository);
+
+    await _tap(tester, 'Adicionar planta');
+    await _tap(tester, 'Semente');
+    await _tap(tester, 'Continuar'); // identificação
+
+    await _tap(tester, 'Comprada');
+    await tester.enterText(
+      find.widgetWithText(TextField, 'Detalhes da origem'),
+      'Growshop da esquina',
+    );
+    await tester.pumpAndSettle();
+
+    // Volta ao passo 1 e troca para clone.
+    await tester.tap(find.byIcon(Icons.arrow_back));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.arrow_back));
+    await tester.pumpAndSettle();
+    await _tap(tester, 'Clone');
+    await _tap(tester, 'Continuar'); // identificação
+
+    // A origem de semente sumiu junto com o detalhe digitado.
+    expect(find.text('Encontrada em uma flor'), findsNothing);
+    expect(find.text('Growshop da esquina'), findsNothing);
+
+    // Origem em branco e os demais passos (genética, datas, ambiente, meio,
+    // fase, irrigação) até a revisão.
+    for (var i = 0; i < 7; i++) {
+      await _tap(tester, 'Continuar');
+    }
+    await _tap(tester, 'CRIAR PLANTA');
+
+    final plant = repository.plants.values.single;
+    expect(plant.startingPoint, PlantStartingPoint.clone);
+    expect(plant.origin, PlantOrigin.unknown);
+    expect(plant.originDetails, isNull);
+  });
+
   testWidgets('planta em andamento aceita tudo desconhecido', (tester) async {
     final repository = FakePlantRepository();
     await pumpApp(tester, repository);
