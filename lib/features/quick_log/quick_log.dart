@@ -157,17 +157,23 @@ class _QuickLogMenu extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(4, 8, 4, 16),
           child: Text(l10n.quickLogTitle, style: theme.textTheme.titleLarge),
         ),
-        GridView.count(
-          crossAxisCount: 2,
+        GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 2.4,
-          children: [
-            for (final (spec, action) in entries)
-              _ActionCell(spec: spec, onTap: () => onSelect(action)),
-          ],
+          // Altura fixa em dp (e não childAspectRatio): em telas estreitas
+          // rótulos longos quebram em duas linhas e uma célula derivada da
+          // largura ficaria baixa demais.
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            mainAxisExtent: 80,
+          ),
+          itemCount: entries.length,
+          itemBuilder: (context, index) {
+            final (spec, action) = entries[index];
+            return _ActionCell(spec: spec, onTap: () => onSelect(action));
+          },
         ),
       ],
     );
