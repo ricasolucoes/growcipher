@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:sqflite/sqflite.dart';
 
 import '../domain/identifiers.dart';
+import '../domain/models/grow_stats.dart';
 import '../domain/models/plant.dart';
 import '../domain/models/plant_enums.dart';
 import '../domain/models/plant_event.dart';
@@ -17,6 +18,26 @@ class SqlitePlantRepository implements PlantRepository {
   SqlitePlantRepository(this._db);
 
   final Database _db;
+
+  @override
+  Future<GrowStats> getStats() async {
+    final totalPlantsRow = await _db.rawQuery('SELECT COUNT(*) FROM plants');
+    final activePlantsRow = await _db.rawQuery(
+      'SELECT COUNT(*) FROM plants WHERE status = ?',
+      [PlantStatus.active.name],
+    );
+    final totalEventsRow = await _db.rawQuery('SELECT COUNT(*) FROM plant_events');
+
+    final totalPlants = Sqflite.firstIntValue(totalPlantsRow) ?? 0;
+    final activePlants = Sqflite.firstIntValue(activePlantsRow) ?? 0;
+    final totalEvents = Sqflite.firstIntValue(totalEventsRow) ?? 0;
+
+    return GrowStats(
+      totalPlants: totalPlants,
+      activePlants: activePlants,
+      totalEvents: totalEvents,
+    );
+  }
 
   @override
   Future<List<Plant>> getPlants() async {
