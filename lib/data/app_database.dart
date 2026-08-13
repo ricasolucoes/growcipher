@@ -1,6 +1,8 @@
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
+import 'gamification_schema.dart';
+
 /// Banco local do GrowCipher.
 ///
 /// Esquema versionado por migrations aditivas: cada versão é uma lista de
@@ -15,7 +17,7 @@ class AppDatabase {
   final DatabaseFactory _factory;
 
   static const String fileName = 'growcipher.db';
-  static const int version = 1;
+  static const int version = 2;
 
   /// `_migrations[n - 1]` leva o banco da versão `n - 1` para a versão `n`.
   static const List<List<String>> _migrations = [
@@ -66,6 +68,8 @@ class AppDatabase {
         ON plant_events(plant_id, occurred_at DESC)
       ''',
     ],
+    // v2 — progressão local (estado, ledger de XP, contadores, conquistas).
+    gamificationMigrationV2,
   ];
 
   /// Abre (criando/migrando se preciso) o banco. [path] é sobrescrevível
