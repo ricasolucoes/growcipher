@@ -16,9 +16,9 @@
 - Sistema de registro rápido (Rega, Nutrição).
 
 ## Phase 4: Fotos e Privacidade
-- Câmera e seleção de fotos.
-- Processamento seguro (remover metadados EXIF offline).
-- Armazenamento das imagens na pasta local (fora da galeria do usuário).
+- [x] Câmera e seleção de fotos.
+- [x] Processamento seguro (remover metadados EXIF offline).
+- [x] Armazenamento das imagens na pasta local (fora da galeria do usuário).
 
 ## Phase 5: Exportação e Relatórios
 - Estatísticas locais.
