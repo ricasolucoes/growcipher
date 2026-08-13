@@ -17,10 +17,7 @@ class LocalAuthService {
 
       return await _auth.authenticate(
         localizedReason: 'Desbloquear o GrowCipher',
-        options: const AuthenticationOptions(
-          biometricOnly: false,
-          stickyAuth: true,
-        ),
+        biometricOnly: false,
       );
     } catch (e) {
       return false;

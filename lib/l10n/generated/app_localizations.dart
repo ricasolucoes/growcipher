@@ -157,32 +157,50 @@ abstract class AppLocalizations {
   /// No description provided for @homeTagline.
   ///
   /// In pt, this message translates to:
-  /// **'Seu cultivo. Seus dados. Suas decisões.'**
+  /// **'Privacidade desde a semente.'**
   String get homeTagline;
 
   /// No description provided for @homeEmptyTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Vamos cadastrar sua planta'**
+  /// **'Seu cultivo seguro começa aqui'**
   String get homeEmptyTitle;
 
   /// No description provided for @homeEmptyBody.
   ///
   /// In pt, this message translates to:
-  /// **'Registre sua primeira planta e acompanhe cada etapa do cultivo — tudo offline, só no seu aparelho.'**
+  /// **'A GrowCipher guarda os dados das suas plantas localmente no seu aparelho. Sem internet, sem complicação.'**
   String get homeEmptyBody;
+
+  /// No description provided for @homePlantsSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Minhas Plantas'**
+  String get homePlantsSection;
+
+  /// No description provided for @statsTotalPlants.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total de Plantas'**
+  String get statsTotalPlants;
+
+  /// No description provided for @statsActivePlants.
+  ///
+  /// In pt, this message translates to:
+  /// **'Plantas Ativas'**
+  String get statsActivePlants;
+
+  /// No description provided for @statsTotalEvents.
+  ///
+  /// In pt, this message translates to:
+  /// **'Eventos'**
+  String get statsTotalEvents;
 
   /// No description provided for @addPlant.
   ///
   /// In pt, this message translates to:
   /// **'Adicionar planta'**
   String get addPlant;
-
-  /// No description provided for @homePlantsSection.
-  ///
-  /// In pt, this message translates to:
-  /// **'Suas plantas'**
-  String get homePlantsSection;
 
   /// No description provided for @plantAgeDays.
   ///
@@ -297,6 +315,24 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Foto'**
   String get photoLabel;
+
+  /// No description provided for @addPhoto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar foto'**
+  String get addPhoto;
+
+  /// No description provided for @takePhoto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tirar foto'**
+  String get takePhoto;
+
+  /// No description provided for @chooseFromGallery.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolher da galeria'**
+  String get chooseFromGallery;
 
   /// No description provided for @photoComingSoon.
   ///

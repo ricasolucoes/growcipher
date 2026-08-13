@@ -39,20 +39,29 @@ class AppLocalizationsPt extends AppLocalizations {
   String get notInformed => 'Não informado';
 
   @override
-  String get homeTagline => 'Seu cultivo. Seus dados. Suas decisões.';
+  String get homeTagline => 'Privacidade desde a semente.';
 
   @override
-  String get homeEmptyTitle => 'Vamos cadastrar sua planta';
+  String get homeEmptyTitle => 'Seu cultivo seguro começa aqui';
 
   @override
   String get homeEmptyBody =>
-      'Registre sua primeira planta e acompanhe cada etapa do cultivo — tudo offline, só no seu aparelho.';
+      'A GrowCipher guarda os dados das suas plantas localmente no seu aparelho. Sem internet, sem complicação.';
+
+  @override
+  String get homePlantsSection => 'Minhas Plantas';
+
+  @override
+  String get statsTotalPlants => 'Total de Plantas';
+
+  @override
+  String get statsActivePlants => 'Plantas Ativas';
+
+  @override
+  String get statsTotalEvents => 'Eventos';
 
   @override
   String get addPlant => 'Adicionar planta';
-
-  @override
-  String get homePlantsSection => 'Suas plantas';
 
   @override
   String plantAgeDays(int count) {
@@ -123,6 +132,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get photoLabel => 'Foto';
+
+  @override
+  String get addPhoto => 'Adicionar foto';
+
+  @override
+  String get takePhoto => 'Tirar foto';
+
+  @override
+  String get chooseFromGallery => 'Escolher da galeria';
 
   @override
   String get photoComingSoon =>

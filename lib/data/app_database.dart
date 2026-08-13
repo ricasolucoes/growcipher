@@ -81,16 +81,14 @@ class AppDatabase {
         path ?? p.join(await _factory.getDatabasesPath(), fileName);
 
     Future<Database> doOpen() {
-      return _factory.openDatabase(
+      return openDatabase(
         resolvedPath,
         password: password,
-        options: OpenDatabaseOptions(
-          version: version,
-          onConfigure: (db) => db.execute('PRAGMA foreign_keys = ON'),
-          onCreate: (db, version) => _apply(db, from: 0, to: version),
-          onUpgrade: (db, oldVersion, newVersion) =>
-              _apply(db, from: oldVersion, to: newVersion),
-        ),
+        version: version,
+        onConfigure: (db) => db.execute('PRAGMA foreign_keys = ON'),
+        onCreate: (db, version) => _apply(db, from: 0, to: version),
+        onUpgrade: (db, oldVersion, newVersion) =>
+            _apply(db, from: oldVersion, to: newVersion),
       );
     }
 
