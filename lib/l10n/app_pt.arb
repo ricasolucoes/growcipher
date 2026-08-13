@@ -6,10 +6,8 @@
   "actionBack": "Voltar",
   "actionSave": "Salvar",
   "actionCancel": "Cancelar",
-  "actionEdit": "Editar",
   "dontKnow": "Não sei",
   "optionalTag": "opcional",
-  "notInformed": "Não informado",
 
   "homeTagline": "Seu cultivo. Seus dados. Suas decisões.",
   "homeEmptyTitle": "Vamos cadastrar sua planta",
@@ -260,14 +258,6 @@
   "timelineTitle": "Linha do tempo",
   "timelineEmpty": "Nenhum registro ainda.",
   "registerActivity": "Registrar atividade",
-  "plantFallbackTitle": "Planta {code}",
-  "@plantFallbackTitle": {
-    "placeholders": {
-      "code": {
-        "type": "String"
-      }
-    }
-  },
 
   "statusActive": "Ativa",
   "statusCompleted": "Concluída",

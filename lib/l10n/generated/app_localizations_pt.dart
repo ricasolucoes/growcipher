@@ -27,16 +27,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get actionCancel => 'Cancelar';
 
   @override
-  String get actionEdit => 'Editar';
-
-  @override
   String get dontKnow => 'Não sei';
 
   @override
   String get optionalTag => 'opcional';
-
-  @override
-  String get notInformed => 'Não informado';
 
   @override
   String get homeTagline => 'Seu cultivo. Seus dados. Suas decisões.';
@@ -633,11 +627,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get registerActivity => 'Registrar atividade';
-
-  @override
-  String plantFallbackTitle(String code) {
-    return 'Planta $code';
-  }
 
   @override
   String get statusActive => 'Ativa';

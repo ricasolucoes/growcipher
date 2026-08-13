@@ -130,12 +130,6 @@ abstract class AppLocalizations {
   /// **'Cancelar'**
   String get actionCancel;
 
-  /// No description provided for @actionEdit.
-  ///
-  /// In pt, this message translates to:
-  /// **'Editar'**
-  String get actionEdit;
-
   /// No description provided for @dontKnow.
   ///
   /// In pt, this message translates to:
@@ -147,12 +141,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'opcional'**
   String get optionalTag;
-
-  /// No description provided for @notInformed.
-  ///
-  /// In pt, this message translates to:
-  /// **'Não informado'**
-  String get notInformed;
 
   /// No description provided for @homeTagline.
   ///
@@ -1293,12 +1281,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Registrar atividade'**
   String get registerActivity;
-
-  /// No description provided for @plantFallbackTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Planta {code}'**
-  String plantFallbackTitle(String code);
 
   /// No description provided for @statusActive.
   ///
