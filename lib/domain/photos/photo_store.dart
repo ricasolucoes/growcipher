@@ -7,11 +7,11 @@ import 'dart:typed_data';
 /// referencia fotos apenas por um `photoRef` opaco emitido por este contrato,
 /// para que nenhuma tela dependa de detalhes de arquivo ou de rede.
 abstract class PhotoStore {
-  /// Armazena os bytes e devolve o `photoRef` para associar a plantas/eventos.
-  Future<String> savePhoto(Uint8List bytes);
+  /// Armazena a foto e devolve o `photoRef` para associar a plantas/eventos.
+  Future<String> savePhoto(String tempPath);
 
-  /// Bytes da foto, ou `null` se a referência não existir mais.
-  Future<Uint8List?> readPhoto(String photoRef);
+  /// Caminho da foto, ou `null` se a referência não existir mais.
+  Future<String?> getPhotoPath(String photoRef);
 
   Future<void> deletePhoto(String photoRef);
 }
