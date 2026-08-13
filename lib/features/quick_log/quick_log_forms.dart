@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -48,8 +50,10 @@ class QuickLogForm extends StatelessWidget {
         plant: plant,
         onBack: onBack,
       ),
-      // Foto fica desabilitada no menu até a galeria privada existir.
-      QuickLogAction.photo => const SizedBox.shrink(),
+      QuickLogAction.photo => _PhotoEventForm(
+        plant: plant,
+        onBack: onBack,
+      ),
       QuickLogAction.observation => _ObservationForm(
         plant: plant,
         onBack: onBack,
@@ -1272,6 +1276,125 @@ class _EndPlantFormState extends _EventFormState<_EndPlantForm> {
             ),
           ],
         ),
+      ],
+    );
+  }
+}
+
+// --- foto ---
+
+class _PhotoEventForm extends ConsumerStatefulWidget {
+  const _PhotoEventForm({required this.plant, required this.onBack});
+
+  final Plant plant;
+  final VoidCallback onBack;
+
+  @override
+  ConsumerState<_PhotoEventForm> createState() => _PhotoEventFormState();
+}
+
+class _PhotoEventFormState extends _EventFormState<_PhotoEventForm> {
+  final _notes = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  String? _tempPhotoPath;
+
+  @override
+  void dispose() {
+    _notes.dispose();
+    super.dispose();
+  }
+
+  Future<void> _save() => submit((occurredAt) async {
+    String? photoRef;
+    if (_tempPhotoPath != null) {
+      photoRef = await ref.read(photoStoreProvider).savePhoto(_tempPhotoPath!);
+    }
+    
+    await repository.addEvent(
+      PhotoAddedEvent(
+        id: generateLocalId(),
+        plantId: widget.plant.id,
+        occurredAt: occurredAt,
+        createdAt: DateTime.now(),
+        photoRef: photoRef,
+        notes: _EventFormState.textOrNull(_notes),
+      ),
+    );
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+
+    return _FormShell(
+      title: l10n.quickLogPhoto,
+      onBack: widget.onBack,
+      onSave: _save,
+      saveEnabled: _tempPhotoPath != null,
+      saving: saving,
+      children: [
+        _OccurredAtField(
+          value: occurredAt,
+          onChanged: (value) => setState(() => occurredAt = value),
+        ),
+        const SizedBox(height: 16),
+        ListTile(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(color: theme.colorScheme.outlineVariant),
+          ),
+          leading: _tempPhotoPath != null 
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.file(
+                    File(_tempPhotoPath!),
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover,
+                  ),
+                )
+              : const Icon(Icons.photo_camera_outlined),
+          title: Text(l10n.photoLabel),
+          subtitle: _tempPhotoPath != null 
+              ? Text(l10n.actionEdit)
+              : Text(l10n.addPhoto),
+          onTap: () async {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => SafeArea(
+                child: Wrap(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.camera_alt),
+                      title: Text(l10n.takePhoto),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        final xFile = await _picker.pickImage(source: ImageSource.camera);
+                        if (xFile != null) {
+                          setState(() => _tempPhotoPath = xFile.path);
+                        }
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.photo_library),
+                      title: Text(l10n.chooseFromGallery),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        final xFile = await _picker.pickImage(source: ImageSource.gallery);
+                        if (xFile != null) {
+                          setState(() => _tempPhotoPath = xFile.path);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 16),
+        _NotesField(controller: _notes),
       ],
     );
   }

@@ -118,8 +118,7 @@ class _QuickLogMenu extends StatelessWidget {
         _ActionSpec(
           l10n.quickLogPhoto,
           Icons.photo_camera_outlined,
-          sublabel: l10n.quickLogPhotoComingSoon,
-          enabled: false,
+          enabled: true,
         ),
         QuickLogAction.photo,
       ),
