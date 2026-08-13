@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,6 +11,10 @@ import '../common/enum_labels.dart';
 import '../common/formatting.dart';
 import '../common/l10n_extensions.dart';
 import '../quick_log/quick_log.dart';
+
+final photoPathProvider = FutureProvider.family<String?, String>((ref, photoRef) async {
+  return ref.watch(photoStoreProvider).getPhotoPath(photoRef);
+});
 
 /// Perfil da planta: dados estáveis no topo, linha do tempo abaixo.
 class PlantProfileScreen extends ConsumerStatefulWidget {
@@ -160,13 +165,13 @@ class _PlantProfileScreenState extends ConsumerState<PlantProfileScreen> {
   }
 }
 
-class _PlantHeader extends StatelessWidget {
+class _PlantHeader extends ConsumerWidget {
   const _PlantHeader({required this.plant});
 
   final Plant plant;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final l10n = context.l10n;
 
@@ -201,38 +206,77 @@ class _PlantHeader extends StatelessWidget {
       addInfo(plant.strain!);
     }
 
+    Widget? photoWidget;
+    if (plant.photoRef != null) {
+      final photoAsync = ref.watch(photoPathProvider(plant.photoRef!));
+      photoWidget = photoAsync.when(
+        data: (path) => path == null 
+            ? const SizedBox.shrink()
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.file(
+                  File(path),
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
+                ),
+              ),
+        loading: () => const SizedBox(
+          width: 80,
+          height: 80,
+          child: Center(child: CircularProgressIndicator()),
+        ),
+        error: (_, __) => const SizedBox(
+          width: 80,
+          height: 80,
+          child: Icon(Icons.error),
+        ),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(plant.displayLabel, style: theme.textTheme.headlineSmall),
-          const SizedBox(height: 4),
-          Text(
-            [
-              plant.privacyCode,
-              if (plant.startDate != null)
-                formatDate(
-                  context,
-                  plant.startDate!,
-                  approximate: plant.startDateIsApproximate,
+          if (photoWidget != null) ...[
+            photoWidget,
+            const SizedBox(width: 16),
+          ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(plant.displayLabel, style: theme.textTheme.headlineSmall),
+                const SizedBox(height: 4),
+                Text(
+                  [
+                    plant.privacyCode,
+                    if (plant.startDate != null)
+                      formatDate(
+                        context,
+                        plant.startDate!,
+                        approximate: plant.startDateIsApproximate,
+                      ),
+                  ].join(' · '),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
-            ].join(' · '),
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
+                if (chips.isNotEmpty) ...[
+                  const SizedBox(height: 12),
+                  Wrap(spacing: 8, runSpacing: 8, children: chips),
+                ],
+              ],
             ),
           ),
-          if (chips.isNotEmpty) ...[
-            const SizedBox(height: 12),
-            Wrap(spacing: 8, runSpacing: 8, children: chips),
-          ],
         ],
       ),
     );
   }
 }
 
-class _EventTile extends StatelessWidget {
+class _EventTile extends ConsumerWidget {
   const _EventTile({required this.event});
 
   final PlantEvent event;
@@ -318,7 +362,7 @@ class _EventTile extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final l10n = context.l10n;
 
@@ -329,6 +373,34 @@ class _EventTile extends StatelessWidget {
     final mainText = event is ObservationAddedEvent
         ? notes ?? ''
         : summary ?? '';
+
+    Widget? photoThumbnail;
+    if (event is PhotoAddedEvent) {
+      final ev = event as PhotoAddedEvent;
+      if (ev.photoRef != null) {
+        final photoAsync = ref.watch(photoPathProvider(ev.photoRef!));
+        photoThumbnail = photoAsync.when(
+          data: (path) => path == null 
+              ? const SizedBox.shrink()
+              : Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.file(
+                      File(path),
+                      height: 120,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+          loading: () => const Padding(
+            padding: EdgeInsets.only(top: 8.0),
+            child: SizedBox(height: 120, child: Center(child: CircularProgressIndicator())),
+          ),
+          error: (_, __) => const SizedBox.shrink(),
+        );
+      }
+    }
 
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
@@ -365,6 +437,7 @@ class _EventTile extends StatelessWidget {
                       ),
                     ),
                   ],
+                  if (photoThumbnail != null) photoThumbnail,
                   const SizedBox(height: 4),
                   Text(
                     formatDateTime(context, event.occurredAt),
