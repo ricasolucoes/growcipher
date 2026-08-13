@@ -18,9 +18,10 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with RouteAware {
   List<Plant>? _plants;
   bool _loadRequested = false;
+  RouteObserver<ModalRoute<Object?>>? _routeObserver;
 
   @override
   void didChangeDependencies() {
@@ -29,7 +30,27 @@ class _HomeScreenState extends State<HomeScreen> {
       _loadRequested = true;
       _reload();
     }
+
+    // O wizard troca a própria rota pela tela de sucesso e depois pelo
+    // perfil (pushReplacement), então esperar o Future do pushNamed traria a
+    // lista já defasada. Recarregar em didPopNext cobre qualquer retorno.
+    final observer = AppScope.of(context).routeObserver;
+    final route = ModalRoute.of(context);
+    if (observer != _routeObserver && route != null) {
+      _routeObserver?.unsubscribe(this);
+      _routeObserver = observer..subscribe(this, route);
+    }
   }
+
+  @override
+  void dispose() {
+    _routeObserver?.unsubscribe(this);
+    super.dispose();
+  }
+
+  /// Uma rota empilhada sobre a home foi fechada — os dados podem ter mudado.
+  @override
+  void didPopNext() => _reload();
 
   Future<void> _reload() async {
     final plants = await AppScope.of(context).plantRepository.getPlants();
@@ -38,20 +59,14 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> _openWizard() async {
-    await Navigator.of(context).pushNamed(PlantWizardScreen.route);
-    if (mounted) {
-      await _reload();
-    }
+  void _openWizard() {
+    Navigator.of(context).pushNamed(PlantWizardScreen.route);
   }
 
-  Future<void> _openPlant(Plant plant) async {
-    await Navigator.of(
+  void _openPlant(Plant plant) {
+    Navigator.of(
       context,
     ).pushNamed(PlantProfileScreen.route, arguments: plant.id);
-    if (mounted) {
-      await _reload();
-    }
   }
 
   @override

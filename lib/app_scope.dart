@@ -8,10 +8,15 @@ class AppScope extends InheritedWidget {
   const AppScope({
     super.key,
     required this.plantRepository,
+    required this.routeObserver,
     required super.child,
   });
 
   final PlantRepository plantRepository;
+
+  /// Permite que telas de listagem recarreguem quando voltam ao topo da
+  /// pilha (ver [RouteAware]).
+  final RouteObserver<ModalRoute<Object?>> routeObserver;
 
   static AppScope of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<AppScope>();
@@ -21,5 +26,6 @@ class AppScope extends InheritedWidget {
 
   @override
   bool updateShouldNotify(AppScope oldWidget) =>
-      plantRepository != oldWidget.plantRepository;
+      plantRepository != oldWidget.plantRepository ||
+      routeObserver != oldWidget.routeObserver;
 }

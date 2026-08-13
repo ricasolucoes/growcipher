@@ -15,15 +15,20 @@ import 'l10n/generated/app_localizations.dart';
 const Color _seedColor = Color(0xFF2E6B4F);
 
 class GrowCipherApp extends StatelessWidget {
-  const GrowCipherApp({super.key, required this.repository});
+  GrowCipherApp({super.key, required this.repository});
 
   final PlantRepository repository;
+
+  final RouteObserver<ModalRoute<Object?>> _routeObserver =
+      RouteObserver<ModalRoute<Object?>>();
 
   @override
   Widget build(BuildContext context) {
     return AppScope(
       plantRepository: repository,
+      routeObserver: _routeObserver,
       child: MaterialApp(
+        navigatorObservers: [_routeObserver],
         onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
         debugShowCheckedModeBanner: false,
         theme: _buildTheme(Brightness.light),
