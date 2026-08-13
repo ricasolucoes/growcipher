@@ -47,5 +47,9 @@
 	<true/>
 	<key>NSFaceIDUsageDescription</key>
 	<string>GrowCipher requer autenticação para proteger os dados do seu cultivo.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>GrowCipher precisa de acesso à câmera para tirar fotos das suas plantas.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>GrowCipher precisa de acesso à galeria para selecionar fotos das suas plantas.</string>
 </dict>
 </plist>
