@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'core/security/local_auth_service.dart';
 import 'core/security/secure_storage_service.dart';
 import 'features/home/home_screen.dart';
+import 'features/settings/export_screen.dart';
 import 'features/plant_profile/plant_profile_screen.dart';
 import 'features/plant_wizard/plant_created_screen.dart';
 import 'features/plant_wizard/plant_wizard_screen.dart';
@@ -21,7 +22,8 @@ class GrowCipherApp extends StatefulWidget {
   State<GrowCipherApp> createState() => _GrowCipherAppState();
 }
 
-class _GrowCipherAppState extends State<GrowCipherApp> with WidgetsBindingObserver {
+class _GrowCipherAppState extends State<GrowCipherApp>
+    with WidgetsBindingObserver {
   final _localAuthService = LocalAuthService();
   final _secureStorageService = const SecureStorageService();
 
@@ -53,24 +55,24 @@ class _GrowCipherAppState extends State<GrowCipherApp> with WidgetsBindingObserv
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-        debugShowCheckedModeBanner: false,
-        theme: _buildTheme(Brightness.light),
-        darkTheme: _buildTheme(Brightness.dark),
-        // Dark mode é prioritário (uso noturno em grow room), mas o app
-        // respeita a escolha do sistema.
-        themeMode: ThemeMode.system,
-        // pt-BR é o idioma padrão do produto; outros idiomas entram como
-        // novos ARBs em lib/l10n.
-        locale: const Locale('pt', 'BR'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: const [
-          Locale('pt', 'BR'),
-          ...AppLocalizations.supportedLocales,
-        ],
-        onGenerateRoute: _onGenerateRoute,
-        initialRoute: HomeScreen.route,
-      );
+      onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
+      debugShowCheckedModeBanner: false,
+      theme: _buildTheme(Brightness.light),
+      darkTheme: _buildTheme(Brightness.dark),
+      // Dark mode é prioritário (uso noturno em grow room), mas o app
+      // respeita a escolha do sistema.
+      themeMode: ThemeMode.system,
+      // pt-BR é o idioma padrão do produto; outros idiomas entram como
+      // novos ARBs em lib/l10n.
+      locale: const Locale('pt', 'BR'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: const [
+        Locale('pt', 'BR'),
+        ...AppLocalizations.supportedLocales,
+      ],
+      onGenerateRoute: _onGenerateRoute,
+      initialRoute: HomeScreen.route,
+    );
   }
 
   Route<Object?>? _onGenerateRoute(RouteSettings settings) {
@@ -83,6 +85,7 @@ class _GrowCipherAppState extends State<GrowCipherApp> with WidgetsBindingObserv
       PlantProfileScreen.route => (_) => PlantProfileScreen(
         plantId: settings.arguments as String,
       ),
+      ExportScreen.route => (_) => const ExportScreen(),
       _ => null,
     };
     if (builder == null) return null;

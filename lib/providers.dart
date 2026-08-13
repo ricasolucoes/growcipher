@@ -4,9 +4,12 @@ import 'data/sqlite_plant_repository.dart';
 import 'domain/repositories/plant_repository.dart';
 import 'domain/photos/photo_store.dart';
 import 'data/local_photo_store.dart';
+import 'data/backup_service.dart';
 
 final appDatabaseProvider = Provider<Database>((ref) {
-  throw UnimplementedError('appDatabaseProvider must be overridden in ProviderScope');
+  throw UnimplementedError(
+    'appDatabaseProvider must be overridden in ProviderScope',
+  );
 });
 
 final plantRepositoryProvider = Provider<PlantRepository>((ref) {
@@ -16,4 +19,11 @@ final plantRepositoryProvider = Provider<PlantRepository>((ref) {
 
 final photoStoreProvider = Provider<PhotoStore>((ref) {
   return LocalPhotoStore();
+});
+
+final backupServiceProvider = Provider<BackupService>((ref) {
+  return BackupService(
+    ref.watch(plantRepositoryProvider),
+    ref.watch(photoStoreProvider),
+  );
 });

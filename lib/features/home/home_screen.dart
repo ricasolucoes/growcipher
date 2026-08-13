@@ -67,7 +67,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final plants = _plants;
 
     return Scaffold(
-      appBar: AppBar(title: Text(context.l10n.appTitle)),
+      appBar: AppBar(
+        title: Text(context.l10n.appTitle),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () => Navigator.pushNamed(context, '/export'),
+          ),
+        ],
+      ),
       floatingActionButton: (plants == null || plants.isEmpty)
           ? null
           : FloatingActionButton.extended(
@@ -149,7 +157,11 @@ class _EmptyState extends StatelessWidget {
 }
 
 class _PlantList extends StatelessWidget {
-  const _PlantList({required this.plants, this.stats, required this.onOpenPlant});
+  const _PlantList({
+    required this.plants,
+    this.stats,
+    required this.onOpenPlant,
+  });
 
   final List<Plant> plants;
   final GrowStats? stats;
@@ -168,7 +180,7 @@ class _PlantList extends StatelessWidget {
         if (hasStats && index == 0) {
           return _StatsCard(stats: stats!);
         }
-        
+
         final headerIndex = hasStats ? 1 : 0;
         if (index == headerIndex) {
           return Padding(
@@ -179,7 +191,7 @@ class _PlantList extends StatelessWidget {
             ),
           );
         }
-        
+
         final plantIndex = index - offset;
         return _PlantTile(
           plant: plants[plantIndex],
@@ -199,7 +211,7 @@ class _StatsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
-    
+
     Widget statItem(String label, int value) {
       return Column(
         children: [
@@ -219,7 +231,7 @@ class _StatsCard extends StatelessWidget {
         ],
       );
     }
-    
+
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 0,
