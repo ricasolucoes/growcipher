@@ -1,0 +1,88 @@
+name: Reprodutibilidade
+
+# Confere que dois builds limpos e seguidos, no mesmo caminho e com o mesmo
+# toolchain, produzem o mesmo APK byte a byte. É a garantia de que o APK anexado
+# numa release pode ser refeito e conferido depois.
+#
+# ATENÇÃO: isto NÃO prova reprodutibilidade entre máquinas diferentes. O snapshot
+# AOT do Dart carrega o caminho absoluto do projeto, então builds em diretórios
+# diferentes divergem. Detalhes e medição em docs/reprodutibilidade.md.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Todo dia 1º às 04:00 UTC — pega regressão vinda de bump de dependência.
+    - cron: '0 4 1 * *'
+
+permissions:
+  contents: read
+
+env:
+  FLUTTER_VERSION: 3.44.9
+  TZ: UTC
+  LC_ALL: C.UTF-8
+
+jobs:
+  dois-builds:
+    name: Dois builds, mesmo SHA256
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Dependências (trava o pubspec.lock)
+        run: flutter pub get --enforce-lockfile
+
+      - name: Build 1, build 2 e comparação
+        shell: bash
+        run: |
+          set -euo pipefail
+          apk=build/app/outputs/flutter-apk/app-release.apk
+          SOURCE_DATE_EPOCH="$(git log -1 --pretty=%ct)"
+          export SOURCE_DATE_EPOCH
+
+          flutter build apk --release
+          um="$(sha256sum "$apk" | cut -d' ' -f1)"
+          cp "$apk" /tmp/build-1.apk
+
+          flutter clean
+          flutter pub get --enforce-lockfile
+          flutter build apk --release
+          dois="$(sha256sum "$apk" | cut -d' ' -f1)"
+
+          {
+            echo "### Reprodutibilidade"
+            echo ""
+            echo "| build | SHA256 |"
+            echo "|---|---|"
+            echo "| 1 | \`${um}\` |"
+            echo "| 2 | \`${dois}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$um" != "$dois" ]; then
+            echo "::error::Dois builds limpos produziram APKs diferentes."
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "**Entradas divergentes:**" >> "$GITHUB_STEP_SUMMARY"
+            mkdir -p /tmp/x1 /tmp/x2
+            unzip -qq -o /tmp/build-1.apk -d /tmp/x1
+            unzip -qq -o "$apk" -d /tmp/x2
+            ( cd /tmp/x1 && find . -type f | sort ) | while read -r p; do
+              if ! cmp -s "/tmp/x1/$p" "/tmp/x2/$p"; then
+                echo "- \`$p\`" >> "$GITHUB_STEP_SUMMARY"
+              fi
+            done
+            exit 1
+          fi
+          echo "Os dois builds bateram: $um"
