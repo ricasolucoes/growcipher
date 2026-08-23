@@ -12,6 +12,34 @@
 
 ## [Unreleased](https://github.com/ricardosierra/growcipher/compare/v0.2.0...master)
 
+> ⚙️ **Primeira CI do projeto.** Até aqui o repositório caminhava para distribuição pública — `fastlane/metadata` pronto, receita de F-Droid escrita — sem nenhuma verificação automática rodando.
+
+### ✨ Novidades
+
+- [x] **Pipeline de integração** — `.github/workflows/ci.yml` roda em push na `master` e em todo pull request: formatação, conferência de que o l10n gerado está em dia com o ARB, `flutter analyze --fatal-infos`, `flutter test --coverage` com o lcov publicado como artifact, e o build do APK de release num job paralelo
+- [x] **Release por tag** — `.github/workflows/release.yml` dispara em tag SemVer completa, gera o `app-release.apk` (nome que a receita F-Droid espera) e publica o SHA256 no corpo da release e num anexo `.sha256`
+- [x] **Verificação de reprodutibilidade** — `.github/workflows/reprodutibilidade.yml` compila duas vezes do zero, compara os SHA256 e, se divergirem, lista quais entradas do APK mudaram
+- [x] **Assinatura opcional no release** — havendo os secrets da keystore o APK sai assinado; sem eles a release nasce como rascunho, porque o Android recusa instalar APK sem assinatura
+
+### 🎨 Melhorias
+
+- [x] **`tool/check_format.sh`** — o mesmo checador que a CI roda, com `--fix` para consertar no lugar; `lib/l10n/generated` fica de fora por ser código gerado
+- [x] **Trava de tag** — o release confere que a tag bate com o `version:` do `pubspec.yaml` antes de compilar, e só aceita `vX.Y.Z`
+- [x] **Toolchain fixo na CI** — Flutter 3.44.9 e `flutter pub get --enforce-lockfile`, iguais aos da receita F-Droid e do `.tool-versions`
+
+### 🐛 Correções
+
+- [x] Receita F-Droid sem o `commit: 0000…` placeholder — os builds `0.1.0` e `0.2.0` apontam para os commits reais das tags correspondentes
+- [x] Tag `v1.0` fora do SemVer, apontando para um commit de bookkeeping cujo `pubspec.yaml` estava em `0.1.0+1` — arquivada como `arquivo/marco-v1.0`
+- [x] 11 arquivos Dart fora do `dart format`, que reprovariam a CI no primeiro pull request
+- [x] `coverage/` deixa de ficar solto como arquivo não rastreado depois de `flutter test --coverage`
+
+### 🔧 Técnico
+
+**Reprodutibilidade:** medida, não estimada — o resultado está em `docs/reprodutibilidade.md`. Dois builds limpos no mesmo caminho produzem o mesmo APK byte a byte. Em caminhos diferentes, não: o snapshot AOT do Dart embute o `file://` absoluto do projeto, e 1.536.586 dos 6.292.368 bytes do `libapp.so` arm64 mudam. `--split-debug-info` com `--obfuscate` também não resolve. Os timestamps do ZIP não são fonte de variação — o AGP já normaliza tudo para `1981-01-01`.
+
+**F-Droid:** como o buildserver do F-Droid e o runner do GitHub compilam em caminhos diferentes por construção, `Binaries:` nunca passaria na verificação de reprodutibilidade. A receita passou a compilar **a partir do fonte**, e com isso saíram `Binaries:` e o `AllowedAPKSigningKeys: 0000…`, que também estava com placeholder. O `UpdateCheckMode` foi de `Tags ^v.*$` para `Tags ^v\d+\.\d+\.\d+$`, que ignora tags malformadas. O build `0.1.0` entrou com `disable:`: o commit da tag `v0.1.0` só existe na branch local `release/mvp` e nunca foi enviado ao `origin`.
+
 ## [v0.2.0 (2026-08-22)](https://github.com/ricardosierra/growcipher/releases/tag/v0.2.0)
 
 > 🌱 **Phase 1 — Setup e infraestrutura base:** bootstrap do projeto Flutter, documentação e planejamento versionados, e limpeza dos placeholders deixados pelo `flutter create`.
