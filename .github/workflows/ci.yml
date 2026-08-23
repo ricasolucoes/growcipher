@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+# Nenhum job da CI escreve no repositório.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Mesma versão do srclib `flutter@3.44.9` da receita F-Droid
+  # (com.sierratecnologia.growcipher.yml) e do .tool-versions.
+  FLUTTER_VERSION: 3.44.9
+  # Ambiente estável: o APK de release precisa sair igual a cada build.
+  TZ: UTC
+  LC_ALL: C.UTF-8
+
+jobs:
+  estatica-e-testes:
+    name: Análise, formatação e testes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Conferir a versão do Flutter
+        run: flutter --version
+
+      - name: Dependências (trava o pubspec.lock)
+        run: flutter pub get --enforce-lockfile
+
+      - name: Formatação
+        # Mesmo script que roda na máquina do dev: `tool/check_format.sh --fix`
+        # conserta o que este passo reprova.
+        run: ./tool/check_format.sh
+
+      - name: Localização em dia
+        shell: bash
+        run: |
+          set -euo pipefail
+          # lib/l10n/generated é versionado; se alguém mexeu no ARB sem regerar,
+          # o diff aparece aqui em vez de virar bug em produção.
+          flutter gen-l10n
+          if ! git diff --quiet -- lib/l10n/generated; then
+            echo "::error::lib/l10n/generated está desatualizado. Rode 'flutter gen-l10n' e faça commit."
+            git --no-pager diff --stat -- lib/l10n/generated
+            exit 1
+          fi
+
+      - name: Análise estática
+        run: flutter analyze --fatal-infos
+
+      - name: Testes com cobertura
+        run: flutter test --coverage
+
+      - name: Publicar o lcov
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-lcov
+          path: coverage/lcov.info
+          if-no-files-found: error
+          retention-days: 30
+
+  apk:
+    name: Build do APK de release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Dependências (trava o pubspec.lock)
+        run: flutter pub get --enforce-lockfile
+
+      - name: Build do APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Data do commit: entra no lugar do "agora" em qualquer etapa que
+          # respeite SOURCE_DATE_EPOCH (ver docs/reprodutibilidade.md).
+          SOURCE_DATE_EPOCH="$(git log -1 --pretty=%ct)"
+          export SOURCE_DATE_EPOCH
+          echo "SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH"
+          flutter build apk --release
+
+      - name: SHA256 do APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Sem android/key.properties o APK sai NÃO assinado — ver
+          # android/app/build.gradle.kts. Aqui ele serve só como prova de
+          # compilação; o APK instalável sai do release.yml.
+          sha256sum build/app/outputs/flutter-apk/app-release.apk | tee -a "$GITHUB_STEP_SUMMARY"
