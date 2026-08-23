@@ -46,3 +46,6 @@ app.*.map.json
 
 # Saída de ferramentas de análise (graphify)
 /graphify-out/
+
+# Cobertura de testes (flutter test --coverage)
+/coverage/
