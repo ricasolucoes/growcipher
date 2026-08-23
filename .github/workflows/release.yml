@@ -158,15 +158,11 @@ jobs:
         run: |
           set -euo pipefail
           apk=build/app/outputs/flutter-apk/app-release.apk
-          rascunho=()
+          args=(--title "GrowCipher ${GITHUB_REF_NAME}" --notes-file corpo.md)
           if [ "${{ steps.assinatura.outputs.assinado }}" != "true" ]; then
-            rascunho=(--draft)
+            args+=(--draft)
           fi
-          gh release create "${GITHUB_REF_NAME}" \
-            --title "GrowCipher ${GITHUB_REF_NAME}" \
-            --notes-file corpo.md \
-            "${rascunho[@]}" \
-            "$apk" "${apk}.sha256"
+          gh release create "${GITHUB_REF_NAME}" "${args[@]}" "$apk" "${apk}.sha256"
 
       - name: Guardar o APK como artifact
         uses: actions/upload-artifact@v4
