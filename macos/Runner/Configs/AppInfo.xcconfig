@@ -8,7 +8,7 @@
 PRODUCT_NAME = GrowCipher
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.growcipher.growcipher
+PRODUCT_BUNDLE_IDENTIFIER = com.sierratecnologia.growcipher
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 com.growcipher. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 Ricardo Sierra. All rights reserved.
