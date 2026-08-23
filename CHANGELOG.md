@@ -45,7 +45,7 @@
 
 **Peças puras:** `QuickLogInput` (validação e materialização de cada tipo de acontecimento, incluindo os três que passam pelo repositório em vez de só acrescentar evento — mudança de fase, encerramento e colheita que encerra o ciclo) e `WizardMachine` (passo atual, transições e as regras dos quatro caminhos de entrada). Nenhum dos dois importa Flutter.
 
-**Testes:** de 85 para 152, em 3 arquivos novos. Cobrem o que sumia sem avisar: a validação de cada um dos 12 acontecimentos, a ordem das gravações da colheita que encerra o ciclo, e a navegação do wizard — inclusive o descarte das respostas dependentes ao trocar o ponto de partida e as respostas que avançam o passo sozinhas.
+**Testes:** de 85 para 153, em 4 arquivos novos. Cobrem o que sumia sem avisar: a validação de cada um dos 12 acontecimentos, a ordem das gravações da colheita que encerra o ciclo, e a navegação do wizard — inclusive o descarte das respostas dependentes ao trocar o ponto de partida e as respostas que avançam o passo sozinhas. Um teste de arquitetura reprova se a máquina ou o contrato voltarem a importar Flutter.
 
 **Comportamento:** inalterado de propósito. Mesma interface, mesmos passos, mesmos campos, e as 218 chaves de tradução em uso continuam exatamente as mesmas — conferido chave a chave contra o commit anterior.
 
