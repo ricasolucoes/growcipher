@@ -13,6 +13,8 @@
 ## [Unreleased](https://github.com/ricardosierra/growcipher/compare/v0.2.0...master)
 
 > ⚙️ **Primeira CI do projeto.** Até aqui o repositório caminhava para distribuição pública — `fastlane/metadata` pronto, receita de F-Droid escrita — sem nenhuma verificação automática rodando.
+>
+> 🧱 **Duas telas gigantes quebradas por peça.** `quick_log_forms.dart` (1.236 linhas) e `plant_wizard_screen.dart` (1.097 linhas) concentravam um quinto do código escrito à mão. Nenhum arquivo de feature passa de 330 linhas agora, e a regra que estava presa dentro dos `State` virou código puro com teste.
 
 ### ✨ Novidades
 
@@ -26,6 +28,9 @@
 - [x] **`tool/check_format.sh`** — o mesmo checador que a CI roda, com `--fix` para consertar no lugar; `lib/l10n/generated` fica de fora por ser código gerado
 - [x] **Trava de tag** — o release confere que a tag bate com o `version:` do `pubspec.yaml` antes de compilar, e só aceita `vX.Y.Z`
 - [x] **Toolchain fixo na CI** — Flutter 3.44.9 e `flutter pub get --enforce-lockfile`, iguais aos da receita F-Droid e do `.tool-versions`
+- [x] **Registro rápido por acontecimento** — os 12 tipos saíram do arquivo único para um arquivo cada em `lib/features/quick_log/forms/`, com um contrato comum: a entrada do formulário diz o que falta (`validate()`) e materializa a gravação (`build()`), sem tocar em widget nem em banco
+- [x] **Wizard com a máquina de estados separada** — `plant_wizard_screen.dart` foi de 1.097 para 299 linhas e virou só a moldura (barra de progresso, `PageView` e gravação final); cada um dos 10 passos é um widget próprio em `steps/`
+- [x] **Caminhos de entrada explícitos** — semente, muda, clone e cultivo em andamento deixam de ser condicionais espalhadas pela interface e viram transições da `WizardMachine`, que decide origens oferecidas, datas extras e a pergunta do passo de datas
 
 ### 🐛 Correções
 
@@ -35,6 +40,14 @@
 - [x] `coverage/` deixa de ficar solto como arquivo não rastreado depois de `flutter test --coverage`
 
 ### 🔧 Técnico
+
+**Gerência de estado:** decidida antes de refatorar e registrada em `docs/gerencia-de-estado.md` — **nenhuma biblioteca**. O app é offline-first, sem conta e sem rede: não existe o estado assíncrono compartilhado que riverpod, provider ou bloc resolvem, e cada pacote novo custa caro na revisão do F-Droid, que compila a partir do fonte. O que muda não é a ferramenta e sim onde a regra mora: sai do `State` e vira código puro (`WizardMachine`, `QuickLogInput`), com `setState` de volta ao papel de avisar que é hora de redesenhar. O documento registra os gatilhos que reabririam a conversa (sincronização entre aparelhos, estado global do cofre criptografado, mais de um mantenedor).
+
+**Peças puras:** `QuickLogInput` (validação e materialização de cada tipo de acontecimento, incluindo os três que passam pelo repositório em vez de só acrescentar evento — mudança de fase, encerramento e colheita que encerra o ciclo) e `WizardMachine` (passo atual, transições e as regras dos quatro caminhos de entrada). Nenhum dos dois importa Flutter.
+
+**Testes:** de 85 para 152, em 3 arquivos novos. Cobrem o que sumia sem avisar: a validação de cada um dos 12 acontecimentos, a ordem das gravações da colheita que encerra o ciclo, e a navegação do wizard — inclusive o descarte das respostas dependentes ao trocar o ponto de partida e as respostas que avançam o passo sozinhas.
+
+**Comportamento:** inalterado de propósito. Mesma interface, mesmos passos, mesmos campos, e as 218 chaves de tradução em uso continuam exatamente as mesmas — conferido chave a chave contra o commit anterior.
 
 **Reprodutibilidade:** medida, não estimada — o resultado está em `docs/reprodutibilidade.md`. Dois builds limpos no mesmo caminho produzem o mesmo APK byte a byte. Em caminhos diferentes, não: o snapshot AOT do Dart embute o `file://` absoluto do projeto, e 1.536.586 dos 6.292.368 bytes do `libapp.so` arm64 mudam. `--split-debug-info` com `--obfuscate` também não resolve. Os timestamps do ZIP não são fonte de variação — o AGP já normaliza tudo para `1981-01-01`.
 
