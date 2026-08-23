@@ -10,7 +10,9 @@
 - [ ] **Fotos privadas** — captura, remoção de EXIF offline e armazenamento fora da galeria do sistema (Phase 4)
 - [ ] **Exportação e relatórios** — estatísticas locais e backup criptografado por senha (Phase 5)
 
-## [Unreleased](https://github.com/ricardosierra/growcipher/compare/main...develop)
+## [Unreleased](https://github.com/ricardosierra/growcipher/compare/v0.2.0...master)
+
+## [v0.2.0 (2026-08-22)](https://github.com/ricardosierra/growcipher/releases/tag/v0.2.0)
 
 > 🌱 **Phase 1 — Setup e infraestrutura base:** bootstrap do projeto Flutter, documentação e planejamento versionados, e limpeza dos placeholders deixados pelo `flutter create`.
 >
@@ -27,11 +29,24 @@
 - [x] **Registro rápido** — menu "O que aconteceu?" com 12 ações (rega, alimentação, tratamento, medição, transplante, mudança de fase, foto, observação, problema, tarefa, colheita e encerramento), cada uma salvável em segundos
 - [x] **Linha do tempo da planta** — perfil com dados estáveis e histórico cronológico por tipo de evento, com ícone e resumo próprios
 - [x] **Banco local** — SQLite via `sqflite` com esquema versionado por migrations aditivas (`plants` e `plant_events`)
+- [x] **Progressão local** — domínio de conquistas e níveis calculado no próprio aparelho, alimentado pela linha do tempo da planta e persistido no esquema v2 do banco local
+- [x] **IA no aparelho (camada 1)** — `InsightEngine` determinístico que lê apenas o histórico local e devolve observações acompanhadas da evidência que as sustenta, sem nenhuma chamada de rede
 
 ### 🎨 Melhorias
 
 - [x] **Identidade visual provisória** — seed color verde sóbria (`#2E6B4F`) substitui o `deepPurple` do template; `theme_color` do manifest web deixa de ser o azul do Flutter. A paleta definitiva é entregável de design (`docs/Design.md` §5.3)
 - [x] **Nome de exibição** — "GrowCipher" nas cinco plataformas nativas e no web, no lugar do `growcipher` minúsculo gerado pelo scaffold
+- [x] **Identidade do aplicativo** — `applicationId` e `namespace` passam de `com.growcipher.growcipher` para `com.sierratecnologia.growcipher`, com o mesmo identificador refletido em Android, iOS, macOS, Linux e Windows
+- [x] **Material de loja** — ícones do launcher, feature graphic, capturas de tela em `assets/store/` e metadados fastlane em pt-BR (`fastlane/metadata/android/pt-BR/`) para publicação em lojas de código aberto
+- [x] **README público** — reescrito com posicionamento, o que já funciona hoje e o que ainda é roadmap, sem anunciar recurso futuro como pronto
+- [x] **Backup do sistema desligado** — `android:allowBackup="false"` impede que o histórico local saia do aparelho pelo backup automático do Android
+
+### 🐛 Correções
+
+- [x] Home recarrega a lista quando uma rota empilhada é fechada
+- [x] Trocar o ponto de partida no wizard descarta o detalhe de origem que deixou de fazer sentido
+- [x] Botão de salvar volta a ficar disponível quando a gravação local falha
+- [x] Menu do registro rápido não corta mais o rótulo em tela estreita
 
 ### 🔧 Técnico
 
@@ -49,7 +64,13 @@
 
 **Fotos:** o domínio referencia imagens por um `photoRef` opaco emitido pelo contrato `PhotoStore`, sem implementação nem chamada de rede — a captura entra na Phase 4 sem tocar nas telas.
 
-- [x] Versão inicial `0.1.0+1` (o `flutter create` gera `1.0.0+1`)
+- [x] Versão `0.2.0+2` no `pubspec.yaml` — `versionName` 0.2.0 e `versionCode` 2 no APK (o `flutter create` gera `1.0.0+1`)
 - [x] `description` do pubspec, do manifest web e do `index.html` descrevem o produto
 - [x] Injeção de dependências por `InheritedWidget` (`AppScope`) e navegação por rotas nomeadas — sem biblioteca de state management
 - [x] 85 testes cobrindo domínio, persistência (roundtrip dos 14 tipos de evento) e os caminhos do wizard, do registro rápido e das telas pequenas
+
+**Licença:** o projeto passa a declarar licença explícita — arquivo `LICENSE` com o texto MIT completo, Copyright (c) 2026 Ricardo Sierra. Até aqui o repositório era público mas sem licença, o que impedia redistribuição (e a inclusão em repositórios de software livre).
+
+**Assinatura de release:** o buildType `release` deixa de usar a keystore de debug. A `signingConfig` de release só é criada quando existe `android/key.properties`; sem ela o APK sai não assinado, e a assinatura fica a cargo de quem publica. Isso torna `flutter build apk --release` reproduzível em ambiente sem keystore, como o buildserver do F-Droid.
+
+**Higiene do repositório:** `graphify-out/` (saída de ferramenta de análise) entra no `.gitignore` em vez de ser versionado. Keystore e `key.properties` continuam fora do controle de versão por `android/.gitignore`.
