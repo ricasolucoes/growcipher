@@ -10,7 +10,15 @@
 - [ ] **Fotos privadas** — captura, remoção de EXIF offline e armazenamento fora da galeria do sistema (Phase 4)
 - [ ] **Exportação e relatórios** — estatísticas locais e backup criptografado por senha (Phase 5)
 
-## [Unreleased](https://github.com/ricardosierra/growcipher/compare/v0.2.0...master)
+## [Unreleased](https://github.com/ricardosierra/growcipher/compare/v0.2.1...master)
+
+## [v0.2.1 (2026-08-23)](https://github.com/ricardosierra/growcipher/compare/v0.2.0...v0.2.1)
+
+### 🔧 Técnico
+
+- [x] **Descrição da loja em inglês** — `fastlane/metadata/android/en-US/`, pedido pela revisão do F-Droid; o catálogo usa o en-US como texto padrão quando o aparelho está em um idioma sem tradução própria
+- [x] **`.flutter-version`** — fixa a versão do SDK em `3.44.9`, a mesma com que o aplicativo é compilado aqui, para que a receita do F-Droid faça checkout dela em vez de acompanhar o canal estável e mudar de compilador sem aviso
+
 
 ## [v0.2.0 (2026-08-22)](https://github.com/ricardosierra/growcipher/releases/tag/v0.2.0)
 
