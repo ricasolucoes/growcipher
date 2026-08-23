@@ -128,18 +128,14 @@ class SqliteGamificationRepository implements GamificationRepository {
         }, conflictAlgorithm: ConflictAlgorithm.replace);
       }
 
-      await txn.update(
-        'gamification_state',
-        {
-          'total_xp': state.totalXp + xpActuallyGained,
-          'current_streak': outcome.state.currentStreak,
-          'longest_streak': outcome.state.longestStreak,
-          'last_activity_day':
-              outcome.state.lastActivityDay?.millisecondsSinceEpoch,
-          'updated_at': awardedAt,
-        },
-        where: 'id = 1',
-      );
+      await txn.update('gamification_state', {
+        'total_xp': state.totalXp + xpActuallyGained,
+        'current_streak': outcome.state.currentStreak,
+        'longest_streak': outcome.state.longestStreak,
+        'last_activity_day':
+            outcome.state.lastActivityDay?.millisecondsSinceEpoch,
+        'updated_at': awardedAt,
+      }, where: 'id = 1');
     });
 
     return GamificationOutcome(

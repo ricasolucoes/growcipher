@@ -188,9 +188,7 @@ void main() {
       expect(
         firstOf(
           engine.analyze(
-            histories: [
-              PlantHistory(plant: plantFixture(), events: const []),
-            ],
+            histories: [PlantHistory(plant: plantFixture(), events: const [])],
             now: now,
           ),
           InsightKind.incompleteProfile,
@@ -301,8 +299,12 @@ void main() {
             phase: PlantPhase.harvest,
           ),
           events: [
-            phaseAt(flowering, PlantPhase.vegetative, PlantPhase.flowering,
-                plantId: id),
+            phaseAt(
+              flowering,
+              PlantPhase.vegetative,
+              PlantPhase.flowering,
+              plantId: id,
+            ),
             HarvestedEvent(
               id: 'h$id',
               plantId: id,

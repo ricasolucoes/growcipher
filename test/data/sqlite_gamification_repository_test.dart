@@ -81,48 +81,50 @@ void main() {
     expect((await gamification.getState()).totalXp, first!.state.totalXp);
   });
 
-  test('marco de completude paga uma única vez, mesmo em eventos seguidos',
-      () async {
-    final draft = PlantDraft()
-      ..startingPoint = PlantStartingPoint.seed
-      ..displayName = 'Alfa'
-      ..strain = 'Northern Lights'
-      ..geneticType = PlantGeneticType.photoperiod
-      ..origin = PlantOrigin.purchased
-      ..startDate = DateTime(2026, 3, 1)
-      ..seedObtainedDate = DateTime(2026, 2, 20)
-      ..environment = GrowingEnvironment.indoor
-      ..environmentPlace = EnvironmentPlace.growTent
-      ..growingMedium = GrowingMedium.coco
-      ..phase = PlantPhase.vegetative;
-    final plant = await plants.createPlant(
-      draft.toPlant(id: generateLocalId(), now: DateTime.now()),
-    );
+  test(
+    'marco de completude paga uma única vez, mesmo em eventos seguidos',
+    () async {
+      final draft = PlantDraft()
+        ..startingPoint = PlantStartingPoint.seed
+        ..displayName = 'Alfa'
+        ..strain = 'Northern Lights'
+        ..geneticType = PlantGeneticType.photoperiod
+        ..origin = PlantOrigin.purchased
+        ..startDate = DateTime(2026, 3, 1)
+        ..seedObtainedDate = DateTime(2026, 2, 20)
+        ..environment = GrowingEnvironment.indoor
+        ..environmentPlace = EnvironmentPlace.growTent
+        ..growingMedium = GrowingMedium.coco
+        ..phase = PlantPhase.vegetative;
+      final plant = await plants.createPlant(
+        draft.toPlant(id: generateLocalId(), now: DateTime.now()),
+      );
 
-    final first = await gamification.registerEvent(
-      event: watering(plant.id, at: DateTime(2026, 5, 10)),
-      plant: plant,
-    );
-    final milestoneKeys = first!.awards
-        .map((award) => award.key)
-        .where((key) => key.contains('completeness'))
-        .toList();
-    expect(milestoneKeys, isNotEmpty);
+      final first = await gamification.registerEvent(
+        event: watering(plant.id, at: DateTime(2026, 5, 10)),
+        plant: plant,
+      );
+      final milestoneKeys = first!.awards
+          .map((award) => award.key)
+          .where((key) => key.contains('completeness'))
+          .toList();
+      expect(milestoneKeys, isNotEmpty);
 
-    final xpAfterFirst = (await gamification.getState()).totalXp;
+      final xpAfterFirst = (await gamification.getState()).totalXp;
 
-    final second = await gamification.registerEvent(
-      event: watering(plant.id, at: DateTime(2026, 5, 11)),
-      plant: plant,
-    );
+      final second = await gamification.registerEvent(
+        event: watering(plant.id, at: DateTime(2026, 5, 11)),
+        plant: plant,
+      );
 
-    expect(
-      second!.awards.any((award) => award.key.contains('completeness')),
-      isFalse,
-    );
-    final xpAfterSecond = (await gamification.getState()).totalXp;
-    expect(xpAfterSecond, greaterThan(xpAfterFirst));
-  });
+      expect(
+        second!.awards.any((award) => award.key.contains('completeness')),
+        isFalse,
+      );
+      final xpAfterSecond = (await gamification.getState()).totalXp;
+      expect(xpAfterSecond, greaterThan(xpAfterFirst));
+    },
+  );
 
   test('conquistas ficam registradas e não se repetem', () async {
     final plant = await createPlant();
@@ -141,10 +143,7 @@ void main() {
     final ids = unlocked.map((achievement) => achievement.id).toSet();
     expect(ids, containsAll(<String>{'first_plant', 'first_log'}));
 
-    await gamification.registerEvent(
-      event: watering(plant.id),
-      plant: plant,
-    );
+    await gamification.registerEvent(event: watering(plant.id), plant: plant);
 
     final again = await gamification.getUnlockedAchievements();
     expect(

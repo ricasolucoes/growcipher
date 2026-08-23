@@ -81,10 +81,9 @@ const Map<PlantEventType, Set<String>> _requiredPayloadKeys = {
 
 Iterable<MapEntry<String, Object?>> _optionalPayload(PlantEvent event) {
   final required = _requiredPayloadKeys[event.type] ?? const <String>{};
-  return event
-      .payloadToMap()
-      .entries
-      .where((entry) => !required.contains(entry.key));
+  return event.payloadToMap().entries.where(
+    (entry) => !required.contains(entry.key),
+  );
 }
 
 /// Quantos campos opcionais o usuário preencheu neste evento.

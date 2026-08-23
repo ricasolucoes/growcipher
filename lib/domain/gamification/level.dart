@@ -55,6 +55,5 @@ class LevelProgress {
   int get xpRemaining => xpForNextLevel - xpIntoLevel;
 
   /// Fração do nível atual, de 0 a 1.
-  double get fraction =>
-      xpForNextLevel == 0 ? 0 : xpIntoLevel / xpForNextLevel;
+  double get fraction => xpForNextLevel == 0 ? 0 : xpIntoLevel / xpForNextLevel;
 }
