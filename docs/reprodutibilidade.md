@@ -15,8 +15,14 @@ builds reais feitos em 2026-08-23 sobre `master` no commit `1333c58`.
 
 Três clones limpos do repositório (sem `android/key.properties`, para reproduzir
 o ambiente da CI e do buildserver do F-Droid), Flutter 3.44.9 / Dart 3.12.2,
-Temurin JDK 21.0.10, AGP 9.0.1, Gradle 9.1.0, `TZ=UTC`, `LC_ALL=C`,
-`SOURCE_DATE_EPOCH` fixo, `flutter build apk --release`.
+AGP 9.0.1, Gradle 9.1.0, `TZ=UTC`, `LC_ALL=C`, `SOURCE_DATE_EPOCH` fixo,
+`flutter build apk --release`.
+
+O JDK não foi escolhido à mão: é o que o `flutter build` usa por padrão nesta
+máquina — o JetBrains Runtime 21.0.4 que vem no Android Studio, o mesmo que o
+`flutter doctor -v` reporta. A CI fixa Temurin 21 no `actions/setup-java`.
+Nenhuma medição aqui compara os dois JDKs, então leia "mesmo APK" como "mesmo
+toolchain, mesma máquina".
 
 | build | diretório | SHA256 do `app-release.apk` |
 |---|---|---|
@@ -49,9 +55,11 @@ $ strings -a lib/arm64-v8a/libapp.so | grep 'file:///'
 file:///.../repro/a/growcipher/.dart_tool/flutter_build/dart_plugin_registrant.dart
 ```
 
-Não é um detalhe cosmético: **1.536.586 dos 6.292.368 bytes** do snapshot arm64
-diferem (~24%). O caminho tem tamanho diferente, o que desloca offsets e realinha
-o snapshot inteiro. Não há como corrigir isso com um patch de bytes.
+Não é um detalhe cosmético. O caminho tem tamanho diferente, o que desloca
+offsets e realinha o snapshot inteiro — quanto muda depende de quais dois
+caminhos você comparar: **1.536.586 dos 6.292.368 bytes** do snapshot arm64
+neste par (~24%), **1.853.419** (~30%) num par mais distante, medido na
+reconferência abaixo. Não há como corrigir isso com um patch de bytes.
 
 `--split-debug-info` + `--obfuscate` **não resolve** — foi testado:
 
@@ -68,6 +76,36 @@ Os timestamps do ZIP **não** são fonte de variação: o AGP normaliza todas as
 entradas para `1981-01-01 01:01`. É por isso que `SOURCE_DATE_EPOCH` não muda o
 resultado aqui — ele está exportado nos workflows por higiene, para qualquer etapa
 futura que o respeite, não porque seja o que segura a determinismo hoje.
+
+## Reconferência (2026-08-23)
+
+Tudo acima foi remedido do zero, em clones novos, para separar medição de
+lembrança.
+
+Recompilando **o mesmo commit `1333c58` no mesmo caminho**, o SHA256 saiu
+idêntico ao da tabela: `cb869a07…`. Os números deste documento são
+reproduzíveis, não estimados.
+
+Na branch da CI (`679bf8b`, que já traz o `dart format` do commit `0361f25`) o
+padrão se repete:
+
+| build | SHA256 |
+|---|---|
+| caminho A | `caacbcfb87062eade4ee07af62f58e788fcb6776c98210c431fad3157ba0fb32` |
+| caminho A, após `flutter clean` | `caacbcfb87062eade4ee07af62f58e788fcb6776c98210c431fad3157ba0fb32` |
+| caminho B | `ac77d89dece4e6200400429625c7d163658fc1accdb1ba17756d13bfbd7e4a5b` |
+
+Mesmo caminho, mesmo APK; caminho diferente, APK diferente — e de novo
+exatamente **3 das 67 entradas** divergem, os três `libapp.so`, cada um com o
+caminho do seu próprio clone visível no `strings`.
+
+Um detalhe que só apareceu aqui: os dois builds **ofuscados**
+(`--split-debug-info --obfuscate`) dão o mesmo SHA256 nos dois commits,
+`1333c58` e `679bf8b`, apesar de o `dart format` ter reescrito 8 arquivos de
+`lib/` entre eles. Faz sentido — a ofuscação descarta justamente as posições de
+código-fonte que a reformatação deslocou. Reformatar código muda o APK normal e
+não muda o ofuscado: o que entra no snapshot é a tabela de posições, não a
+lógica. Continua sem resolver o problema do caminho, que é o que interessa aqui.
 
 ## Decisão: `Binaries:` sai da receita F-Droid
 
