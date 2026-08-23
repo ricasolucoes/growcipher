@@ -1,5 +1,12 @@
 /// Famílias de conquista (`docs/Gamificacao.md` §4).
-enum AchievementFamily { cadastro, registro, consistencia, cuidado, ciclo, curadoria }
+enum AchievementFamily {
+  cadastro,
+  registro,
+  consistencia,
+  cuidado,
+  ciclo,
+  curadoria,
+}
 
 /// Contadores locais sobre os quais as conquistas são avaliadas.
 ///

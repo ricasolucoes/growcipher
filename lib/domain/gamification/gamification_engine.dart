@@ -178,9 +178,11 @@ class GamificationEngine {
 
     final lastDay = DateTime(last.year, last.month, last.day);
     // Aritmética em UTC para não escorregar em mudança de horário.
-    final gap = DateTime.utc(day.year, day.month, day.day)
-        .difference(DateTime.utc(lastDay.year, lastDay.month, lastDay.day))
-        .inDays;
+    final gap = DateTime.utc(
+      day.year,
+      day.month,
+      day.day,
+    ).difference(DateTime.utc(lastDay.year, lastDay.month, lastDay.day)).inDays;
 
     if (gap <= 0) {
       // Mesmo dia (ou registro com data anterior): sequência não muda.

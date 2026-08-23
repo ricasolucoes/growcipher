@@ -172,9 +172,8 @@ void main() {
         dli: 32,
       );
 
-      int xpOf(PlantEvent event) => awardsForEvent(
-        event,
-      ).fold(0, (sum, award) => sum + award.amount);
+      int xpOf(PlantEvent event) =>
+          awardsForEvent(event).fold(0, (sum, award) => sum + award.amount);
 
       expect(xpOf(empty), 12);
       expect(xpOf(full), 36);
@@ -432,9 +431,7 @@ void main() {
       );
 
       expect(
-        second.awards.any(
-          (award) => award.source == XpSource.profileCompleted,
-        ),
+        second.awards.any((award) => award.source == XpSource.profileCompleted),
         isFalse,
       );
     });

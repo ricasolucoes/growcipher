@@ -70,9 +70,7 @@ class InsightEngine {
     final streak = _streakAtRisk(progress, now);
     if (streak != null) insights.add(streak);
 
-    insights.sort(
-      (a, b) => b.severity.index.compareTo(a.severity.index),
-    );
+    insights.sort((a, b) => b.severity.index.compareTo(a.severity.index));
     return insights;
   }
 
@@ -95,10 +93,7 @@ class InsightEngine {
           ? InsightSeverity.urgent
           : InsightSeverity.attention,
       plantId: history.plant.id,
-      evidence: {
-        'daysSinceLast': sinceLast,
-        'typicalIntervalDays': typical,
-      },
+      evidence: {'daysSinceLast': sinceLast, 'typicalIntervalDays': typical},
     );
   }
 
@@ -132,18 +127,13 @@ class InsightEngine {
       kind: InsightKind.noRecentPhoto,
       severity: InsightSeverity.info,
       plantId: history.plant.id,
-      evidence: {
-        'daysSinceLast': sinceLast,
-        'typicalIntervalDays': typical,
-      },
+      evidence: {'daysSinceLast': sinceLast, 'typicalIntervalDays': typical},
     );
   }
 
   /// Problema registrado e nenhum acompanhamento depois dele.
   Insight? _problemWithoutFollowUp(PlantHistory history, DateTime now) {
-    final problems = history.events
-        .whereType<ProblemReportedEvent>()
-        .toList()
+    final problems = history.events.whereType<ProblemReportedEvent>().toList()
       ..sort((a, b) => a.occurredAt.compareTo(b.occurredAt));
     if (problems.isEmpty) return null;
 
@@ -210,10 +200,9 @@ class InsightEngine {
     PlantHistory history,
     Map<String, _Baseline> baselines,
   ) {
-    final measurements = history.events
-        .whereType<MeasurementAddedEvent>()
-        .toList()
-      ..sort((a, b) => a.occurredAt.compareTo(b.occurredAt));
+    final measurements =
+        history.events.whereType<MeasurementAddedEvent>().toList()
+          ..sort((a, b) => a.occurredAt.compareTo(b.occurredAt));
     if (measurements.isEmpty) return const [];
 
     final latest = measurements.last;
@@ -323,11 +312,12 @@ class InsightEngine {
     final samples = <double>[];
 
     for (final history in histories) {
-      final flowering = history.events
-          .whereType<PhaseChangedEvent>()
-          .where((event) => event.newPhase == PlantPhase.flowering)
-          .toList()
-        ..sort((a, b) => a.occurredAt.compareTo(b.occurredAt));
+      final flowering =
+          history.events
+              .whereType<PhaseChangedEvent>()
+              .where((event) => event.newPhase == PlantPhase.flowering)
+              .toList()
+            ..sort((a, b) => a.occurredAt.compareTo(b.occurredAt));
       if (flowering.isEmpty) continue;
 
       final harvests = history.events.whereType<HarvestedEvent>().toList()
@@ -379,11 +369,12 @@ class InsightEngine {
   /// Quando a planta entrou na fase atual: última mudança para ela, ou o
   /// início da planta se a fase nunca foi registrada como mudança.
   DateTime? _currentPhaseStart(PlantHistory history) {
-    final entries = history.events
-        .whereType<PhaseChangedEvent>()
-        .where((event) => event.newPhase == history.plant.phase)
-        .toList()
-      ..sort((a, b) => a.occurredAt.compareTo(b.occurredAt));
+    final entries =
+        history.events
+            .whereType<PhaseChangedEvent>()
+            .where((event) => event.newPhase == history.plant.phase)
+            .toList()
+          ..sort((a, b) => a.occurredAt.compareTo(b.occurredAt));
 
     if (entries.isNotEmpty) return entries.last.occurredAt;
     return history.plant.startDate;

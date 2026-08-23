@@ -95,8 +95,7 @@ class GamifiedPlantRepository implements PlantRepository {
 
   /// Margem de um segundo: o repositório interno carimba `createdAt` com o
   /// relógio dele, que pode ter granularidade diferente da nossa marcação.
-  DateTime _mark() =>
-      DateTime.now().subtract(const Duration(seconds: 1));
+  DateTime _mark() => DateTime.now().subtract(const Duration(seconds: 1));
 
   /// Pontua os eventos gravados desde [since] — cobre operações que criam o
   /// evento internamente (cadastro, mudança de fase, encerramento).

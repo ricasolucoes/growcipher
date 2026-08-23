@@ -139,7 +139,11 @@ const List<CompletenessItem> completenessItems = [
     weight: 1,
     isFilled: _hasIrrigationSystem,
   ),
-  CompletenessItem(field: CompletenessField.phase, weight: 2, isFilled: _hasPhase),
+  CompletenessItem(
+    field: CompletenessField.phase,
+    weight: 2,
+    isFilled: _hasPhase,
+  ),
 ];
 
 bool _hasDisplayName(Plant p) => _hasText(p.displayName);
@@ -157,7 +161,8 @@ bool _hasEnvironmentName(Plant p) => _hasText(p.environmentName);
 bool _hasGrowingMedium(Plant p) => p.growingMedium != GrowingMedium.unknown;
 bool _hasContainerType(Plant p) => _hasText(p.containerType);
 bool _hasContainerVolume(Plant p) => p.containerVolumeLiters != null;
-bool _hasIrrigationMode(Plant p) => p.irrigationMode != IrrigationMode.undefined;
+bool _hasIrrigationMode(Plant p) =>
+    p.irrigationMode != IrrigationMode.undefined;
 bool _hasIrrigationSystem(Plant p) => p.irrigationSystem != null;
 bool _hasPhase(Plant p) => p.phase != PlantPhase.unknown;
 
