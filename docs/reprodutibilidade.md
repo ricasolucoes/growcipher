@@ -72,10 +72,10 @@ futura que o respeite, não porque seja o que segura a determinismo hoje.
 ## Decisão: `Binaries:` sai da receita F-Droid
 
 O F-Droid verifica `Binaries:` recompilando o app no buildserver dele e comparando
-com o APK publicado. O buildserver compila em `/build/com.sierratecnologia.growcipher`;
-o GitHub Actions compila em `/home/runner/work/growcipher/growcipher`. Caminhos
-diferentes, logo APKs diferentes, logo verificação reprovada — sempre, por
-construção. Não é uma questão de ajustar flags.
+com o APK publicado. O buildserver compila num diretório próprio, derivado do
+applicationId; o GitHub Actions compila em `/home/runner/work/growcipher/growcipher`.
+Os dois caminhos nunca vão coincidir, logo os APKs nunca vão bater, logo a
+verificação reprova — sempre, por construção. Não é questão de ajustar flags.
 
 Havia ainda dois bloqueios independentes:
 
