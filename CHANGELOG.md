@@ -10,6 +10,14 @@
 - [ ] **Fotos privadas** — captura, remoção de EXIF offline e armazenamento fora da galeria do sistema (Phase 4)
 - [ ] **Exportação e relatórios** — estatísticas locais e backup criptografado por senha (Phase 5)
 
+### 🐛 Correções
+
+> Buracos de validação encontrados ao extrair `QuickLogInput`, todos anteriores a esta refatoração e preservados de propósito — o comportamento visível não mudou. Ficam registrados aqui em vez de corrigidos junto, porque cada um é uma decisão de produto, não de arquitetura.
+
+- [ ] **Tarefa concluída salva sem dizer qual** — `TaskDoneInput.validate()` não exige nada, e a descrição é o único conteúdo do evento: um "Salvar" imediato grava um `TaskCompletedEvent` com `taskDescription: null`, que aparece vazio na linha do tempo. Os outros tipos que salvam em branco (rega, alimentação, tratamento, transplante, problema, colheita) carregam informação no próprio tipo — "reguei" já é o registro. "Concluí uma tarefa" não é. A observação, que também é só texto livre, exige o texto (`observationRequired`) — a incoerência está entre esses dois
+- [ ] **Medição vazia vira evento** — mesma raiz: `MeasurementInput.validate()` aceita as seis métricas em branco e grava um `MeasurementAddedEvent` com tudo `null`. Valeria exigir ao menos uma métrica preenchida
+- [ ] **Número inválido some sem aviso** — `parseFlexibleDouble` (`lib/features/common/input_parsing.dart`) devolve `null` quando o `double.tryParse` falha, e o campo simplesmente não entra no evento. Quem digita `7,5.5` no pH, ou usa separador de milhar (`1.234,5`), salva sem erro e perde a medição. É o caso que a refatoração torna testável, mas não resolve: a conversão acontece dentro do `build`, depois do `validate`
+
 ## [Unreleased](https://github.com/ricardosierra/growcipher/compare/v0.2.0...master)
 
 > ⚙️ **Primeira CI do projeto.** Até aqui o repositório caminhava para distribuição pública — `fastlane/metadata` pronto, receita de F-Droid escrita — sem nenhuma verificação automática rodando.
