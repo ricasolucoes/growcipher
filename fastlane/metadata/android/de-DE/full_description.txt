@@ -1,0 +1,7 @@
+GrowCipher ist ein lokales, offline-first Anbautagebuch. Dokumentieren Sie Ihre Pflanzen, Wachstumszyklen und Ereignisse mit absoluter Privatsphäre und voller Kontrolle über Ihre Daten.
+
+Hauptfunktionen:
+- Detaillierte Aufzeichnungen über Pflanzen und Wachstumszyklen
+- Vollständig offline: Ihre Daten verlassen niemals Ihr Gerät
+- Datenschutz an erster Stelle: Keine Konten, keine Tracker
+- Open Source und transparent
