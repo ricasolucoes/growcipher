@@ -1,0 +1,7 @@
+GrowCipher est un journal de culture local et offline-first. Suivez vos plantes, cycles et événements en toute confidentialité et gardez le contrôle total sur vos données.
+
+Fonctionnalités :
+- Suivi détaillé des plantes et des cycles de culture
+- Entièrement hors ligne : Vos données ne quittent jamais votre appareil
+- Confidentialité absolue : Aucun compte, aucun traceur
+- Open Source et transparent

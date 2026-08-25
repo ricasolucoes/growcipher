@@ -1,0 +1,7 @@
+GrowCipher is a local, offline-first grow journal. Track your plants, cycles, and growth events with total privacy and complete control over your own data.
+
+Key Features:
+- Detailed records of plants, stages, and grow cycles
+- Fully offline: Your data never leaves your device
+- Privacy-first: No accounts, no trackers, no external servers
+- Open Source and transparent

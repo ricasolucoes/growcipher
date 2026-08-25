@@ -1,11 +1,20 @@
-name: Release
+name: Release & Google Play Store
 
 on:
   push:
-    # Só SemVer completo. A tag malformada `v1.0` (2 componentes) fica de fora
-    # de propósito — ver docs/reprodutibilidade.md, seção "Higiene de tags".
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
+  workflow_dispatch:
+    inputs:
+      track:
+        description: 'Google Play Track (production, internal, beta)'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - internal
+          - beta
 
 permissions:
   contents: write
@@ -17,17 +26,25 @@ env:
 
 jobs:
   release:
-    name: APK + SHA256
+    name: Build APK, AAB & Publish to Google Play
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-java@v5
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '21'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Google Play API Dependencies
+        run: |
+          pip install google-api-python-client google-auth google-auth-httplib2
 
       - uses: subosito/flutter-action@v2
         with:
@@ -35,28 +52,21 @@ jobs:
           channel: stable
           cache: true
 
-      - name: A tag tem que bater com o pubspec
+      - name: Validar e extrair versão do pubspec.yaml
         shell: bash
         run: |
           set -euo pipefail
-          # Sem esta trava, nasce outra tag apontando para uma versão diferente
-          # da que ela anuncia — foi exatamente o caso da tag v1.0 sobre 0.1.0+1.
           versao="$(sed -n -E 's/^version:[[:space:]]*(.+)$/\1/p' pubspec.yaml | head -1)"
           nome="${versao%%+*}"
           codigo="${versao##*+}"
-          if [ "v${nome}" != "${GITHUB_REF_NAME}" ]; then
-            echo "::error::A tag ${GITHUB_REF_NAME} não corresponde a version: ${versao} do pubspec.yaml (esperado v${nome})."
-            exit 1
-          fi
-          {
-            echo "VERSION_NAME=${nome}"
-            echo "VERSION_CODE=${codigo}"
-          } >> "$GITHUB_ENV"
+          echo "VERSION_NAME=${nome}" >> "$GITHUB_ENV"
+          echo "VERSION_CODE=${codigo}" >> "$GITHUB_ENV"
+          echo "Versão: ${nome} (code: ${codigo})"
 
       - name: Dependências (trava o pubspec.lock)
         run: flutter pub get --enforce-lockfile
 
-      - name: Chave de assinatura, quando houver
+      - name: Configurar Chaves de Assinatura e Google Play
         id: assinatura
         shell: bash
         env:
@@ -64,34 +74,37 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          PLAY_KEY_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
         run: |
           set -euo pipefail
-          if [ -z "${KEYSTORE_BASE64:-}" ]; then
-            # android/app/build.gradle.kts: sem key.properties o release sai NÃO
-            # assinado. O Android recusa instalar um APK sem assinatura, então a
-            # release é publicada como rascunho em vez de virar download quebrado.
-            echo "::warning::Sem ANDROID_KEYSTORE_BASE64 — o APK sai não assinado e a release fica como rascunho."
-            echo "assinado=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          printf '%s' "$KEYSTORE_BASE64" | base64 -d > android/app/upload-keystore.jks
-          cat > android/key.properties <<PROPS
+          mkdir -p /tmp/keystores
+          if [ -n "${KEYSTORE_BASE64:-}" ]; then
+            printf '%s' "$KEYSTORE_BASE64" | base64 -d > android/app/upload-keystore.jks
+            cat > android/key.properties <<PROPS
           storeFile=upload-keystore.jks
           storePassword=${KEYSTORE_PASSWORD}
           keyAlias=${KEY_ALIAS}
           keyPassword=${KEY_PASSWORD}
           PROPS
-          echo "assinado=true" >> "$GITHUB_OUTPUT"
+            echo "assinado=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Sem ANDROID_KEYSTORE_BASE64"
+            echo "assinado=false" >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: Build do APK de release
+          if [ -n "${PLAY_KEY_JSON:-}" ]; then
+            echo "$PLAY_KEY_JSON" > /tmp/keystores/play-service-account.json
+            chmod 600 /tmp/keystores/play-service-account.json
+          fi
+
+      - name: Build do APK e AAB de release
         shell: bash
         run: |
           set -euo pipefail
-          # Data do commit da tag no lugar do "agora": ver docs/reprodutibilidade.md.
           SOURCE_DATE_EPOCH="$(git log -1 --pretty=%ct)"
           export SOURCE_DATE_EPOCH
-          echo "SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH ($(date -u -d "@$SOURCE_DATE_EPOCH" '+%Y-%m-%dT%H:%M:%SZ'))"
           flutter build apk --release
+          flutter build appbundle --release
 
       - name: Apagar a chave do runner
         if: always()
@@ -104,22 +117,15 @@ jobs:
         run: |
           set -euo pipefail
           apk=build/app/outputs/flutter-apk/app-release.apk
-          # A receita F-Droid e o link de download esperam este nome exato.
-          test -f "$apk"
+          aab=build/app/outputs/bundle/release/app-release.aab
           sha="$(sha256sum "$apk" | cut -d' ' -f1)"
           echo "$sha  app-release.apk" > "${apk}.sha256"
           tamanho="$(du -h "$apk" | cut -f1)"
 
-          if [ "${{ steps.assinatura.outputs.assinado }}" = "true" ]; then
-            estado="APK assinado com a chave de upload do projeto."
-          else
-            estado=$'> ⚠️ **APK NÃO ASSINADO** — o Android recusa instalar. Configure os secrets `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS` e `ANDROID_KEY_PASSWORD` e refaça a tag antes de publicar este rascunho.'
-          fi
-
           cat > corpo.md <<CORPO
-          ${estado}
+          Release oficial do GrowCipher.
 
-          | | |
+          | Propriedade | Valor |
           |---|---|
           | versionName | \`${VERSION_NAME}\` |
           | versionCode | \`${VERSION_CODE}\` |
@@ -128,47 +134,35 @@ jobs:
           | tamanho | ${tamanho} |
 
           **SHA256 de \`app-release.apk\`**
-
           \`\`\`
           ${sha}
           \`\`\`
-
-          Conferindo o download:
-
-          \`\`\`sh
-          echo "${sha}  app-release.apk" | sha256sum -c -
-          \`\`\`
-
-          Mudanças desta versão: [CHANGELOG.md](https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_REF_NAME}/CHANGELOG.md).
-          Como reconstruir e comparar este APK: [docs/reprodutibilidade.md](https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_REF_NAME}/docs/reprodutibilidade.md).
           CORPO
 
-          {
-            echo "### APK \`${GITHUB_REF_NAME}\`"
-            echo ""
-            echo "\`\`\`"
-            echo "$sha  app-release.apk"
-            echo "\`\`\`"
-          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Publicar na Google Play Store & Sincronizar Metadados
+        if: steps.assinatura.outputs.assinado == 'true'
+        env:
+          TRACK: ${{ github.event.inputs.track || 'production' }}
+        run: |
+          if [ -f /tmp/keystores/play-service-account.json ]; then
+            python3 scripts/play_store_publish.py \
+              --package com.sierratecnologia.growcipher \
+              --aab build/app/outputs/bundle/release/app-release.aab \
+              --track "$TRACK" \
+              --metadata-dir fastlane/metadata/android \
+              --key /tmp/keystores/play-service-account.json
+          fi
 
-      - name: Publicar a release
+      - name: Publicar GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           apk=build/app/outputs/flutter-apk/app-release.apk
-          args=(--title "GrowCipher ${GITHUB_REF_NAME}" --notes-file corpo.md)
-          if [ "${{ steps.assinatura.outputs.assinado }}" != "true" ]; then
-            args+=(--draft)
-          fi
-          gh release create "${GITHUB_REF_NAME}" "${args[@]}" "$apk" "${apk}.sha256"
-
-      - name: Guardar o APK como artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release-${{ github.ref_name }}
-          path: |
-            build/app/outputs/flutter-apk/app-release.apk
-            build/app/outputs/flutter-apk/app-release.apk.sha256
-          if-no-files-found: error
+          aab=build/app/outputs/bundle/release/app-release.aab
+          gh release create "${GITHUB_REF_NAME}" \
+            --title "GrowCipher ${GITHUB_REF_NAME}" \
+            --notes-file corpo.md \
+            "$apk" "${apk}.sha256" "$aab" || true

@@ -1,0 +1,7 @@
+GrowCipher è un diario di coltivazione locale e offline-first. Tieni traccia delle tue piante, dei cicli e degli eventi con totale privacy e pieno controllo sui tuoi dati.
+
+Caratteristiche:
+- Registri dettagliati di piante e cicli di crescita
+- Completamente offline: I tuoi dati non lasciano mai il dispositivo
+- Massima privacy: Nessun account, nessun tracciamento
+- Open Source e trasparente
