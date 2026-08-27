@@ -18,7 +18,14 @@
 - [ ] **Medição vazia vira evento** — mesma raiz: `MeasurementInput.validate()` aceita as seis métricas em branco e grava um `MeasurementAddedEvent` com tudo `null`. Valeria exigir ao menos uma métrica preenchida
 - [ ] **Número inválido some sem aviso** — `parseFlexibleDouble` (`lib/features/common/input_parsing.dart`) devolve `null` quando o `double.tryParse` falha, e o campo simplesmente não entra no evento. Quem digita `7,5.5` no pH, ou usa separador de milhar (`1.234,5`), salva sem erro e perde a medição. É o caso que a refatoração torna testável, mas não resolve: a conversão acontece dentro do `build`, depois do `validate`
 
-## [Unreleased](https://github.com/ricardosierra/growcipher/compare/v0.2.0...master)
+## [Unreleased](https://github.com/ricardosierra/growcipher/compare/v0.2.1...master)
+
+## [v0.2.1 (2026-08-23)](https://github.com/ricardosierra/growcipher/compare/v0.2.0...v0.2.1)
+
+### 🔧 Técnico
+
+- [x] **Descrição da loja em inglês** — `fastlane/metadata/android/en-US/`, pedido pela revisão do F-Droid; o catálogo usa o en-US como texto padrão quando o aparelho está em um idioma sem tradução própria
+- [x] **`.flutter-version`** — fixa a versão do SDK em `3.44.9`, a mesma com que o aplicativo é compilado aqui, para que a receita do F-Droid faça checkout dela em vez de acompanhar o canal estável e mudar de compilador sem aviso
 
 > ⚙️ **Primeira CI do projeto.** Até aqui o repositório caminhava para distribuição pública — `fastlane/metadata` pronto, receita de F-Droid escrita — sem nenhuma verificação automática rodando.
 >
