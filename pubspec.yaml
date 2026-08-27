@@ -40,6 +40,9 @@ dependencies:
     sdk: flutter
   intl: ^0.20.2
   sqflite: ^2.3.3+1
+  # SQLite via Dart FFI para Windows e Linux; Android/iOS/macOS continuam
+  # usando a implementação nativa do sqflite.
+  sqflite_common_ffi: ^2.3.3
   path: ^1.9.0
 
 dev_dependencies:
@@ -52,7 +55,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
-  sqflite_common_ffi: ^2.3.3
+  msix: ^3.18.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -68,6 +71,17 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+msix_config:
+  display_name: GrowCipher
+  publisher_display_name: Sierra Tecnologia LTDA
+  identity_name: SierraTecnologiaLTDA.GrowCipher
+  publisher: CN=CA36B9CF-47D9-45BD-A4BA-A8C0998008DE
+  msix_version: 0.2.0.2
+  logo_path: assets/store/growcipher-play-icon-512.png
+  architecture: x64
+  languages: pt-br
+  store: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:

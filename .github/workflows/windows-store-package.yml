@@ -1,0 +1,95 @@
+name: Windows Store release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version for a manual release (X.Y.Z)'
+        required: true
+        default: '0.2.0'
+        type: string
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: read
+
+env:
+  FLUTTER_VERSION: 3.44.9
+  MICROSOFT_STORE_PRODUCT_ID: 9P147STG46XL
+  TZ: UTC
+  LC_ALL: C.UTF-8
+
+jobs:
+  package-and-publish:
+    name: Build and publish MSIX to Microsoft Store
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        shell: pwsh
+        run: flutter pub get --enforce-lockfile
+
+      - name: Derive release version from tag
+        shell: pwsh
+        run: |
+          $tag = if ("${{ github.event_name }}" -eq "workflow_dispatch") { "v${{ inputs.version }}" } else { "${{ github.ref_name }}" }
+          if ($tag -notmatch '^v(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)$') {
+            throw "Expected a release tag in the format vX.Y.Z, got $tag"
+          }
+          $version = "$($Matches.major).$($Matches.minor).$($Matches.patch)"
+          $build = ([int64]$Matches.major * 1000000) + ([int64]$Matches.minor * 1000) + [int64]$Matches.patch
+          "VERSION_NAME=$version" >> $env:GITHUB_ENV
+          "VERSION_CODE=$build" >> $env:GITHUB_ENV
+          "MSIX_VERSION=$version.0" >> $env:GITHUB_ENV
+
+      - name: Analyze and test
+        shell: pwsh
+        run: |
+          flutter analyze --fatal-infos
+          flutter test
+
+      - name: Build Windows release
+        shell: pwsh
+        run: flutter build windows --release --build-name "$env:VERSION_NAME" --build-number "$env:VERSION_CODE"
+
+      - name: Create Store MSIX
+        shell: pwsh
+        run: dart run msix:create --store --build-windows false --version "$env:MSIX_VERSION" --output-path build/windows/msix --output-name GrowCipher
+
+      - name: Upload MSIX artifact for audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: growcipher-msix
+          path: build/windows/msix/*.msix
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Install Microsoft Store Developer CLI
+        uses: microsoft/microsoft-store-apppublisher@v1.4
+
+      - name: Configure Microsoft Store credentials
+        shell: pwsh
+        run: |
+          msstore reconfigure `
+            --tenantId "${{ secrets.AZURE_AD_TENANT_ID }}" `
+            --sellerId "${{ secrets.SELLER_ID }}" `
+            --clientId "${{ secrets.AZURE_AD_APPLICATION_CLIENT_ID }}" `
+            --clientSecret "${{ secrets.AZURE_AD_APPLICATION_SECRET }}"
+
+      - name: Submit package for Store certification
+        shell: pwsh
+        run: |
+          $package = (Get-ChildItem "${{ github.workspace }}\build\windows\msix\*.msix" | Select-Object -First 1).FullName
+          if (-not $package) {
+            throw "No MSIX package was generated"
+          }
+          msstore publish $package --appId "$env:MICROSOFT_STORE_PRODUCT_ID"
