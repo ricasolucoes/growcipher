@@ -1,1 +1,1 @@
-Local & offline-first grow journal.
+A local, offline-first grow journal.
