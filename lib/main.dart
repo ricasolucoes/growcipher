@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'app.dart';
 import 'data/app_database.dart';
+import 'data/database_factory.dart';
 import 'data/gamified_plant_repository.dart';
 import 'data/sqlite_gamification_repository.dart';
 import 'data/sqlite_plant_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await configureDatabaseFactory();
 
   // Banco local, offline — nada sai do aparelho.
   final database = await AppDatabase().open();

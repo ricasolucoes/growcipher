@@ -3,7 +3,7 @@ name: Release & Google Play Store
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+*'
+      - 'v*.*.*'
   workflow_dispatch:
     inputs:
       track:
@@ -52,13 +52,21 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Validar e extrair versão do pubspec.yaml
+      - name: Validar e extrair versão da tag
         shell: bash
         run: |
           set -euo pipefail
-          versao="$(sed -n -E 's/^version:[[:space:]]*(.+)$/\1/p' pubspec.yaml | head -1)"
-          nome="${versao%%+*}"
-          codigo="${versao##*+}"
+          if [[ "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            nome="${GITHUB_REF_NAME#v}"
+          else
+            nome="$(sed -n -E 's/^version:[[:space:]]*([0-9]+\.[0-9]+\.[0-9]+)(\+[0-9]+)?$/\1/p' pubspec.yaml | head -1)"
+            if [[ -z "$nome" ]]; then
+              echo "Tag inválida: esperado vX.Y.Z, recebido $GITHUB_REF_NAME" >&2
+              exit 1
+            fi
+          fi
+          IFS=. read -r major minor patch <<< "$nome"
+          codigo="$((major * 1000000 + minor * 1000 + patch))"
           echo "VERSION_NAME=${nome}" >> "$GITHUB_ENV"
           echo "VERSION_CODE=${codigo}" >> "$GITHUB_ENV"
           echo "Versão: ${nome} (code: ${codigo})"
@@ -103,8 +111,8 @@ jobs:
           set -euo pipefail
           SOURCE_DATE_EPOCH="$(git log -1 --pretty=%ct)"
           export SOURCE_DATE_EPOCH
-          flutter build apk --release
-          flutter build appbundle --release
+          flutter build apk --release --build-name "$VERSION_NAME" --build-number "$VERSION_CODE"
+          flutter build appbundle --release --build-name "$VERSION_NAME" --build-number "$VERSION_CODE"
 
       - name: Apagar a chave do runner
         if: always()
