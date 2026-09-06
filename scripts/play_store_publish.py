@@ -29,6 +29,17 @@ def get_publisher_service(key_path: str):
     if not os.path.exists(key_path):
         raise FileNotFoundError(f"Arquivo de credenciais JSON não encontrado em: {key_path}")
     
+    # Suporte a credenciais em base64 ou JSON puro
+    raw = Path(key_path).read_text(encoding="utf-8").strip()
+    if not raw.startswith("{"):
+        import base64
+        try:
+            decoded = base64.b64decode(raw).decode("utf-8")
+            if decoded.strip().startswith("{"):
+                Path(key_path).write_text(decoded, encoding="utf-8")
+        except Exception:
+            pass
+
     creds = service_account.Credentials.from_service_account_file(
         key_path,
         scopes=["https://www.googleapis.com/auth/androidpublisher"]
@@ -94,6 +105,17 @@ def get_release_notes(metadata_dir: Path, version_code: int):
             content = changelog_file.read_text(encoding="utf-8").strip()
         elif default_changelog.exists():
             content = default_changelog.read_text(encoding="utf-8").strip()
+        else:
+            # Fallback para o changelog numerico mais recente disponivel
+            changelogs_dir = locale_dir / "changelogs"
+            if changelogs_dir.is_dir():
+                candidates = []
+                for p in changelogs_dir.glob("*.txt"):
+                    if p.stem.isdigit():
+                        candidates.append((int(p.stem), p))
+                if candidates:
+                    candidates.sort(reverse=True)
+                    content = candidates[0][1].read_text(encoding="utf-8").strip()
 
         if content:
             notes.append({
@@ -233,6 +255,8 @@ def main():
             verify_only=args.verify_only
         )
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         sys.exit(1)
 
 if __name__ == "__main__":
