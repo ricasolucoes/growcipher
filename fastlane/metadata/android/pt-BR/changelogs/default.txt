@@ -1,0 +1,1 @@
+Melhorias gerais e correções de estabilidade no diário de cultivo.
