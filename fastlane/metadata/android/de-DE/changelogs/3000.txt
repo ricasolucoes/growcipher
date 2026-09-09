@@ -1,0 +1,1 @@
+Version 0.3.0: Offline-Anbautagebuch mit Verfolgung von Pflanzen, Zyklen und Ereignissen bei voller Privatsphäre.

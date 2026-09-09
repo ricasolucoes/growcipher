@@ -1,0 +1,1 @@
+Version 0.3.0 : Journal de culture hors-ligne avec suivi des plantes, cycles et événements en toute confidentialité.

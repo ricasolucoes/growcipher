@@ -1,0 +1,1 @@
+Lanzamiento v0.3.0: Diario de cultivo offline-first con seguimiento de plantas, ciclos y eventos con total privacidad.

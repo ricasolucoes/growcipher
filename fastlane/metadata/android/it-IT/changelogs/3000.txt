@@ -1,0 +1,1 @@
+Versione 0.3.0: Diario di coltivazione offline-first con monitoraggio di piante, cicli ed eventi in totale privacy.
