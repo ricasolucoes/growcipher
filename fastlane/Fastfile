@@ -50,8 +50,9 @@ platform :ios do
     profile_name = ENV.fetch("IOS_PROVISIONING_PROFILE_NAME")
     version_name = ENV.fetch("VERSION_NAME")
     build_number = ENV.fetch("BUILD_NUMBER")
+    binary_version_name = ENV.fetch("IOS_BINARY_VERSION_NAME", ENV.fetch("IOS_APP_STORE_VERSION", version_name))
 
-    sh("cd #{PROJECT_ROOT} && flutter build ios --release --no-codesign --verbose --build-name #{version_name} --build-number #{build_number}")
+    sh("cd #{PROJECT_ROOT} && flutter build ios --release --no-codesign --verbose --build-name #{binary_version_name} --build-number #{build_number}")
 
     gym(
       workspace: File.join(PROJECT_ROOT, "ios/Runner.xcworkspace"),
