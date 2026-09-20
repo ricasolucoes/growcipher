@@ -55,19 +55,24 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
-      - name: Corrigir CocoaPods no Ruby do runner
-        shell: bash
-        run: |
-          set -euo pipefail
-          gem install cocoapods --no-document
-          pod --version
-
       - name: Configurar Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
+
+      - name: Corrigir CocoaPods do runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          if brew list cocoapods >/dev/null 2>&1; then
+            brew reinstall cocoapods
+          else
+            brew install cocoapods
+          fi
+          command -v pod
+          pod --version
 
       - name: Conferir versão do release
         id: version
