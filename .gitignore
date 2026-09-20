@@ -50,6 +50,10 @@ app.*.map.json
 # Cobertura de testes (flutter test --coverage)
 /coverage/
 
+# Metadados e capturas do App Store Connect são gerados deterministically no CI.
+/fastlane/metadata/ios/
+/fastlane/screenshots/
+
 # --- Artefatos de assinatura e segredos ---
 # Chave privada e senha no mesmo repositorio = identidade de publicacao comprometida.
 # Chave de assinatura Android nao pode ser trocada depois que o app esta publicado.

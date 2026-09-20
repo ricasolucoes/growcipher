@@ -1,12 +1,14 @@
 default_platform(:android)
 
+PROJECT_ROOT = File.expand_path("..", __dir__)
+
 platform :android do
   desc "Build and publish GrowCipher to Google Play Store"
   lane :deploy do |options|
     track = options[:track] || 'production'
-    
+
     sh("cd .. && flutter build appbundle --release")
-    
+
     upload_to_play_store(
       track: track,
       aab: '../build/app/outputs/bundle/release/app-release.aab',
@@ -26,6 +28,96 @@ platform :android do
       skip_upload_screenshots: true,
       json_key: '/Users/sierra/Dev/keystores/play-store-api-key.json',
       package_name: 'com.sierratecnologia.growcipher'
+    )
+  end
+end
+
+platform :ios do
+  private_lane :growcipher_app_store_connect_api_key do
+    app_store_connect_api_key(
+      key_id: ENV.fetch("APPSTORE_CONNECT_API_KEY_ID"),
+      issuer_id: ENV.fetch("APPSTORE_CONNECT_ISSUER_ID"),
+      key_content: ENV.fetch("APPSTORE_CONNECT_API_PRIVATE_KEY_BASE64"),
+      is_key_content_base64: true,
+      in_house: false
+    )
+  end
+
+  desc "Build, sign and export the GrowCipher iOS IPA"
+  lane :build do
+    team_id = ENV.fetch("APPLE_TEAM_ID", "28X7P94SF5")
+    bundle_id = ENV.fetch("IOS_BUNDLE_ID", "com.sierratecnologia.growcipher")
+    profile_name = ENV.fetch("IOS_PROVISIONING_PROFILE_NAME")
+    version_name = ENV.fetch("VERSION_NAME")
+    build_number = ENV.fetch("BUILD_NUMBER")
+
+    sh("cd #{PROJECT_ROOT} && flutter build ios --release --no-codesign --build-name #{version_name} --build-number #{build_number}")
+
+    gym(
+      workspace: File.join(PROJECT_ROOT, "ios/Runner.xcworkspace"),
+      scheme: "Runner",
+      configuration: "Release",
+      clean: true,
+      output_directory: File.join(PROJECT_ROOT, "build/ios"),
+      output_name: "GrowCipher.ipa",
+      export_method: "app-store",
+      xcargs: "CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=#{team_id} " \
+        "PROVISIONING_PROFILE_SPECIFIER='#{profile_name}' " \
+        "CODE_SIGN_IDENTITY='Apple Distribution'",
+      export_options: {
+        method: "app-store",
+        signingStyle: "manual",
+        teamID: team_id,
+        provisioningProfiles: {
+          bundle_id => profile_name
+        }
+      }
+    )
+  end
+
+  desc "Upload the signed IPA to TestFlight"
+  lane :upload_testflight do
+    pilot(
+      api_key: growcipher_app_store_connect_api_key,
+      ipa: File.join(PROJECT_ROOT, "build/ios/GrowCipher.ipa"),
+      skip_waiting_for_build_processing: true,
+      distribute_external: false
+    )
+  end
+
+  desc "Upload the signed IPA and metadata to App Store Connect"
+  lane :upload_appstore do
+    deliver(
+      api_key: growcipher_app_store_connect_api_key,
+      ipa: File.join(PROJECT_ROOT, "build/ios/GrowCipher.ipa"),
+      app_identifier: ENV.fetch("IOS_BUNDLE_ID", "com.sierratecnologia.growcipher"),
+      app_version: ENV.fetch("VERSION_NAME"),
+      metadata_path: File.join(PROJECT_ROOT, "fastlane/metadata/ios"),
+      screenshots_path: File.join(PROJECT_ROOT, "fastlane/screenshots"),
+      skip_metadata: false,
+      skip_screenshots: false,
+      submit_for_review: ENV.fetch("IOS_SUBMIT_FOR_REVIEW", "false") == "true",
+      automatic_release: ENV.fetch("IOS_AUTOMATIC_RELEASE", "true") == "true",
+      force: true,
+      run_precheck_before_submit: false,
+      app_review_information: {
+        first_name: ENV.fetch("IOS_REVIEW_FIRST_NAME", "Ricardo"),
+        last_name: ENV.fetch("IOS_REVIEW_LAST_NAME", "Sierra"),
+        phone_number: ENV.fetch("IOS_REVIEW_PHONE", "+55 21 99919-3898"),
+        email_address: ENV.fetch("IOS_REVIEW_EMAIL", "sierra.csi@gmail.com"),
+        notes: "GrowCipher nao exige login e nao coleta dados. O MVP registra plantas e eventos localmente, sem anuncios, compras ou conteudo publico. Use o app de acordo com a legislacao aplicavel no local do usuario."
+      },
+      submission_information: {
+        add_id_info_serves_ads: false,
+        add_id_info_tracks_action: false,
+        add_id_info_tracks_install: false,
+        content_rights_has_rights: true,
+        content_rights_contains_third_party_content: false,
+        export_compliance_uses_encryption: ENV.fetch("IOS_EXPORT_COMPLIANCE_USES_ENCRYPTION").casecmp("true").zero?,
+        export_compliance_is_exempt: ENV.fetch("IOS_EXPORT_COMPLIANCE_IS_EXEMPT").casecmp("true").zero?,
+        export_compliance_contains_proprietary_cryptography: false,
+        export_compliance_contains_third_party_cryptography: false
+      }
     )
   end
 end

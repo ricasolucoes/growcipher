@@ -1,0 +1,252 @@
+name: Release & App Store (iOS)
+
+on:
+  push:
+    tags:
+      - 'ios-v*'
+  workflow_dispatch:
+    inputs:
+      destination:
+        description: Destino do build iOS
+        required: true
+        default: appstore
+        type: choice
+        options:
+          - testflight
+          - appstore
+      submit_for_review:
+        description: Enviar a versão para revisão da Apple
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: growcipher-appstore-release
+  cancel-in-progress: false
+
+env:
+  FLUTTER_VERSION: 3.44.9
+  APPLE_TEAM_ID: 28X7P94SF5
+  IOS_BUNDLE_ID: com.sierratecnologia.growcipher
+  TZ: UTC
+  LC_ALL: C.UTF-8
+
+jobs:
+  build:
+    name: Exportar e assinar iOS
+    runs-on: macos-latest
+    timeout-minutes: 60
+    outputs:
+      version: ${{ steps.version.outputs.name }}
+      build: ${{ steps.version.outputs.build }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Ruby e Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Conferir versão do release
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcodebuild -version
+          version_line="$(sed -n -E 's/^version:[[:space:]]*([0-9]+\.[0-9]+\.[0-9]+\+[0-9]+).*/\1/p' pubspec.yaml | head -1)"
+          test -n "$version_line"
+          version_name="${version_line%%+*}"
+          build_number="${version_line##*+}"
+          if [[ "$GITHUB_REF" == refs/tags/ios-* && "$GITHUB_REF_NAME" != "ios-v$version_name" ]]; then
+            echo "::error::Tag e pubspec.yaml discordam: esperado ios-v$version_name"
+            exit 1
+          fi
+          echo "name=$version_name" >> "$GITHUB_OUTPUT"
+          echo "build=$build_number" >> "$GITHUB_OUTPUT"
+          echo "VERSION_NAME=$version_name" >> "$GITHUB_ENV"
+          echo "BUILD_NUMBER=$build_number" >> "$GITHUB_ENV"
+
+      - name: Dependências Flutter
+        run: flutter pub get --enforce-lockfile
+
+      - name: Análise estática
+        run: flutter analyze --fatal-infos
+
+      - name: Testes
+        run: flutter test --coverage
+
+      - name: Importar certificado e provisioning profile
+        id: signing
+        shell: bash
+        env:
+          IOS_CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
+          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+          IOS_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+        run: |
+          set -euo pipefail
+          : "${IOS_CERTIFICATE_BASE64:?Configure IOS_CERTIFICATE_BASE64 no repositorio}"
+          : "${IOS_CERTIFICATE_PASSWORD:?Configure IOS_CERTIFICATE_PASSWORD no repositorio}"
+          : "${IOS_PROVISIONING_PROFILE_BASE64:?Configure IOS_PROVISIONING_PROFILE_BASE64 no repositorio}"
+
+          decode_base64() {
+            if ! printf '%s' "$1" | base64 --decode > "$2" 2>/dev/null; then
+              printf '%s' "$1" | base64 -D > "$2"
+            fi
+          }
+
+          keychain_password="$(openssl rand -hex 32)"
+          keychain_path="$RUNNER_TEMP/growcipher-signing.keychain-db"
+          security create-keychain -p "$keychain_password" "$keychain_path"
+          security set-keychain-settings -lut 21600 "$keychain_path"
+          security unlock-keychain -p "$keychain_password" "$keychain_path"
+          security list-keychains -d user -s "$keychain_path" login.keychain-db
+          security default-keychain -s "$keychain_path"
+
+          certificate_path="$RUNNER_TEMP/growcipher-distribution.p12"
+          decode_base64 "$IOS_CERTIFICATE_BASE64" "$certificate_path"
+          security import "$certificate_path" \
+            -k "$keychain_path" \
+            -P "$IOS_CERTIFICATE_PASSWORD" \
+            -T /usr/bin/codesign \
+            -T /usr/bin/security
+          security set-key-partition-list \
+            -S apple-tool:,apple:,codesign: \
+            -s -k "$keychain_password" "$keychain_path"
+
+          profile_path="$RUNNER_TEMP/growcipher.mobileprovision"
+          profile_plist="$RUNNER_TEMP/growcipher-profile.plist"
+          decode_base64 "$IOS_PROVISIONING_PROFILE_BASE64" "$profile_path"
+          security cms -D -i "$profile_path" > "$profile_plist"
+          profile_uuid="$(/usr/libexec/PlistBuddy -c 'Print :UUID' "$profile_plist")"
+          profile_name="$(/usr/libexec/PlistBuddy -c 'Print :Name' "$profile_plist")"
+          app_identifier="$(/usr/libexec/PlistBuddy -c 'Print :Entitlements:application-identifier' "$profile_plist")"
+          get_task_allow="$(/usr/libexec/PlistBuddy -c 'Print :Entitlements:get-task-allow' "$profile_plist" 2>/dev/null || true)"
+          test "$app_identifier" = "$APPLE_TEAM_ID.$IOS_BUNDLE_ID"
+          test "$get_task_allow" != "true"
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          cp "$profile_path" "$HOME/Library/MobileDevice/Provisioning Profiles/$profile_uuid.mobileprovision"
+
+          echo "IOS_PROVISIONING_PROFILE_NAME=$profile_name" >> "$GITHUB_ENV"
+          echo "SIGNING_KEYCHAIN=$keychain_path" >> "$GITHUB_ENV"
+          echo "profile=$profile_name" >> "$GITHUB_OUTPUT"
+
+      - name: Gerar IPA assinado
+        run: bundle exec fastlane ios build
+
+      - name: Publicar IPA como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: growcipher-ios-${{ steps.version.outputs.name }}-${{ steps.version.outputs.build }}
+          path: build/ios/GrowCipher.ipa
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Limpar material de assinatura
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          if [[ -n "${SIGNING_KEYCHAIN:-}" ]]; then
+            security delete-keychain "$SIGNING_KEYCHAIN"
+          fi
+          rm -f "$RUNNER_TEMP/growcipher-distribution.p12" \
+            "$RUNNER_TEMP/growcipher.mobileprovision" \
+            "$RUNNER_TEMP/growcipher-profile.plist"
+
+  publish-testflight:
+    name: Enviar para TestFlight
+    needs: build
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.destination == 'testflight' }}
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Ruby e Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Baixar IPA assinado
+        uses: actions/download-artifact@v4
+        with:
+          name: growcipher-ios-${{ needs.build.outputs.version }}-${{ needs.build.outputs.build }}
+          path: build/ios
+
+      - name: Enviar para TestFlight
+        env:
+          APPSTORE_CONNECT_API_KEY_ID: ${{ secrets.APPSTORE_CONNECT_API_KEY_ID }}
+          APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+          APPSTORE_CONNECT_API_PRIVATE_KEY_BASE64: ${{ secrets.APPSTORE_CONNECT_API_PRIVATE_KEY_BASE64 }}
+        run: bundle exec fastlane ios upload_testflight
+
+  publish-appstore:
+    name: Enviar para App Store
+    needs: build
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.destination == 'appstore') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/ios-v')) }}
+    runs-on: macos-latest
+    timeout-minutes: 40
+    environment: appstore-production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Ruby e Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Baixar IPA assinado
+        uses: actions/download-artifact@v4
+        with:
+          name: growcipher-ios-${{ needs.build.outputs.version }}-${{ needs.build.outputs.build }}
+          path: build/ios
+
+      - name: Preparar metadados localizados
+        run: bash scripts/ios_store_metadata.sh
+
+      - name: Preparar capturas iPhone e iPad
+        shell: bash
+        run: |
+          set -euo pipefail
+          brew list imagemagick >/dev/null 2>&1 || brew install imagemagick
+          bash scripts/ios_store_screenshots.sh
+
+      - name: Validar respostas de compliance
+        shell: bash
+        env:
+          IOS_EXPORT_COMPLIANCE_USES_ENCRYPTION: ${{ vars.IOS_EXPORT_COMPLIANCE_USES_ENCRYPTION }}
+          IOS_EXPORT_COMPLIANCE_IS_EXEMPT: ${{ vars.IOS_EXPORT_COMPLIANCE_IS_EXEMPT }}
+        run: |
+          set -euo pipefail
+          : "${IOS_EXPORT_COMPLIANCE_USES_ENCRYPTION:?Configure IOS_EXPORT_COMPLIANCE_USES_ENCRYPTION no ambiente appstore-production}"
+          : "${IOS_EXPORT_COMPLIANCE_IS_EXEMPT:?Configure IOS_EXPORT_COMPLIANCE_IS_EXEMPT no ambiente appstore-production}"
+          case "$IOS_EXPORT_COMPLIANCE_USES_ENCRYPTION" in true|false) ;; *) exit 1 ;; esac
+          case "$IOS_EXPORT_COMPLIANCE_IS_EXEMPT" in true|false) ;; *) exit 1 ;; esac
+
+      - name: Enviar para App Store Connect
+        env:
+          APPSTORE_CONNECT_API_KEY_ID: ${{ secrets.APPSTORE_CONNECT_API_KEY_ID }}
+          APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+          APPSTORE_CONNECT_API_PRIVATE_KEY_BASE64: ${{ secrets.APPSTORE_CONNECT_API_PRIVATE_KEY_BASE64 }}
+          IOS_SUBMIT_FOR_REVIEW: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/ios-v') || inputs.submit_for_review }}
+          IOS_AUTOMATIC_RELEASE: "true"
+          IOS_EXPORT_COMPLIANCE_USES_ENCRYPTION: ${{ vars.IOS_EXPORT_COMPLIANCE_USES_ENCRYPTION }}
+          IOS_EXPORT_COMPLIANCE_IS_EXEMPT: ${{ vars.IOS_EXPORT_COMPLIANCE_IS_EXEMPT }}
+          VERSION_NAME: ${{ needs.build.outputs.version }}
+        run: bundle exec fastlane ios upload_appstore
