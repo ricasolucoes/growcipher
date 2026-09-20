@@ -51,9 +51,7 @@ platform :ios do
     version_name = ENV.fetch("VERSION_NAME")
     build_number = ENV.fetch("BUILD_NUMBER")
 
-    with_clean_env do
-      sh("cd #{PROJECT_ROOT} && flutter build ios --release --no-codesign --build-name #{version_name} --build-number #{build_number}")
-    end
+    sh("cd #{PROJECT_ROOT} && env -u BUNDLE_BIN_PATH -u BUNDLE_GEMFILE -u BUNDLE_PATH -u BUNDLE_WITH -u BUNDLE_WITHOUT -u BUNDLE_APP_CONFIG -u RUBYOPT -u RUBYLIB flutter build ios --release --no-codesign --build-name #{version_name} --build-number #{build_number}")
 
     gym(
       workspace: File.join(PROJECT_ROOT, "ios/Runner.xcworkspace"),
