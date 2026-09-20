@@ -207,6 +207,15 @@ jobs:
           APPSTORE_CONNECT_API_PRIVATE_KEY_BASE64: ${{ secrets.APPSTORE_CONNECT_API_PRIVATE_KEY_BASE64 }}
         run: bundle exec fastlane ios upload_testflight
 
+      - name: Declarar conformidade de criptografia
+        env:
+          APPSTORE_CONNECT_API_KEY_ID: ${{ secrets.APPSTORE_CONNECT_API_KEY_ID }}
+          APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+          APPSTORE_CONNECT_API_PRIVATE_KEY_BASE64: ${{ secrets.APPSTORE_CONNECT_API_PRIVATE_KEY_BASE64 }}
+          IOS_APP_ID: "6814259887"
+          IOS_BUILD_NUMBER: ${{ needs.build.outputs.build }}
+        run: ruby scripts/appstore_connect_export_compliance.rb
+
   publish-appstore:
     name: Enviar para App Store
     needs: build

@@ -1,0 +1,35 @@
+name: App Store Connect - Conformidade iOS
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_number:
+        description: Número do build já processado no App Store Connect
+        required: true
+        default: "3001"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  export-compliance:
+    name: Declarar conformidade de criptografia
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+
+      - name: Declarar build sem criptografia não isenta
+        env:
+          APPSTORE_CONNECT_API_KEY_ID: ${{ secrets.APPSTORE_CONNECT_API_KEY_ID }}
+          APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+          APPSTORE_CONNECT_API_PRIVATE_KEY_BASE64: ${{ secrets.APPSTORE_CONNECT_API_PRIVATE_KEY_BASE64 }}
+          IOS_APP_ID: "6814259887"
+          IOS_BUILD_NUMBER: ${{ inputs.build_number }}
+        run: ruby scripts/appstore_connect_export_compliance.rb
