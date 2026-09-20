@@ -11,7 +11,7 @@ require "uri"
 class AppStoreConnectExportCompliance
   API_BASE = "https://api.appstoreconnect.apple.com"
   DEFAULT_APP_ID = "6814259887"
-  DEFAULT_BUILD_NUMBER = "3001"
+  DEFAULT_BUILD_NUMBER = "3002"
   DEFAULT_WAIT_SECONDS = 1_200
   DEFAULT_POLL_INTERVAL_SECONDS = 20
 

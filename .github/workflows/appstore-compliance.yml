@@ -6,7 +6,7 @@ on:
       build_number:
         description: Número do build já processado no App Store Connect
         required: true
-        default: "3001"
+        default: "3002"
         type: string
 
 permissions:

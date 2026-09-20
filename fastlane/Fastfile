@@ -50,7 +50,10 @@ platform :ios do
     profile_name = ENV.fetch("IOS_PROVISIONING_PROFILE_NAME")
     version_name = ENV.fetch("VERSION_NAME")
     build_number = ENV.fetch("BUILD_NUMBER")
-    binary_version_name = ENV.fetch("IOS_BINARY_VERSION_NAME", ENV.fetch("IOS_APP_STORE_VERSION", version_name))
+    # The binary marketing version comes from pubspec.yaml. IOS_APP_STORE_VERSION
+    # identifies the App Store Connect version record and must never rewrite the
+    # version users see in the installed app.
+    binary_version_name = ENV.fetch("IOS_BINARY_VERSION_NAME", version_name)
 
     sh("cd #{PROJECT_ROOT} && flutter build ios --release --no-codesign --verbose --build-name #{binary_version_name} --build-number #{build_number}")
 
@@ -103,7 +106,33 @@ platform :ios do
         last_name: ENV.fetch("IOS_REVIEW_LAST_NAME", "Sierra"),
         phone_number: ENV.fetch("IOS_REVIEW_PHONE", "+55 21 99919-3898"),
         email_address: ENV.fetch("IOS_REVIEW_EMAIL", "sierra.csi@gmail.com"),
-        notes: "GrowCipher nao exige login e nao coleta dados. O MVP registra plantas e eventos localmente, sem anuncios, compras ou conteudo publico. Use o app de acordo com a legislacao aplicavel no local do usuario."
+        notes: <<~REVIEW_NOTES
+          GrowCipher — App Review Information
+
+          1. Screen recording
+          Attach a screen recording made on a physical iPhone running the latest supported iOS. It starts on the Home Screen, launches GrowCipher, creates a plant, records a growth event, opens the plant timeline, and returns to the main screen. GrowCipher has no account registration, login, account deletion, user-generated public content, reporting/blocking flow, advertisements, in-app purchases, subscriptions, or paid features.
+
+          2. Purpose and target audience
+          GrowCipher is a privacy-first, offline-first grow journal for hobby growers, indoor gardeners, and independent cultivators. It solves the problem of keeping plant, cycle, and growth-event records without requiring an account or sending cultivation data to a cloud service. It provides a private local timeline, structured records, and simple progress insights that remain under the user's control.
+
+          3. Setup and access
+          Install and launch the app, then tap the action to add a plant. Follow the on-device wizard, save the plant, and use the quick-log actions to record watering, observation, treatment, or harvest events. Open any plant to review its timeline and progress. No account, credentials, invitation, sample file, or special setup is required; all main features are available immediately after installation and all records are stored locally on the device.
+
+          4. External services, tools, and platforms
+          The core functionality uses Flutter and the iOS SQLite storage provided through the sqflite plugin. The app does not use authentication, remote APIs, cloud storage, analytics, advertising, tracking, social networks, AI services, payment processors, or other third-party data providers. Apple services are used only for App Store distribution and TestFlight delivery.
+
+          5. Regional differences
+          The app's features, data handling, and content are consistent worldwide. The interface is localized for Brazilian Portuguese, English, and Spanish; localization is the only regional variation. GrowCipher is a private record-keeping tool and does not provide regulated medical, financial, legal, or agricultural certification.
+
+          6. Regulated industry and third-party material
+          GrowCipher is not a regulated service and does not provide medical treatment, financial services, gambling, or controlled-substance transactions. It does not include protected third-party media or user-generated public content. The app's code and interface are owned or properly licensed by Sierra Tecnologia LTDA. No authorization credentials or special documentation are required.
+
+          Additional review answers
+          - Accounts: none; no registration, login, profile, or account-deletion flow exists, so no demo credentials are needed.
+          - User-generated content: records are private local data only; users cannot publish, contact, report, or block other users.
+          - Paid content: none; there are no purchases, subscriptions, ads, or paywalls.
+          - Business model: general consumer app, not restricted to a business, organization, or employee group.
+        REVIEW_NOTES
       },
       submission_information: {
         add_id_info_serves_ads: false,
