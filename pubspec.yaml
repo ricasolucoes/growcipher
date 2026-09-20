@@ -63,6 +63,10 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
 
+  # O projeto usa a integração CocoaPods existente no iOS.
+  config:
+    enable-swift-package-manager: false
+
   # Geração das classes de localização a partir dos ARBs em lib/l10n
   # (ver l10n.yaml). pt-BR é o idioma padrão do produto.
   generate: true
