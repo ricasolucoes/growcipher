@@ -61,9 +61,6 @@ platform :ios do
       output_directory: File.join(PROJECT_ROOT, "build/ios"),
       output_name: "GrowCipher.ipa",
       export_method: "app-store",
-      xcargs: "CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=#{team_id} " \
-        "PROVISIONING_PROFILE_SPECIFIER='#{profile_name}' " \
-        "CODE_SIGN_IDENTITY='Apple Distribution'",
       export_options: {
         method: "app-store",
         signingStyle: "manual",
