@@ -233,11 +233,7 @@ jobs:
         run: bash scripts/ios_store_metadata.sh
 
       - name: Preparar capturas iPhone e iPad
-        shell: bash
-        run: |
-          set -euo pipefail
-          brew list imagemagick >/dev/null 2>&1 || brew install imagemagick
-          bash scripts/ios_store_screenshots.sh
+        run: bash scripts/ios_store_screenshots.sh
 
       - name: Validar respostas de compliance
         shell: bash
