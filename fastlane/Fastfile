@@ -89,7 +89,7 @@ platform :ios do
       api_key: growcipher_app_store_connect_api_key,
       ipa: File.join(PROJECT_ROOT, "build/ios/GrowCipher.ipa"),
       app_identifier: ENV.fetch("IOS_BUNDLE_ID", "com.sierratecnologia.growcipher"),
-      app_version: ENV.fetch("IOS_APP_STORE_VERSION", "1.0"),
+      app_version: ENV.fetch("IOS_APP_STORE_VERSION", "1"),
       metadata_path: File.join(PROJECT_ROOT, "fastlane/metadata/ios"),
       screenshots_path: File.join(PROJECT_ROOT, "fastlane/screenshots"),
       skip_metadata: false,

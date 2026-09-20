@@ -31,7 +31,7 @@ env:
   FLUTTER_VERSION: 3.44.9
   APPLE_TEAM_ID: 28X7P94SF5
   IOS_BUNDLE_ID: com.sierratecnologia.growcipher
-  IOS_APP_STORE_VERSION: "1.0"
+  IOS_APP_STORE_VERSION: "1"
   TZ: UTC
   LC_ALL: C.UTF-8
 
