@@ -61,7 +61,9 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
-          cache: true
+          # O cache do SDK ultrapassa 2 GB e tem sido cancelado no runner macOS.
+          # O release continua usando a versão fixa acima, sem depender desse cache.
+          cache: false
 
       - name: Conferir versão do release
         id: version
