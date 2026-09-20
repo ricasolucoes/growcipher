@@ -51,7 +51,7 @@ platform :ios do
     version_name = ENV.fetch("VERSION_NAME")
     build_number = ENV.fetch("BUILD_NUMBER")
 
-    sh("cd #{PROJECT_ROOT} && env -u BUNDLE_BIN_PATH -u BUNDLE_GEMFILE -u BUNDLE_PATH -u BUNDLE_WITH -u BUNDLE_WITHOUT -u BUNDLE_APP_CONFIG -u RUBYOPT -u RUBYLIB flutter build ios --release --no-codesign --verbose --build-name #{version_name} --build-number #{build_number}")
+    sh("cd #{PROJECT_ROOT} && flutter build ios --release --no-codesign --verbose --build-name #{version_name} --build-number #{build_number}")
 
     gym(
       workspace: File.join(PROJECT_ROOT, "ios/Runner.xcworkspace"),
@@ -91,7 +91,7 @@ platform :ios do
       api_key: growcipher_app_store_connect_api_key,
       ipa: File.join(PROJECT_ROOT, "build/ios/GrowCipher.ipa"),
       app_identifier: ENV.fetch("IOS_BUNDLE_ID", "com.sierratecnologia.growcipher"),
-      app_version: ENV.fetch("VERSION_NAME"),
+      app_version: ENV.fetch("IOS_APP_STORE_VERSION", "1.0"),
       metadata_path: File.join(PROJECT_ROOT, "fastlane/metadata/ios"),
       screenshots_path: File.join(PROJECT_ROOT, "fastlane/screenshots"),
       skip_metadata: false,
