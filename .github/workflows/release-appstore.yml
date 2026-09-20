@@ -39,6 +39,7 @@ jobs:
     name: Exportar e assinar iOS
     runs-on: macos-latest
     timeout-minutes: 60
+    environment: appstore-production
     outputs:
       version: ${{ steps.version.outputs.name }}
       build: ${{ steps.version.outputs.build }}
