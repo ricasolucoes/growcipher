@@ -100,8 +100,9 @@ class AppStoreConnectExportCompliance
   def list_builds
     response = request(
       :get,
-      "/v1/apps/#{@app_id}/builds",
+      "/v1/builds",
       query: {
+        "filter[app]" => @app_id,
         "filter[version]" => @build_number,
         "limit" => "200",
         "fields[builds]" => "version,processingState,usesNonExemptEncryption"
