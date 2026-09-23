@@ -31,7 +31,6 @@ env:
   FLUTTER_VERSION: 3.44.9
   APPLE_TEAM_ID: 28X7P94SF5
   IOS_BUNDLE_ID: com.sierratecnologia.growcipher
-  IOS_APP_STORE_VERSION: "1"
   TZ: UTC
   LC_ALL: C.UTF-8
 
@@ -86,6 +85,12 @@ jobs:
 
       - name: Dependências Flutter
         run: flutter pub get --enforce-lockfile
+
+      - name: Gerar ícone do iOS
+        run: bash scripts/ios_app_icon.sh
+
+      - name: Validar configuração da release iOS
+        run: bash scripts/ios_release_config_test.sh
 
       - name: Instalar dependências CocoaPods
         working-directory: ios
@@ -265,6 +270,6 @@ jobs:
           IOS_AUTOMATIC_RELEASE: "true"
           IOS_EXPORT_COMPLIANCE_USES_ENCRYPTION: ${{ vars.IOS_EXPORT_COMPLIANCE_USES_ENCRYPTION }}
           IOS_EXPORT_COMPLIANCE_IS_EXEMPT: ${{ vars.IOS_EXPORT_COMPLIANCE_IS_EXEMPT }}
-          IOS_APP_STORE_VERSION: ${{ env.IOS_APP_STORE_VERSION }}
+          IOS_APP_STORE_VERSION: ${{ needs.build.outputs.version }}
           VERSION_NAME: ${{ needs.build.outputs.version }}
         run: bundle exec fastlane ios upload_appstore
